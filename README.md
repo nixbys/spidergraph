@@ -1,7 +1,5 @@
 # Spidergraph
 
-**Live site: https://nixbys.github.io/spidergraph/**
-
 A self-contained, client-side privacy and security program: a tiered reference playbook,
 two interactive audit tools, and a live coverage visualization — no backend, no accounts,
 no tracking. Named after its own signature visual: a radar chart that plots your real
