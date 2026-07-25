@@ -4,10 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spidergraph — Stack Builder</title>
+<meta name="description" content="Pick a target tier, select what you actually run across 14 product slots, and see live gap analysis and a radar chart of your security coverage — modeled on a PC-part-picker build sheet.">
+<meta name="theme-color" content="#0f1419">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Spidergraph — Stack Builder">
+<meta property="og:description" content="Pick a target tier, select what you actually run across 14 product slots, and see live gap analysis and a radar chart of your security coverage.">
+<meta property="og:url" content="https://nixbys.github.io/spidergraph/privacy-stack-builder.html">
+<meta property="og:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spidergraph — Stack Builder">
+<meta name="twitter:description" content="Pick a target tier, select what you actually run across 14 product slots, and see live gap analysis and a radar chart of your security coverage.">
+<meta name="twitter:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
 <link rel="apple-touch-icon" href="favicon-180.png">
+<link rel="icon" href="favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -83,9 +98,11 @@
   .tier-btn{
     flex:1; text-align:center; padding:9px 10px; border-radius:7px; cursor:pointer;
     font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:500; letter-spacing:.02em;
-    color:var(--muted); border:1px solid transparent; transition:all .15s ease; user-select:none;
+    color:var(--muted); background:none; border:1px solid transparent; transition:all .15s ease; user-select:none;
+    appearance:none; -webkit-appearance:none; margin:0;
   }
   .tier-btn:hover{color:var(--text);}
+  .tier-btn:focus-visible{outline:2px solid var(--blue); outline-offset:1px;}
   .tier-btn.active{background:var(--surface3); border-color:var(--border); color:var(--text);}
   .tier-btn.active[data-tier="1"]{color:var(--amber); border-color:#e8a23d55;}
   .tier-btn.active[data-tier="2"]{color:var(--blue); border-color:#5b8def55;}
@@ -222,9 +239,9 @@
     <div class="tier-select">
       <div class="tier-label">Target build tier</div>
       <div class="tier-btns" id="tierBtns">
-        <div class="tier-btn" data-tier="1">Budget</div>
-        <div class="tier-btn active" data-tier="2">Mid</div>
-        <div class="tier-btn" data-tier="3">No-Limit</div>
+        <button type="button" class="tier-btn" data-tier="1">Budget</button>
+        <button type="button" class="tier-btn active" data-tier="2">Mid</button>
+        <button type="button" class="tier-btn" data-tier="3">No-Limit</button>
       </div>
     </div>
   </header>
@@ -254,7 +271,7 @@
     <div class="sidebar">
       <div class="card">
         <div class="card-title">Coverage readout</div>
-        <svg id="radar" width="280" height="280" viewBox="0 0 280 280"></svg>
+        <svg id="radar" width="280" height="280" viewBox="0 0 280 280" aria-hidden="true"></svg>
         <div class="score-row">
           <div>
             <div class="score-num" id="scoreNum">0%</div>
@@ -278,7 +295,7 @@
 
       <div class="card">
         <div class="card-title">Export</div>
-        <div class="tier-btn active" id="reportBtn" style="text-align:center; padding:11px; cursor:pointer;">Generate report ↓</div>
+        <button type="button" class="tier-btn active" id="reportBtn" style="display:block; width:100%; text-align:center; padding:11px; cursor:pointer;">Generate report ↓</button>
       </div>
     </div>
   </div>

@@ -16,7 +16,7 @@ coverage across every security domain as one shape.
 - `docs/recommendations-report.md` — source content for the report page
 - `docs/logo-mark.svg`, `docs/logo-lockup.svg`, `docs/favicon.svg`, `docs/favicon-*.png`, `docs/favicon.ico` — brand assets
 - `docs/spidergraph-demo.gif` — animated coverage-shape asset for social/launch posts
-- `LAUNCH-KIT.md` — ready-to-post copy for Hacker News, r/privacy, Product Hunt, and Techlore
+- `LICENSE` — MIT
 
 ## Local preview
 
@@ -30,9 +30,10 @@ cd docs && python3 -m http.server 8000
 
 ## Deployment
 
-Deployed automatically via GitHub Actions to GitHub Pages on every push to `main`.
-See `DEPLOYMENT-PLAN.md` for the full reasoning, repo setup steps, and the planned
-migration path to Astro if this grows beyond five pages.
+Deployed automatically via GitHub Actions to GitHub Pages (`.github/workflows/deploy.yml`)
+on every push to `main`, publishing the `docs/` folder directly — no build step. If this
+project ever grows past five pages, Astro is the planned upgrade path for shared
+nav/component reuse; not needed at the current size.
 
 ## Brand
 
