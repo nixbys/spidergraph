@@ -61,10 +61,15 @@ The root layer. Everything downstream depends on this being solid first.
 
 ## 3. Operating Systems & Endpoint
 
+OS hardening rows are split by platform below — pick the row(s) matching what you actually run, desktop and mobile independently. Don't read the Linux/GrapheneOS rows as the implied default; they're one path among three, not the baseline.
+
 | | **Budget** | **Mid** | **No-Limit** |
 |---|---|---|---|
-| Desktop OS | Any mainstream OS, fully patched, auto-update on | Fedora Atomic (Silverblue/Kinoite) or similar immutable distro | Secureblue (hardened atomic fork) or Qubes OS for compartmentalized, VM-isolated computing |
-| Mobile OS | Stock iOS or Android, hardened settings (App Tracking Transparency off, ad ID reset, Lockdown Mode if iOS) | Same, disciplined app-permission audits quarterly | GrapheneOS on a Pixel (Android path) for full de-Googled hardened AOSP; iOS Lockdown Mode as standing default if staying on Apple |
+| Desktop OS — Windows | Fully patched, local account (not a Microsoft account), device encryption/BitLocker verified on | Windows Pro + Group Policy privacy hardening (Recall and Copilot telemetry disabled, default OneDrive backup off) | Windows Pro or Education, hardened, + Windows Sandbox or a Hyper-V isolated VM for untrusted/sensitive tasks — avoid modified ISOs like Tiny11 or Windows AME, they fall behind on security updates and antivirus definitions |
+| Desktop OS — macOS | Fully patched, FileVault enabled, firewall on | Same + Lockdown Mode enabled, Advanced Data Protection (or iCloud sync disabled), Standard (non-admin) daily account | Apple Silicon Mac (M2 or newer, for Secure Page Table Monitor/Trusted Execution Monitor) + Lockdown Mode as standing default, firewall set to block all incoming, MAC address randomized per network |
+| Desktop OS — Linux | Any mainstream distro, fully patched, auto-update on | Fedora Atomic (Silverblue/Kinoite) or similar immutable distro | Secureblue (hardened atomic fork) or Qubes OS for compartmentalized, VM-isolated computing |
+| Mobile OS — iOS | Stock iOS, hardened settings (App Tracking Transparency off, ad ID reset) | Same + quarterly privacy/permission report audits | Lockdown Mode as standing default |
+| Mobile OS — Android | Stock Android, hardened settings (ad ID reset, Play Protect on) | Same + quarterly permission audits, sensitive apps isolated in a separate profile | GrapheneOS on a Pixel — only Pixel hardware supports it, due to firmware/bootloader requirements |
 | Antivirus/EDR | Built-in OS protection (Windows Defender, macOS XProtect) — genuinely sufficient for most threat models | Same + Malwarebytes on-demand scans | Enterprise-grade EDR (e.g. CrowdStrike-class tooling scaled to personal use is usually overkill — better spent on the OS hardening line above) |
 | Sensitive/high-risk browsing | — | Whonix or Tails on a spare USB for anything genuinely sensitive | Dedicated air-gapped machine for the highest-sensitivity work (e.g. cold storage key generation) |
 
