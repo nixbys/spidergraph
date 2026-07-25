@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spidergraph — Personal Security Program</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419; --surface:#171e27; --surface2:#1f2732; --surface3:#242e3a;
+    --border:#2b3542; --border-soft:#20293380; --text:#e6ecf3; --muted:#8695a7; --muted2:#5e6b7c;
+    --teal:#3ddc97; --amber:#e8a23d; --red:#e0596b; --blue:#5b8def;
+    --teal-dim:#3ddc9722; --amber-dim:#e8a23d22; --red-dim:#e0596b22; --blue-dim:#5b8def22;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(circle at 15% 0%, #16202c 0%, transparent 45%),
+      radial-gradient(circle at 100% 20%, #141b24 0%, transparent 40%), var(--bg);
+    color:var(--text); font-family:'IBM Plex Sans', sans-serif; min-height:100vh; padding:32px 20px 100px;
+  }
+  .wrap{max-width:1000px; margin:0 auto;}
+  .topnav{display:flex; align-items:center; gap:4px; flex-wrap:wrap; margin-bottom:56px;}
+  .topnav a{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em; color:var(--muted);
+    text-decoration:none; padding:8px 12px; border-radius:7px; border:1px solid transparent; transition:all .15s ease;}
+  .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
+  .topnav a.current{color:var(--text); background:var(--surface2); border-color:var(--border);}
+  .topnav .sep{color:var(--border); margin:0 2px;}
+
+  .hero{margin-bottom:64px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--blue); margin-bottom:16px; display:flex; align-items:center; gap:8px;}
+  .eyebrow::before{content:"";width:6px;height:6px;background:var(--blue);border-radius:1px; display:inline-block;}
+  h1{font-family:'Space Grotesk', sans-serif; font-size:clamp(34px,5.5vw,58px); font-weight:700; margin:0 0 18px;
+    letter-spacing:-.015em; line-height:1.04; max-width:820px;}
+  h1 span{color:var(--muted); font-weight:500;}
+  .lede{color:var(--muted); font-size:16px; line-height:1.65; max-width:600px;}
+
+  .flow{
+    display:flex; align-items:center; gap:10px; margin-top:36px; flex-wrap:wrap;
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted2);
+  }
+  .flow .node{background:var(--surface); border:1px solid var(--border); border-radius:7px; padding:7px 12px; color:var(--muted);}
+  .flow .arrow{color:var(--border);}
+
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media (max-width:720px){.grid{grid-template-columns:1fr;}}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px;
+    text-decoration:none; color:var(--text); display:block; transition:all .18s ease; position:relative; overflow:hidden;
+  }
+  .card:hover{border-color:#374252; transform:translateY(-2px);}
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px;}
+  .card-code{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted2); background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:4px 9px;}
+  .card-type{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase;}
+  .card h2{font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:600; margin:0 0 10px;}
+  .card p{color:var(--muted); font-size:13.5px; line-height:1.6; margin:0 0 16px;}
+  .card .go{font-family:'IBM Plex Mono',monospace; font-size:11.5px; display:flex; align-items:center; gap:6px;}
+
+  .card.doc .card-type{color:var(--blue);}
+  .card.doc .go{color:var(--blue);}
+  .card.tool .card-type{color:var(--teal);}
+  .card.tool .go{color:var(--teal);}
+  .card.tool2 .card-type{color:var(--amber);}
+  .card.tool2 .go{color:var(--amber);}
+  .card.gen .card-type{color:var(--teal);}
+  .card.gen .go{color:var(--teal);}
+
+  .about{margin-top:60px; padding-top:32px; border-top:1px solid var(--border);}
+  .about h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0 0 12px; color:var(--muted);}
+  .about p{color:var(--muted2); font-size:13px; line-height:1.7; max-width:680px;}
+
+  .brand{display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:14px; padding-right:14px; border-right:1px solid var(--border);}
+  .brand svg{display:block;}
+  .brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--text); letter-spacing:-0.2px;}
+  .brand-word span{color:var(--teal);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="topnav">
+    <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
+      <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
+      <g stroke="#2b3542" stroke-width="2">
+        <line x1="60" y1="60" x2="60" y2="12"/><line x1="60" y1="60" x2="93.94" y2="26.06"/>
+        <line x1="60" y1="60" x2="108" y2="60"/><line x1="60" y1="60" x2="93.94" y2="93.94"/>
+        <line x1="60" y1="60" x2="60" y2="108"/><line x1="60" y1="60" x2="26.06" y2="93.94"/>
+        <line x1="60" y1="60" x2="12" y2="60"/><line x1="60" y1="60" x2="26.06" y2="26.06"/>
+      </g>
+      <polygon points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
+               fill="#3ddc97" fill-opacity="0.3" stroke="#3ddc97" stroke-width="4"/>
+    </svg><span class="brand-word">SPIDER<span>GRAPH</span></span></a>
+  <a href="index.html" class="current">Home</a><span class="sep">/</span>
+    <a href="playbook.html">Playbook</a><span class="sep">/</span>
+    <a href="privacy-stack-builder.html">Stack Builder</a><span class="sep">/</span>
+    <a href="opsec-field-manual.html">OPSEC Field Manual</a><span class="sep">/</span>
+    <a href="report.html">Recommendations Report</a>
+  </nav>
+
+  <div class="hero">
+    <div class="eyebrow">Spidergraph · Personal security program</div>
+    <h1>See your whole <span>security posture.</span></h1>
+    <p class="lede">Spidergraph is a complete privacy and security stack — from the tiered playbook that explains every control, to the interactive tools that audit what you actually have against it, plotted as one shape across every domain that matters.</p>
+    <div class="flow">
+      <span class="node">Read the Playbook</span><span class="arrow">→</span>
+      <span class="node">Audit tools &amp; habits</span><span class="arrow">→</span>
+      <span class="node">See your Spidergraph</span>
+    </div>
+  </div>
+
+  <div class="grid">
+    <a class="card doc" href="playbook.html">
+      <div class="card-top"><span class="card-code">DOC-01</span><span class="card-type">Reference</span></div>
+      <h2>Personal Security Playbook</h2>
+      <p>Twelve control domains, each tiered Budget → Mid → No-Limit, plus six incident-response runbooks written in the Detect → Contain → Eradicate → Recover structure security teams actually use.</p>
+      <div class="go">Read the playbook →</div>
+    </a>
+
+    <a class="card tool" href="privacy-stack-builder.html">
+      <div class="card-top"><span class="card-code">TOOL-01</span><span class="card-type">Interactive</span></div>
+      <h2>Privacy Stack Builder</h2>
+      <p>Pick a target tier, select what you currently run across 12 product slots, and see live gap analysis, cost totals, and a radar chart of your coverage — modeled on a PC-part-picker build sheet.</p>
+      <div class="go">Open the builder →</div>
+    </a>
+
+    <a class="card tool2" href="opsec-field-manual.html">
+      <div class="card-top"><span class="card-code">TOOL-02</span><span class="card-type">Interactive</span></div>
+      <h2>OPSEC Field Manual</h2>
+      <p>33 behavioral controls across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence. Habits, not purchases.</p>
+      <div class="go">Start the audit →</div>
+    </a>
+
+    <a class="card gen" href="report.html">
+      <div class="card-top"><span class="card-code">DOC-02</span><span class="card-type">Generated</span></div>
+      <h2>Recommendations Report</h2>
+      <p>Top picks per category, best practices to close any gap to 100%, and full source documentation — both the research trail behind this project and where to keep learning going forward.</p>
+      <div class="go">View the report →</div>
+    </a>
+  </div>
+
+  <div class="about">
+    <h3>How the pieces connect</h3>
+    <p>The Playbook is the source of truth for every recommendation. Both tools audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either tool rather than reading the static version here if you want your own results. Nothing you enter in either tool leaves your browser; there's no backend, no account, and no tracking.</p>
+  </div>
+</div>
+</body>
+</html>

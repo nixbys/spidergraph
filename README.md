@@ -1,0 +1,49 @@
+# Spidergraph
+
+A self-contained, client-side privacy and security program: a tiered reference playbook,
+two interactive audit tools, and a live coverage visualization — no backend, no accounts,
+no tracking. Named after its own signature visual: a radar chart that plots your real
+coverage across every security domain as one shape.
+
+## Structure
+
+- `docs/index.html` — hub / landing page
+- `docs/playbook.html` — renders `personal-security-playbook.md`
+- `docs/report.html` — renders `recommendations-report.md`
+- `docs/privacy-stack-builder.html` — interactive product/tool picker with live gap analysis
+- `docs/opsec-field-manual.html` — interactive behavioral/OPSEC self-audit checklist
+- `docs/personal-security-playbook.md` — source content for the playbook page
+- `docs/recommendations-report.md` — source content for the report page
+- `docs/logo-mark.svg`, `docs/logo-lockup.svg`, `docs/favicon.svg`, `docs/favicon-*.png`, `docs/favicon.ico` — brand assets
+- `docs/spidergraph-demo.gif` — animated coverage-shape asset for social/launch posts
+- `LAUNCH-KIT.md` — ready-to-post copy for Hacker News, r/privacy, Product Hunt, and Techlore
+
+## Local preview
+
+Because the doc pages fetch their markdown at runtime, opening the HTML files directly
+(`file://`) will not load the content — serve the `docs/` folder over local HTTP instead:
+
+```bash
+cd docs && python3 -m http.server 8000
+# then visit http://localhost:8000
+```
+
+## Deployment
+
+Deployed automatically via GitHub Actions to GitHub Pages on every push to `main`.
+See `DEPLOYMENT-PLAN.md` for the full reasoning, repo setup steps, and the planned
+migration path to Astro if this grows beyond five pages.
+
+## Brand
+
+"Spidergraph" was checked against existing products before adoption — the name shows up
+generically as a chart-type synonym (radar/spider charts) across various dashboarding
+tools, and as an unrelated font marketplace, but not as a privacy/security product brand.
+The logo mark is an original geometric construction (not derived from any existing logo)
+built directly from the same radar-chart math the tools render live — see `logo-mark.svg`.
+
+## Maintenance
+
+Tool and pricing recommendations in this project are time-sensitive. Re-verify against
+current sources (see the Recommendations Report's sources section) on a quarterly cadence
+rather than treating this as a one-time build.
