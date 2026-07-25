@@ -130,7 +130,7 @@ Privacy Guides and Techlore both point to Linux (desktop) and GrapheneOS (Androi
 | Data broker removal | Manual opt-outs via Bazzell's/EFF's free broker lists | EasyOptOuts ($19.99/yr) | EasyOptOuts + DeleteMe layered together, or Optery Ultimate for highest documented removal rate with screenshot verification |
 | Username hygiene | Audit every handle for reuse across a public-facing identity and a personal one | Same, formalized: dedicated alias set per public identity | Same + periodic professional re-audit as public profile grows |
 
-**This is the domain most people under-invest in relative to its actual leverage.** A perfect VPN setup doesn't matter if your gaming channel handle is one Google search away from your real name via a decade-old forum account.
+**This is the domain most people under-invest in relative to its actual leverage.** A perfect VPN setup doesn't matter if a handle you use publicly is one Google search away from your real name via a decade-old forum account.
 
 ---
 
@@ -144,7 +144,7 @@ This is the domain with no dollar cost and the highest neglect rate — most bre
 | Vishing (voice phishing) | Establish a family/close-contact verbal passphrase for any request involving money, credentials, or access — a scripted, calm hang-up-and-call-back-on-a-known-number habit defeats nearly all voice-based social engineering |
 | Pretexting | Assume any unsolicited contact claiming to be a bank, government agency, or service provider is false until verified independently (call the number on the actual card/bill, not the number they give you) |
 | Physical social engineering | Be skeptical of unsolicited technicians, deliveries, or "can I use your phone" requests; don't discuss travel plans or home-alone windows on public/social channels |
-| Training the people around you | This only works if immediate family/close contacts are onboarded too — a hardened account with a socially-engineerable family member sharing your info is still exposed. Your Signal rollout is the right instinct; extend the same "why" conversation to security basics, not just the app switch |
+| Training the people around you | This only works if immediate family/close contacts are onboarded too — a hardened account with a socially-engineerable family member sharing your info is still exposed. If you're moving contacts to a more secure messenger, have the same "why" conversation about security basics, not just the app switch |
 
 **No-limit add-on**: a professional social engineering penetration test (red-team engagement) against your own household — genuinely available as a service, mostly relevant if your public profile or net worth justifies it.
 
@@ -166,7 +166,7 @@ This is the domain with no dollar cost and the highest neglect rate — most bre
 |---|---|---|---|
 | Credit freezes | Free at all 3 bureaus — do this regardless of tier | Same + calendar reminder to review annually | Same + monitoring service that auto-manages temporary lifts when needed |
 | Digital legacy | A written, offline document listing account recovery info location for a trusted person, without exposing live credentials | Password manager's built-in emergency access feature (Bitwarden, Proton Pass support this) | Formal estate planning inclusion of digital assets with an attorney |
-| Business/creator entity separation | Keep personal and channel-related accounts distinct (ties to Domain 8) | Consider an LLC or equivalent if the channel starts generating real revenue, for liability and identity separation | Full legal review of content/IP exposure as revenue grows |
+| Business/creator entity separation | Keep personal and content-creator/business accounts distinct (ties to Domain 8) | Consider an LLC or equivalent once that work starts generating real revenue, for liability and identity separation | Full legal review of content/IP exposure as revenue grows |
 
 ---
 
