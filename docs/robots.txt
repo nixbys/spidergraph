@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nixbys.github.io/spidergraph/sitemap.xml
