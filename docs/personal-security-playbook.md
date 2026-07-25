@@ -61,7 +61,11 @@ The root layer. Everything downstream depends on this being solid first.
 
 ## 3. Operating Systems & Endpoint
 
-OS hardening rows are split by platform below — pick the row(s) matching what you actually run, desktop and mobile independently. Don't read the Linux/GrapheneOS rows as the implied default; they're one path among three, not the baseline.
+OS hardening rows are split by platform below — pick the row(s) matching what you actually run, desktop and mobile independently.
+
+Privacy Guides and Techlore both point to Linux (desktop) and GrapheneOS (Android) as the stronger privacy default — mainstream proprietary OSes ship with telemetry that's genuinely difficult to fully remove, which is the core of that reasoning. Neither source treats staying on Windows, macOS, or iOS as a failure to correct, though: Techlore has written explicitly against shaming people for the informed, often practical decision to stay in an ecosystem (work software, hardware, comfort). The rows below give every platform — including Windows and macOS — a real Budget → No-Limit hardening ceiling, not just a nudge to switch.
+
+*Sources: Privacy Guides, [Linux Overview](https://www.privacyguides.org/en/os/linux-overview/) and [Windows Overview](https://www.privacyguides.org/en/os/windows/); Techlore, ["The Real Privacy Enemy is Ourselves"](https://techlore.tech/the-real-privacy-enemy-is-ourselves/).*
 
 | | **Budget** | **Mid** | **No-Limit** |
 |---|---|---|---|
