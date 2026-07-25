@@ -215,7 +215,7 @@
 
   <header>
     <div>
-      <div class="eyebrow">Configurator · 12 slots</div>
+      <div class="eyebrow">Configurator · 14 slots</div>
       <h1>Stack <span>Builder</span></h1>
       <div class="sub">Pick what you currently run in each slot. The build compares it against the recommended part for your target tier and flags gaps — same idea as a hardware parts list, applied to a security stack.</div>
     </div>
@@ -409,6 +409,22 @@ const DATA = [
       {id:"321", label:"Full 3-2-1 (local + local sync + offsite)", tier:2, cost:0},
       {id:"cold", label:"3-2-1 + offline cold backup, quarterly restore-tested", tier:3, cost:0},
     ], rec:"3-2-1 fully implemented is the real target — most people are missing the second local copy."},
+
+  {domain:"Financial", code:"FIN-01", name:"Card Masking / Payment Privacy",
+    options:[
+      {id:"none", label:"Real card number used everywhere, no masking", tier:0, cost:0},
+      {id:"bank", label:"Bank's built-in virtual card feature, if available", tier:1, cost:0},
+      {id:"privacy-free", label:"Privacy.com (Free or Plus tier)", tier:2, cost:0},
+      {id:"privacy-pro", label:"Privacy.com Pro + dedicated per-vendor cards on every subscription", tier:3, cost:300},
+    ], rec:"One leaked merchant database shouldn't expose your real card everywhere else — Privacy.com's free tier alone (12 cards/month, no monthly fee) covers most people's actual usage."},
+
+  {domain:"Financial", code:"FIN-02", name:"Credit Monitoring & Freezes",
+    options:[
+      {id:"none", label:"No monitoring, no freeze", tier:0, cost:0},
+      {id:"freeze", label:"Free credit freezes at all 3 bureaus + free annual reports", tier:1, cost:0},
+      {id:"monitoring", label:"Same + a paid credit monitoring alert layer", tier:2, cost:150},
+      {id:"insurance", label:"Full identity theft insurance/restoration service", tier:3, cost:250},
+    ], rec:"The freeze is the actual control — it prevents new accounts from opening at all. Monitoring only tells you after the fact, so do the freeze even if you also pay for monitoring."},
 
   {domain:"Digital Footprint", code:"OSN-01", name:"Data Broker Removal",
     options:[
