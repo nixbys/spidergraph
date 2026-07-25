@@ -140,6 +140,9 @@
   .row-main .name{font-weight:600; font-size:15px; margin-bottom:3px;}
   .row-main .note{font-size:12.5px; color:var(--muted); line-height:1.45; max-width:520px;}
   .row-main .note b{color:var(--text); font-weight:600;}
+  .verified-tag{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--teal); margin-left:6px;}
+  .legacy-note{display:block; margin-top:5px; font-size:11.5px; color:var(--muted2); font-style:italic;}
+  .legacy-note b{color:var(--muted2); font-weight:600; font-style:normal;}
 
   select{
     width:100%; background:var(--surface2); color:var(--text); border:1px solid var(--border);
@@ -305,6 +308,8 @@
     <b>Not in this picker:</b> social engineering discipline, physical security habits, and legal/documentation steps aren't product slots — they're behavior, not purchases. See the companion <b>personal-security-playbook.md</b> for those domains and the full incident-response runbooks. Costs shown are rough annual estimates for the paid tier of each option and may not reflect current pricing — verify at checkout.
     <br><br>
     <b>On the Linux/GrapheneOS recommendations:</b> Privacy Guides and Techlore rate Linux (desktop) and GrapheneOS (Android) as the stronger privacy default because mainstream proprietary OSes ship with telemetry that's genuinely hard to fully remove — see Privacy Guides' <a href="https://www.privacyguides.org/en/os/linux-overview/" target="_blank" rel="noopener">Linux Overview</a> and <a href="https://www.privacyguides.org/en/os/windows/" target="_blank" rel="noopener">Windows Overview</a>. Neither source treats staying on Windows, macOS, or iOS as a mistake — see Techlore's <a href="https://techlore.tech/the-real-privacy-enemy-is-ourselves/" target="_blank" rel="noopener">"The Real Privacy Enemy is Ourselves"</a> on shaming beginners and people who make informed, practical platform choices. Every platform above gets a real hardening ceiling either way.
+    <br><br>
+    <b>On the ✓ verified / Legacy tags:</b> this isn't a static list — slots get re-checked against current vendor pricing and source guidance on the project's quarterly cycle (see <b>SOURCES</b> in a generated report). A <span class="verified-tag" style="margin-left:0;">✓ verified</span> tag shows the date a slot's figures were last confirmed current; a slot with no tag hasn't been re-checked recently. When a figure changes, the old value isn't silently deleted — it's kept as a <b>Legacy</b> note directly under the current recommendation, so you can see what changed and when.
   </footer>
 
 </div>
@@ -313,15 +318,16 @@
 const TIERS = {1:"Budget", 2:"Mid", 3:"No-Limit"};
 
 const DATA = [
-  {domain:"Identity & Accounts", code:"IDN-01", name:"Password Manager",
+  {domain:"Identity & Accounts", code:"IDN-01", name:"Password Manager", verified:"2026-07-25",
     options:[
       {id:"none", label:"None / browser-saved passwords", tier:0, cost:0},
       {id:"bw-free", label:"Bitwarden (Free)", tier:1, cost:0},
       {id:"bw-prem", label:"Bitwarden Premium / Proton Pass", tier:2, cost:10},
       {id:"1p", label:"1Password (Families/Business-grade)", tier:3, cost:72},
-    ], rec:"Bitwarden Premium or Proton Pass — cross-platform, hardware-key lockable."},
+    ], rec:"Bitwarden Premium or Proton Pass — cross-platform, hardware-key lockable.",
+    legacyNotes:["1Password (Families/Business-grade) was listed at $60/yr; corrected to $72/yr on 2026-07-25 following 1Password's March 2026 price increase ($59.88→$71.88/yr)."]},
 
-  {domain:"Identity & Accounts", code:"IDN-02", name:"Email & Aliasing",
+  {domain:"Identity & Accounts", code:"IDN-02", name:"Email & Aliasing", verified:"2026-07-25",
     options:[
       {id:"none", label:"Mainstream free email, no aliasing", tier:0, cost:0},
       {id:"proton-free", label:"Proton Mail (Free) + free aliasing tier", tier:1, cost:0},
@@ -380,7 +386,7 @@ const DATA = [
         ], rec:"GrapheneOS on Pixel hardware is the Privacy Guides-preferred mobile ceiling — only Pixel devices support it, due to firmware/bootloader requirements."},
     }},
 
-  {domain:"Network", code:"NET-01", name:"VPN",
+  {domain:"Network", code:"NET-01", name:"VPN", verified:"2026-07-25",
     options:[
       {id:"none", label:"No VPN", tier:0, cost:0},
       {id:"free", label:"Proton VPN (Free tier)", tier:1, cost:0},
@@ -428,7 +434,7 @@ const DATA = [
       {id:"cold", label:"3-2-1 + offline cold backup, quarterly restore-tested", tier:3, cost:0},
     ], rec:"3-2-1 fully implemented is the real target — most people are missing the second local copy."},
 
-  {domain:"Financial", code:"FIN-01", name:"Card Masking / Payment Privacy",
+  {domain:"Financial", code:"FIN-01", name:"Card Masking / Payment Privacy", verified:"2026-07-24",
     options:[
       {id:"none", label:"Real card number used everywhere, no masking", tier:0, cost:0},
       {id:"bank", label:"Bank's built-in virtual card feature, if available", tier:1, cost:0},
@@ -436,7 +442,7 @@ const DATA = [
       {id:"privacy-pro", label:"Privacy.com Pro + dedicated per-vendor cards on every subscription", tier:3, cost:300},
     ], rec:"One leaked merchant database shouldn't expose your real card everywhere else — Privacy.com's free tier alone (12 cards/month, no monthly fee) covers most people's actual usage."},
 
-  {domain:"Financial", code:"FIN-02", name:"Credit Monitoring & Freezes",
+  {domain:"Financial", code:"FIN-02", name:"Credit Monitoring & Freezes", verified:"2026-07-24",
     options:[
       {id:"none", label:"No monitoring, no freeze", tier:0, cost:0},
       {id:"freeze", label:"Free credit freezes at all 3 bureaus + free annual reports", tier:1, cost:0},
@@ -444,7 +450,7 @@ const DATA = [
       {id:"insurance", label:"Full identity theft insurance/restoration service", tier:3, cost:250},
     ], rec:"The freeze is the actual control — it prevents new accounts from opening at all. Monitoring only tells you after the fact, so do the freeze even if you also pay for monitoring."},
 
-  {domain:"Digital Footprint", code:"OSN-01", name:"Data Broker Removal",
+  {domain:"Digital Footprint", code:"OSN-01", name:"Data Broker Removal", verified:"2026-07-25",
     options:[
       {id:"none", label:"Never audited or opted out", tier:0, cost:0},
       {id:"manual", label:"Manual opt-outs via free broker lists", tier:1, cost:0},
@@ -599,7 +605,9 @@ function render(){
       atTarget++; // exceeding target still counts as covered
     }
 
-    noteEl.innerHTML = `<b>Rec:</b> ${currentRec(d)}`;
+    const verifiedTag = d.verified ? `<span class="verified-tag">✓ verified ${d.verified}</span>` : "";
+    const legacyHtml = (d.legacyNotes || []).map(n => `<span class="legacy-note"><b>Legacy:</b> ${n}</span>`).join("");
+    noteEl.innerHTML = `<b>Rec:</b> ${currentRec(d)}${verifiedTag}${legacyHtml}`;
   });
 
   document.getElementById("mAtTarget").textContent = `${atTarget}/${DATA.length}`;
