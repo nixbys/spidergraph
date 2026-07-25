@@ -615,9 +615,9 @@ function onPlatformChange(axis, newValue){
 document.getElementById("platformDesktop").addEventListener("change", e => onPlatformChange("desktop", e.target.value));
 document.getElementById("platformMobile").addEventListener("change", e => onPlatformChange("mobile", e.target.value));
 
-document.querySelectorAll(".tier-btn").forEach(btn => {
+document.querySelectorAll("#tierBtns .tier-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".tier-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll("#tierBtns .tier-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     target = parseInt(btn.dataset.tier, 10);
     render();
