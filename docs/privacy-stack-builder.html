@@ -70,6 +70,15 @@
     font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em;
     text-transform:uppercase; color:var(--muted2);
   }
+  .platform-bar{
+    display:flex; flex-wrap:wrap; gap:20px; align-items:flex-end;
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px 18px; margin-bottom:24px;
+  }
+  .platform-field{display:flex; flex-direction:column; gap:8px; min-width:180px;}
+  .platform-hint{font-size:12px; color:var(--muted2); margin-left:auto; align-self:center;}
+  @media (max-width:640px){ .platform-hint{margin-left:0; align-self:flex-start;} }
+
   .tier-btns{display:flex; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:4px;}
   .tier-btn{
     flex:1; text-align:center; padding:9px 10px; border-radius:7px; cursor:pointer;
@@ -218,6 +227,25 @@
     </div>
   </header>
 
+  <div class="platform-bar" id="platformBar">
+    <div class="platform-field">
+      <div class="tier-label">Desktop platform</div>
+      <select id="platformDesktop">
+        <option value="windows">Windows</option>
+        <option value="macos">macOS</option>
+        <option value="linux">Linux</option>
+      </select>
+    </div>
+    <div class="platform-field">
+      <div class="tier-label">Mobile platform</div>
+      <select id="platformMobile">
+        <option value="ios">iOS</option>
+        <option value="android">Android</option>
+      </select>
+    </div>
+    <div class="platform-hint" id="platformHint">Guessed from your browser — change either if wrong. Affects the two OS Hardening slots below.</div>
+  </div>
+
   <div class="layout">
     <div id="rows"></div>
 
@@ -287,21 +315,48 @@ const DATA = [
       {id:"key2", label:"2x Hardware keys, primary + offsite backup", tier:3, cost:0},
     ], rec:"Two hardware keys — one carried, one stored offsite as a lockout backup."},
 
-  {domain:"Endpoint", code:"SYS-01", name:"Desktop OS Hardening",
-    options:[
-      {id:"none", label:"Mainstream OS, default settings", tier:0, cost:0},
-      {id:"patched", label:"Mainstream OS, fully patched + FDE verified", tier:1, cost:0},
-      {id:"atomic", label:"Fedora Atomic (Silverblue/Kinoite)", tier:2, cost:0},
-      {id:"hardened", label:"Secureblue or Qubes OS", tier:3, cost:0},
-    ], rec:"Immutable/atomic distro limits persistence of malware and config drift."},
+  {domain:"Endpoint", code:"SYS-01", name:"Desktop OS Hardening", platformAxis:"desktop",
+    platforms:{
+      windows:{
+        options:[
+          {id:"none", label:"Windows Home, Microsoft account, default settings", tier:0, cost:0},
+          {id:"patched", label:"Fully patched, local account, device encryption/BitLocker verified", tier:1, cost:0},
+          {id:"grouppolicy", label:"Windows Pro + Group Policy privacy hardening (Recall/Copilot telemetry off)", tier:2, cost:0},
+          {id:"sandboxed", label:"Windows Pro/Education hardened + Sandbox or Hyper-V VM isolation", tier:3, cost:0},
+        ], rec:"Windows has no Qubes-equivalent compartmentalization — Sandbox/Hyper-V VM isolation is the realistic ceiling. Avoid modified ISOs like Tiny11 or Windows AME: they fall behind on security updates and AV definitions."},
+      macos:{
+        options:[
+          {id:"none", label:"macOS default settings, iCloud account", tier:0, cost:0},
+          {id:"patched", label:"Fully patched, FileVault enabled, firewall on", tier:1, cost:0},
+          {id:"lockdown", label:"Same + Lockdown Mode, Advanced Data Protection, Standard (non-admin) account", tier:2, cost:0},
+          {id:"apple-silicon", label:"Apple Silicon (M2+) + Lockdown Mode standing default, firewall blocks all incoming", tier:3, cost:0},
+        ], rec:"FileVault + Lockdown Mode cover most of the realistic gain. No third-party antivirus needed — XProtect plus Apple Silicon's Secure Enclave is the hardware ceiling."},
+      linux:{
+        options:[
+          {id:"none", label:"Mainstream OS, default settings", tier:0, cost:0},
+          {id:"patched", label:"Mainstream distro, fully patched + FDE verified", tier:1, cost:0},
+          {id:"atomic", label:"Fedora Atomic (Silverblue/Kinoite)", tier:2, cost:0},
+          {id:"hardened", label:"Secureblue or Qubes OS", tier:3, cost:0},
+        ], rec:"Immutable/atomic distro limits persistence of malware and config drift."},
+    }},
 
-  {domain:"Endpoint", code:"SYS-02", name:"Mobile OS Hardening",
-    options:[
-      {id:"none", label:"Stock OS, default settings", tier:0, cost:0},
-      {id:"hardened-stock", label:"Stock iOS/Android, hardened settings applied", tier:1, cost:0},
-      {id:"disciplined", label:"Same, + quarterly permission audits", tier:2, cost:0},
-      {id:"graphene", label:"GrapheneOS (Pixel) or iOS Lockdown Mode standing default", tier:3, cost:0},
-    ], rec:"GrapheneOS for Android-path hardening; Lockdown Mode as the iOS equivalent ceiling."},
+  {domain:"Endpoint", code:"SYS-02", name:"Mobile OS Hardening", platformAxis:"mobile",
+    platforms:{
+      ios:{
+        options:[
+          {id:"none", label:"Stock iOS, default settings", tier:0, cost:0},
+          {id:"hardened-stock", label:"Stock iOS, App Tracking Transparency off, ad ID reset", tier:1, cost:0},
+          {id:"disciplined", label:"Same + quarterly privacy/permission report audits", tier:2, cost:0},
+          {id:"lockdown", label:"Lockdown Mode enabled as standing default", tier:3, cost:0},
+        ], rec:"Lockdown Mode is the realistic ceiling on iOS — meaningfully shrinks attack surface at the cost of some convenience features."},
+      android:{
+        options:[
+          {id:"none", label:"Stock Android, default settings", tier:0, cost:0},
+          {id:"hardened-stock", label:"Stock Android, ad ID reset, Play Protect on, hardened settings", tier:1, cost:0},
+          {id:"disciplined", label:"Same + quarterly permission audits, sensitive apps in a separate profile", tier:2, cost:0},
+          {id:"graphene", label:"GrapheneOS on a Pixel — full de-Googled hardened AOSP", tier:3, cost:0},
+        ], rec:"GrapheneOS on Pixel hardware is the ceiling for Android — only Pixel devices support it, due to firmware/bootloader requirements."},
+    }},
 
   {domain:"Network", code:"NET-01", name:"VPN",
     options:[
@@ -360,9 +415,54 @@ const DATA = [
     ], rec:"EasyOptOuts alone out-performs DeleteMe alone on documented removal rate — layer, don't just upgrade."},
 ];
 
+// Platform detection: guess desktop/mobile OS from the browser, default to the
+// global-majority platforms (Windows, Android) rather than assuming Linux/iOS.
+function detectPlatform(){
+  const ua = navigator.userAgent || "";
+  const uaData = navigator.userAgentData;
+  let desktop = null, mobile = null;
+
+  if(/android/i.test(ua)) mobile = "android";
+  else if(/iphone|ipad|ipod/i.test(ua)) mobile = "ios";
+
+  if(!mobile){
+    if(uaData && uaData.platform){
+      const p = uaData.platform.toLowerCase();
+      if(p.includes("win")) desktop = "windows";
+      else if(p.includes("mac")) desktop = "macos";
+      else if(p.includes("linux")) desktop = "linux";
+    } else {
+      if(/windows/i.test(ua)) desktop = "windows";
+      else if(/macintosh|mac os x/i.test(ua)) desktop = "macos";
+      else if(/linux/i.test(ua)) desktop = "linux";
+    }
+  }
+  return {desktop, mobile};
+}
+
+let platformState = {desktop:"windows", mobile:"android"};
+const detected = detectPlatform();
+if(detected.desktop) platformState.desktop = detected.desktop;
+if(detected.mobile) platformState.mobile = detected.mobile;
+
+function currentOptions(d){ return d.platformAxis ? d.platforms[platformState[d.platformAxis]].options : d.options; }
+function currentRec(d){ return d.platformAxis ? d.platforms[platformState[d.platformAxis]].rec : d.rec; }
+
 let target = 2;
 let state = {}; // id -> selected option id
-DATA.forEach(d => state[d.code] = d.options[0].id);
+DATA.forEach(d => state[d.code] = currentOptions(d)[0].id);
+
+function populateSelect(d){
+  const sel = document.getElementById(`sel-${d.code}`);
+  sel.innerHTML = "";
+  currentOptions(d).forEach(o => {
+    const opt = document.createElement("option");
+    opt.value = o.id;
+    opt.textContent = o.label;
+    sel.appendChild(opt);
+  });
+  sel.value = state[d.code];
+}
 
 const rowsEl = document.getElementById("rows");
 let lastDomain = null;
@@ -388,19 +488,35 @@ DATA.forEach((d, idx) => {
   `;
   rowsEl.appendChild(row);
 
+  populateSelect(d);
   const sel = row.querySelector(`#sel-${d.code}`);
-  d.options.forEach(o => {
-    const opt = document.createElement("option");
-    opt.value = o.id;
-    opt.textContent = o.label;
-    sel.appendChild(opt);
-  });
-  sel.value = state[d.code];
   sel.addEventListener("change", () => {
     state[d.code] = sel.value;
     render();
   });
 });
+
+document.getElementById("platformDesktop").value = platformState.desktop;
+document.getElementById("platformMobile").value = platformState.mobile;
+
+function onPlatformChange(axis, newValue){
+  const affected = DATA.filter(d => d.platformAxis === axis);
+  const prevTiers = affected.map(d => {
+    const cur = currentOptions(d).find(o => o.id === state[d.code]);
+    return cur ? cur.tier : 0;
+  });
+  platformState[axis] = newValue;
+  affected.forEach((d, i) => {
+    const newOptions = currentOptions(d);
+    const matched = newOptions.find(o => o.tier === prevTiers[i]) || newOptions[0];
+    state[d.code] = matched.id;
+    populateSelect(d);
+  });
+  render();
+}
+
+document.getElementById("platformDesktop").addEventListener("change", e => onPlatformChange("desktop", e.target.value));
+document.getElementById("platformMobile").addEventListener("change", e => onPlatformChange("mobile", e.target.value));
 
 document.querySelectorAll(".tier-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -411,7 +527,7 @@ document.querySelectorAll(".tier-btn").forEach(btn => {
   });
 });
 
-function getOption(d, id){ return d.options.find(o => o.id === id); }
+function getOption(d, id){ return currentOptions(d).find(o => o.id === id); }
 
 function render(){
   let atTarget = 0, below = 0, gap = 0, cost = 0;
@@ -428,7 +544,7 @@ function render(){
       statusEl.textContent = "GAP";
       statusEl.className = "status gap";
       gap++;
-      gapItems.push({name:d.name, msg:`Nothing set — start with: ${getOption(d, d.options[1].id).label}`});
+      gapItems.push({name:d.name, msg:`Nothing set — start with: ${currentOptions(d)[1].label}`});
     } else if(cur.tier === target){
       statusEl.textContent = "OPTIMAL";
       statusEl.className = "status optimal";
@@ -437,15 +553,15 @@ function render(){
       statusEl.textContent = "BELOW";
       statusEl.className = "status below";
       below++;
-      const recOpt = d.options.find(o => o.tier === target);
-      gapItems.push({name:d.name, msg:`Below target — consider: ${recOpt ? recOpt.label : d.rec}`});
+      const recOpt = currentOptions(d).find(o => o.tier === target);
+      gapItems.push({name:d.name, msg:`Below target — consider: ${recOpt ? recOpt.label : currentRec(d)}`});
     } else {
       statusEl.textContent = "ABOVE";
       statusEl.className = "status above";
       atTarget++; // exceeding target still counts as covered
     }
 
-    noteEl.innerHTML = `<b>Rec:</b> ${d.rec}`;
+    noteEl.innerHTML = `<b>Rec:</b> ${currentRec(d)}`;
   });
 
   document.getElementById("mAtTarget").textContent = `${atTarget}/${DATA.length}`;
@@ -560,8 +676,10 @@ function generateReport(){
   const now = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
   let atTarget=0, below=0, gap=0, cost=0;
   let lines = [];
+  const platformLabels = {windows:"Windows", macos:"macOS", linux:"Linux", ios:"iOS", android:"Android"};
   lines.push("PRIVACY & SECURITY STACK — RECOMMENDATIONS REPORT");
   lines.push(`Generated ${now} · Target tier: ${TIERS[target]}`);
+  lines.push(`Platform: Desktop = ${platformLabels[platformState.desktop]}, Mobile = ${platformLabels[platformState.mobile]}`);
   lines.push("=".repeat(60));
   lines.push("");
 
@@ -571,15 +689,15 @@ function generateReport(){
     let status, action;
     if(cur.tier === 0){
       status = "CRITICAL GAP"; gap++;
-      const first = d.options[1];
-      action = `Start with: ${first.label}. ${d.rec}`;
+      const first = currentOptions(d)[1];
+      action = `Start with: ${first.label}. ${currentRec(d)}`;
     } else if(cur.tier === target){
       status = "OPTIMAL"; atTarget++;
       action = "No action needed at current target tier.";
     } else if(cur.tier < target){
       status = "BELOW TARGET"; below++;
-      const recOpt = d.options.find(o => o.tier === target);
-      action = `Upgrade to: ${recOpt ? recOpt.label : d.rec}. ${d.rec}`;
+      const recOpt = currentOptions(d).find(o => o.tier === target);
+      action = `Upgrade to: ${recOpt ? recOpt.label : currentRec(d)}. ${currentRec(d)}`;
     } else {
       status = "EXCEEDS TARGET"; atTarget++;
       action = "Already above target tier — no action needed.";
