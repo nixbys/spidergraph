@@ -4,24 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
-<title>Spidergraph — Playbook</title>
-<meta name="description" content="The Personal Security Playbook: twelve control domains tiered Budget to No-Limit, plus incident-response runbooks, sourced from Privacy Guides, The New Oil, IntelTechniques, and Techlore.">
+<title>Spidergraph — Recommendations Report</title>
+<meta name="description" content="Top picks per category, best practices to close any gap to 100%, and full source documentation — sourced from Privacy Guides, The New Oil, IntelTechniques, Techlore, and Consumer Reports.">
 <meta name="theme-color" content="#0f1419">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Spidergraph — Playbook">
-<meta property="og:description" content="Twelve control domains tiered Budget to No-Limit, plus incident-response runbooks, sourced from Privacy Guides, The New Oil, IntelTechniques, and Techlore.">
-<meta property="og:url" content="https://nixbys.github.io/spidergraph/playbook.html">
+<meta property="og:title" content="Spidergraph — Recommendations Report">
+<meta property="og:description" content="Top picks per category, best practices to close any gap to 100%, and full source documentation — sourced from Privacy Guides, The New Oil, IntelTechniques, Techlore, and Consumer Reports.">
+<meta property="og:url" content="https://nixbys.github.io/spidergraph/report/">
 <meta property="og:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spidergraph — Playbook">
-<meta name="twitter:description" content="Twelve control domains tiered Budget to No-Limit, plus incident-response runbooks, sourced from Privacy Guides, The New Oil, IntelTechniques, and Techlore.">
+<meta name="twitter:title" content="Spidergraph — Recommendations Report">
+<meta name="twitter:description" content="Top picks per category, best practices to close any gap to 100%, and full source documentation — sourced from Privacy Guides, The New Oil, IntelTechniques, Techlore, and Consumer Reports.">
 <meta name="twitter:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
-<link rel="apple-touch-icon" href="favicon-180.png">
-<link rel="icon" href="favicon.ico">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../favicon-48.png">
+<link rel="apple-touch-icon" href="../favicon-180.png">
+<link rel="icon" href="../favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -55,8 +55,8 @@
     border-radius:16px; padding:48px clamp(20px,5vw,64px);}
   .doc-head{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;}
   .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--blue); display:flex; align-items:center; gap:8px;}
-  .eyebrow::before{content:"";width:6px;height:6px;background:var(--blue);border-radius:1px; display:inline-block;}
+    color:var(--teal); display:flex; align-items:center; gap:8px;}
+  .eyebrow::before{content:"";width:6px;height:6px;background:var(--teal);border-radius:1px; display:inline-block;}
   .section-jump{
     background:var(--surface2); color:var(--text); border:1px solid var(--border);
     border-radius:7px; padding:7px 30px 7px 12px; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
@@ -68,7 +68,7 @@
 
   .scroll-top-btn{
     position:fixed; bottom:24px; right:24px; z-index:90; width:44px; height:44px; border-radius:50%;
-    background:var(--surface); border:1px solid var(--border); color:var(--blue); font-size:18px;
+    background:var(--surface); border:1px solid var(--border); color:var(--teal); font-size:18px;
     cursor:pointer; display:flex; align-items:center; justify-content:center;
     opacity:0; visibility:hidden; transform:translateY(8px);
     transition:opacity .2s ease, transform .2s ease, visibility .2s; appearance:none; -webkit-appearance:none;
@@ -76,7 +76,7 @@
   }
   .scroll-top-btn.visible{opacity:1; visibility:visible; transform:translateY(0);}
   .scroll-top-btn:hover{border-color:#374252; color:var(--text);}
-  .scroll-top-btn:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+  .scroll-top-btn:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
 
   #content h1{font-family:'Space Grotesk',sans-serif; font-size:clamp(26px,4vw,36px); font-weight:700;
     letter-spacing:-.01em; margin:0 0 8px; scroll-margin-top:80px;}
@@ -112,7 +112,7 @@
 <body>
 <nav class="topnav">
   <div class="topnav-inner">
-    <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
+    <a href="../" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
       <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
       <g stroke="#2b3542" stroke-width="2">
         <line x1="60" y1="60" x2="60" y2="12"/><line x1="60" y1="60" x2="93.94" y2="26.06"/>
@@ -123,21 +123,21 @@
       <polygon points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
                fill="#3ddc97" fill-opacity="0.3" stroke="#3ddc97" stroke-width="4"/>
     </svg><span class="brand-word">SPIDER<span>GRAPH</span></span></a>
-    <a href="index.html">Home</a><span class="sep">/</span>
-    <a href="playbook.html" class="current">Playbook</a><span class="sep">/</span>
-    <a href="privacy-stack-builder.html">Stack Builder</a><span class="sep">/</span>
-    <a href="opsec-field-manual.html">OPSEC Field Manual</a><span class="sep">/</span>
-    <a href="report.html">Recommendations Report</a>
+    <a href="../">Home</a><span class="sep">/</span>
+    <a href="../playbook/">Playbook</a><span class="sep">/</span>
+    <a href="../privacy-stack-builder/">Stack Builder</a><span class="sep">/</span>
+    <a href="../opsec-field-manual/">OPSEC Field Manual</a><span class="sep">/</span>
+    <a href="./" class="current">Recommendations Report</a>
   </div>
 </nav>
 <div class="doc-wrap">
   <div class="doc-head">
-    <div class="eyebrow">Reference document</div>
+    <div class="eyebrow">Generated synthesis</div>
     <select id="sectionJump" class="section-jump" aria-label="Jump to section">
       <option value="">Jump to section…</option>
     </select>
   </div>
-  <div id="content"><div class="loading">Loading playbook…</div></div>
+  <div id="content"><div class="loading">Loading report…</div></div>
 </div>
 <button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">↑</button>
 <script>
@@ -168,12 +168,12 @@
     });
   }
 
-  fetch('personal-security-playbook.md')
+  fetch('../recommendations-report.md')
     .then(r => { if(!r.ok) throw new Error('fetch failed'); return r.text(); })
     .then(md => { document.getElementById('content').innerHTML = marked.parse(md); buildSectionJump(); })
     .catch(() => {
       document.getElementById('content').innerHTML =
-        '<div class="loading">Could not load personal-security-playbook.md — this page needs to be served over HTTP (e.g. GitHub Pages or a local server), not opened directly as a file.</div>';
+        '<div class="loading">Could not load recommendations-report.md — this page needs to be served over HTTP (e.g. GitHub Pages or a local server), not opened directly as a file.</div>';
     });
 
   const scrollBtn = document.getElementById('scrollTopBtn');
