@@ -8,10 +8,10 @@ coverage across every security domain as one shape.
 ## Structure
 
 - `docs/index.html` — hub / landing page
-- `docs/playbook.html` — renders `personal-security-playbook.md`
-- `docs/report.html` — renders `recommendations-report.md`
-- `docs/privacy-stack-builder.html` — interactive product/tool picker with live gap analysis
-- `docs/opsec-field-manual.html` — interactive behavioral/OPSEC self-audit checklist
+- `docs/playbook/index.html` — renders `personal-security-playbook.md`, served at `/playbook/`
+- `docs/report/index.html` — renders `recommendations-report.md`, served at `/report/`
+- `docs/privacy-stack-builder/index.html` — interactive product/tool picker with live gap analysis, served at `/privacy-stack-builder/`
+- `docs/opsec-field-manual/index.html` — interactive behavioral/OPSEC self-audit checklist, served at `/opsec-field-manual/`
 - `docs/personal-security-playbook.md` — source content for the playbook page
 - `docs/recommendations-report.md` — source content for the report page
 - `docs/logo-mark.svg`, `docs/logo-lockup.svg`, `docs/favicon.svg`, `docs/favicon-*.png`, `docs/favicon.ico` — brand assets
