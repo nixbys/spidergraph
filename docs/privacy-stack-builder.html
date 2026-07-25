@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spidergraph — Stack Builder</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;
+    --surface:#171e27;
+    --surface2:#1f2732;
+    --surface3:#242e3a;
+    --border:#2b3542;
+    --border-soft:#20293380;
+    --text:#e6ecf3;
+    --muted:#8695a7;
+    --muted2:#5e6b7c;
+    --teal:#3ddc97;
+    --amber:#e8a23d;
+    --red:#e0596b;
+    --blue:#5b8def;
+    --teal-dim:#3ddc9722;
+    --amber-dim:#e8a23d22;
+    --red-dim:#e0596b22;
+    --blue-dim:#5b8def22;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 0%, #16202c 0%, transparent 45%),
+      radial-gradient(circle at 100% 20%, #141b24 0%, transparent 40%),
+      var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    padding:32px 20px 80px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;}
+
+  /* header */
+  header{
+    display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between; align-items:flex-end;
+    border-bottom:1px solid var(--border);
+    padding-bottom:24px; margin-bottom:28px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--blue); margin-bottom:10px; display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{content:"";width:6px;height:6px;background:var(--blue);border-radius:1px; display:inline-block;}
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(28px,4vw,42px);
+    font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.05;
+  }
+  h1 span{color:var(--muted); font-weight:500;}
+  .sub{color:var(--muted); font-size:14.5px; margin-top:10px; max-width:560px; line-height:1.5;}
+
+  .tier-select{
+    display:flex; flex-direction:column; gap:8px; min-width:280px;
+  }
+  .tier-label{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--muted2);
+  }
+  .tier-btns{display:flex; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:4px;}
+  .tier-btn{
+    flex:1; text-align:center; padding:9px 10px; border-radius:7px; cursor:pointer;
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:500; letter-spacing:.02em;
+    color:var(--muted); border:1px solid transparent; transition:all .15s ease; user-select:none;
+  }
+  .tier-btn:hover{color:var(--text);}
+  .tier-btn.active{background:var(--surface3); border-color:var(--border); color:var(--text);}
+  .tier-btn.active[data-tier="1"]{color:var(--amber); border-color:#e8a23d55;}
+  .tier-btn.active[data-tier="2"]{color:var(--blue); border-color:#5b8def55;}
+  .tier-btn.active[data-tier="3"]{color:var(--teal); border-color:#3ddc9755;}
+
+  /* layout */
+  .layout{display:grid; grid-template-columns:1fr 340px; gap:28px;}
+  @media (max-width:900px){.layout{grid-template-columns:1fr;} .sidebar{order:-1;}}
+
+  /* category rows */
+  .domain-group{margin-bottom:6px;}
+  .domain-title{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted2); margin:26px 0 10px; padding-left:2px;
+  }
+  .domain-title:first-child{margin-top:0;}
+
+  .row{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-bottom:10px;
+    display:grid; grid-template-columns:44px 1fr 240px 96px; gap:16px; align-items:center;
+    transition:border-color .15s ease;
+  }
+  .row:hover{border-color:#374252;}
+  @media (max-width:720px){
+    .row{grid-template-columns:1fr; gap:10px;}
+    .code-chip{display:none;}
+  }
+  .code-chip{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted2);
+    background:var(--surface2); border:1px solid var(--border); border-radius:6px;
+    padding:5px 0; text-align:center;
+  }
+  .row-main .name{font-weight:600; font-size:15px; margin-bottom:3px;}
+  .row-main .note{font-size:12.5px; color:var(--muted); line-height:1.45; max-width:520px;}
+  .row-main .note b{color:var(--text); font-weight:600;}
+
+  select{
+    width:100%; background:var(--surface2); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:10px 12px; font-family:'IBM Plex Sans',sans-serif; font-size:13.5px;
+    cursor:pointer; appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238695a7'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center;
+  }
+  select:focus{outline:2px solid var(--blue); outline-offset:1px;}
+
+  .topnav{
+    max-width:1180px; margin:0 auto 28px; display:flex; align-items:center; gap:4px;
+    flex-wrap:wrap;
+  }
+  .topnav a{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em;
+    color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:7px;
+    border:1px solid transparent; transition:all .15s ease;
+  }
+  .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
+  .topnav a.current{color:var(--teal); background:var(--teal-dim); border-color:#3ddc9755;}
+  .topnav .sep{color:var(--border); margin:0 2px;}
+
+  .status{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.03em;
+    padding:7px 4px; border-radius:7px; text-align:center; white-space:nowrap;
+  }
+  .status.optimal{background:var(--teal-dim); color:var(--teal);}
+  .status.above{background:var(--blue-dim); color:var(--blue);}
+  .status.below{background:var(--amber-dim); color:var(--amber);}
+  .status.gap{background:var(--red-dim); color:var(--red);}
+
+  /* sidebar */
+  .sidebar{position:sticky; top:24px; align-self:start; display:flex; flex-direction:column; gap:16px;}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px;}
+  .card-title{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted2); margin-bottom:14px;
+  }
+  svg#radar{display:block; margin:0 auto;}
+  .score-row{display:flex; justify-content:space-between; align-items:baseline; margin-top:14px;}
+  .score-num{font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700;}
+  .score-label{font-size:12px; color:var(--muted);}
+
+  .metric{display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid var(--border-soft); font-size:13px;}
+  .metric:first-of-type{border-top:none;}
+  .metric .k{color:var(--muted);}
+  .metric .v{font-family:'IBM Plex Mono',monospace; font-weight:600;}
+  .v.red{color:var(--red);} .v.amber{color:var(--amber);} .v.teal{color:var(--teal);}
+
+  .gap-list{display:flex; flex-direction:column; gap:8px; margin-top:4px;}
+  .gap-item{font-size:12.5px; display:flex; gap:8px; align-items:flex-start; color:var(--muted);}
+  .gap-item .dot{width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:5px;flex-shrink:0;}
+  .gap-item b{color:var(--text); font-weight:600;}
+  .empty-gaps{font-size:12.5px; color:var(--teal); display:flex; gap:8px; align-items:center;}
+
+  footer{
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--border);
+    font-size:12.5px; color:var(--muted2); line-height:1.6;
+  }
+  footer b{color:var(--muted);}
+
+  .brand{display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:14px; padding-right:14px; border-right:1px solid var(--border);}
+  .brand svg{display:block;}
+  .brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--text); letter-spacing:-0.2px;}
+  .brand-word span{color:var(--teal);}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
+      <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
+      <g stroke="#2b3542" stroke-width="2">
+        <line x1="60" y1="60" x2="60" y2="12"/><line x1="60" y1="60" x2="93.94" y2="26.06"/>
+        <line x1="60" y1="60" x2="108" y2="60"/><line x1="60" y1="60" x2="93.94" y2="93.94"/>
+        <line x1="60" y1="60" x2="60" y2="108"/><line x1="60" y1="60" x2="26.06" y2="93.94"/>
+        <line x1="60" y1="60" x2="12" y2="60"/><line x1="60" y1="60" x2="26.06" y2="26.06"/>
+      </g>
+      <polygon points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
+               fill="#3ddc97" fill-opacity="0.3" stroke="#3ddc97" stroke-width="4"/>
+    </svg><span class="brand-word">SPIDER<span>GRAPH</span></span></a>
+  <a href="index.html">Home</a><span class="sep">/</span>
+  <a href="playbook.html">Playbook</a><span class="sep">/</span>
+  <a href="privacy-stack-builder.html" class="current">Stack Builder</a><span class="sep">/</span>
+  <a href="opsec-field-manual.html">OPSEC Field Manual</a><span class="sep">/</span>
+  <a href="report.html">Recommendations Report</a>
+</nav>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="eyebrow">Configurator · 12 slots</div>
+      <h1>Stack <span>Builder</span></h1>
+      <div class="sub">Pick what you currently run in each slot. The build compares it against the recommended part for your target tier and flags gaps — same idea as a hardware parts list, applied to a security stack.</div>
+    </div>
+    <div class="tier-select">
+      <div class="tier-label">Target build tier</div>
+      <div class="tier-btns" id="tierBtns">
+        <div class="tier-btn" data-tier="1">Budget</div>
+        <div class="tier-btn active" data-tier="2">Mid</div>
+        <div class="tier-btn" data-tier="3">No-Limit</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div id="rows"></div>
+
+    <div class="sidebar">
+      <div class="card">
+        <div class="card-title">Coverage readout</div>
+        <svg id="radar" width="280" height="280" viewBox="0 0 280 280"></svg>
+        <div class="score-row">
+          <div>
+            <div class="score-num" id="scoreNum">0%</div>
+            <div class="score-label">of target tier filled</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Build summary</div>
+        <div class="metric"><span class="k">Slots at target</span><span class="v teal" id="mAtTarget">0/12</span></div>
+        <div class="metric"><span class="k">Slots below target</span><span class="v amber" id="mBelow">0</span></div>
+        <div class="metric"><span class="k">Critical gaps (none set)</span><span class="v red" id="mGap">0</span></div>
+        <div class="metric"><span class="k">Est. recurring cost / yr</span><span class="v" id="mCost">$0</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Priority fixes</div>
+        <div id="gapList" class="gap-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Export</div>
+        <div class="tier-btn active" id="reportBtn" style="text-align:center; padding:11px; cursor:pointer;">Generate report ↓</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <b>Not in this picker:</b> social engineering discipline, physical security habits, and legal/documentation steps aren't product slots — they're behavior, not purchases. See the companion <b>personal-security-playbook.md</b> for those domains and the full incident-response runbooks. Costs shown are rough annual estimates for the paid tier of each option and may not reflect current pricing — verify at checkout.
+  </footer>
+
+</div>
+
+<script>
+const TIERS = {1:"Budget", 2:"Mid", 3:"No-Limit"};
+
+const DATA = [
+  {domain:"Identity & Accounts", code:"IDN-01", name:"Password Manager",
+    options:[
+      {id:"none", label:"None / browser-saved passwords", tier:0, cost:0},
+      {id:"bw-free", label:"Bitwarden (Free)", tier:1, cost:0},
+      {id:"bw-prem", label:"Bitwarden Premium / Proton Pass", tier:2, cost:10},
+      {id:"1p", label:"1Password (Families/Business-grade)", tier:3, cost:60},
+    ], rec:"Bitwarden Premium or Proton Pass — cross-platform, hardware-key lockable."},
+
+  {domain:"Identity & Accounts", code:"IDN-02", name:"Email & Aliasing",
+    options:[
+      {id:"none", label:"Mainstream free email, no aliasing", tier:0, cost:0},
+      {id:"proton-free", label:"Proton Mail (Free) + free aliasing tier", tier:1, cost:0},
+      {id:"proton-plus", label:"Proton Unlimited (Mail + aliasing bundled)", tier:2, cost:120},
+      {id:"dual", label:"Proton Unlimited + second compartmentalized provider", tier:3, cost:168},
+    ], rec:"Proton Unlimited bundles Mail + SimpleLogin aliasing at the best per-feature price."},
+
+  {domain:"Authentication", code:"AUTH-01", name:"2FA / Hardware Auth",
+    options:[
+      {id:"none", label:"SMS codes only, or no 2FA", tier:0, cost:0},
+      {id:"totp", label:"TOTP app (Ente Auth / Aegis)", tier:1, cost:0},
+      {id:"key1", label:"1x Hardware key (YubiKey) on core accounts", tier:2, cost:0},
+      {id:"key2", label:"2x Hardware keys, primary + offsite backup", tier:3, cost:0},
+    ], rec:"Two hardware keys — one carried, one stored offsite as a lockout backup."},
+
+  {domain:"Endpoint", code:"SYS-01", name:"Desktop OS Hardening",
+    options:[
+      {id:"none", label:"Mainstream OS, default settings", tier:0, cost:0},
+      {id:"patched", label:"Mainstream OS, fully patched + FDE verified", tier:1, cost:0},
+      {id:"atomic", label:"Fedora Atomic (Silverblue/Kinoite)", tier:2, cost:0},
+      {id:"hardened", label:"Secureblue or Qubes OS", tier:3, cost:0},
+    ], rec:"Immutable/atomic distro limits persistence of malware and config drift."},
+
+  {domain:"Endpoint", code:"SYS-02", name:"Mobile OS Hardening",
+    options:[
+      {id:"none", label:"Stock OS, default settings", tier:0, cost:0},
+      {id:"hardened-stock", label:"Stock iOS/Android, hardened settings applied", tier:1, cost:0},
+      {id:"disciplined", label:"Same, + quarterly permission audits", tier:2, cost:0},
+      {id:"graphene", label:"GrapheneOS (Pixel) or iOS Lockdown Mode standing default", tier:3, cost:0},
+    ], rec:"GrapheneOS for Android-path hardening; Lockdown Mode as the iOS equivalent ceiling."},
+
+  {domain:"Network", code:"NET-01", name:"VPN",
+    options:[
+      {id:"none", label:"No VPN", tier:0, cost:0},
+      {id:"free", label:"Proton VPN (Free tier)", tier:1, cost:0},
+      {id:"paid", label:"Mullvad / IVPN / Proton VPN (paid)", tier:2, cost:70},
+      {id:"selfhost", label:"Paid VPN + self-hosted WireGuard exit node", tier:3, cost:130},
+    ], rec:"A VPN shifts trust from your ISP — it is not anonymity. Pick based on payment privacy (cash/Monero accepted) if that matters to your model."},
+
+  {domain:"Network", code:"NET-02", name:"DNS / Router",
+    options:[
+      {id:"none", label:"ISP default DNS, stock router firmware", tier:0, cost:0},
+      {id:"encrypted-dns", label:"Encrypted DNS (Mullvad DNS / Quad9)", tier:1, cost:0},
+      {id:"openwrt", label:"Encrypted DNS + OpenWrt router firmware", tier:2, cost:0},
+      {id:"segmented", label:"Self-hosted resolver + OPNsense/pfSense, VLAN-segmented", tier:3, cost:150},
+    ], rec:"DNS changes alone are oversold — real gains come from router firmware + network segmentation."},
+
+  {domain:"Network", code:"NET-03", name:"Browser Hardening",
+    options:[
+      {id:"none", label:"Default browser, no extensions", tier:0, cost:0},
+      {id:"ff-ubo", label:"Firefox + uBlock Origin", tier:1, cost:0},
+      {id:"containers", label:"Same + container/profile separation, disciplined", tier:2, cost:0},
+      {id:"mullvad-br", label:"Mullvad Browser / Tor Browser for sensitive sessions", tier:3, cost:0},
+    ], rec:"Firefox + uBlock Origin is the highest value-per-minute control in the entire stack."},
+
+  {domain:"Communications", code:"COM-01", name:"Messaging",
+    options:[
+      {id:"none", label:"Standard SMS / unencrypted platform DMs", tier:0, cost:0},
+      {id:"signal", label:"Signal, core contacts migrated", tier:1, cost:0},
+      {id:"signal-hardened", label:"Signal + disappearing messages + registration lock", tier:2, cost:0},
+      {id:"simplex", label:"Signal (hardened) + SimpleX for zero-identifier needs", tier:3, cost:0},
+    ], rec:"Signal covers nearly everyone; SimpleX is the ceiling for relationships needing no persistent ID."},
+
+  {domain:"Data", code:"DATA-01", name:"Cloud Storage & Encryption",
+    options:[
+      {id:"none", label:"Unencrypted mainstream cloud storage", tier:0, cost:0},
+      {id:"free-tier", label:"Proton Drive / Filen free tier", tier:1, cost:0},
+      {id:"cryptomator", label:"Zero-knowledge provider + Cryptomator client-side encryption", tier:2, cost:115},
+      {id:"selfhost", label:"Self-hosted Nextcloud + encrypted offsite (B2/Storj)", tier:3, cost:250},
+    ], rec:"Client-side encryption (Cryptomator) matters more than which provider you pick."},
+
+  {domain:"Data", code:"DATA-02", name:"Backup Strategy",
+    options:[
+      {id:"none", label:"No regular backup", tier:0, cost:0},
+      {id:"single", label:"Single cloud backup, no local copy", tier:1, cost:0},
+      {id:"321", label:"Full 3-2-1 (local + local sync + offsite)", tier:2, cost:0},
+      {id:"cold", label:"3-2-1 + offline cold backup, quarterly restore-tested", tier:3, cost:0},
+    ], rec:"3-2-1 fully implemented is the real target — most people are missing the second local copy."},
+
+  {domain:"Digital Footprint", code:"OSN-01", name:"Data Broker Removal",
+    options:[
+      {id:"none", label:"Never audited or opted out", tier:0, cost:0},
+      {id:"manual", label:"Manual opt-outs via free broker lists", tier:1, cost:0},
+      {id:"easyoptouts", label:"EasyOptOuts (automated, quarterly)", tier:2, cost:20},
+      {id:"layered", label:"EasyOptOuts + DeleteMe layered, or Optery Ultimate", tier:3, cost:149},
+    ], rec:"EasyOptOuts alone out-performs DeleteMe alone on documented removal rate — layer, don't just upgrade."},
+];
+
+let target = 2;
+let state = {}; // id -> selected option id
+DATA.forEach(d => state[d.code] = d.options[0].id);
+
+const rowsEl = document.getElementById("rows");
+let lastDomain = null;
+
+DATA.forEach((d, idx) => {
+  if(d.domain !== lastDomain){
+    const h = document.createElement("div");
+    h.className = "domain-title";
+    h.textContent = d.domain;
+    rowsEl.appendChild(h);
+    lastDomain = d.domain;
+  }
+  const row = document.createElement("div");
+  row.className = "row";
+  row.innerHTML = `
+    <div class="code-chip">${d.code}</div>
+    <div class="row-main">
+      <div class="name">${d.name}</div>
+      <div class="note" id="note-${d.code}"></div>
+    </div>
+    <select id="sel-${d.code}"></select>
+    <div class="status" id="status-${d.code}"></div>
+  `;
+  rowsEl.appendChild(row);
+
+  const sel = row.querySelector(`#sel-${d.code}`);
+  d.options.forEach(o => {
+    const opt = document.createElement("option");
+    opt.value = o.id;
+    opt.textContent = o.label;
+    sel.appendChild(opt);
+  });
+  sel.value = state[d.code];
+  sel.addEventListener("change", () => {
+    state[d.code] = sel.value;
+    render();
+  });
+});
+
+document.querySelectorAll(".tier-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tier-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    target = parseInt(btn.dataset.tier, 10);
+    render();
+  });
+});
+
+function getOption(d, id){ return d.options.find(o => o.id === id); }
+
+function render(){
+  let atTarget = 0, below = 0, gap = 0, cost = 0;
+  const gapItems = [];
+
+  DATA.forEach(d => {
+    const cur = getOption(d, state[d.code]);
+    const statusEl = document.getElementById(`status-${d.code}`);
+    const noteEl = document.getElementById(`note-${d.code}`);
+    cost += cur.tier > 0 ? cur.cost : 0;
+
+    // if/else status logic
+    if(cur.tier === 0){
+      statusEl.textContent = "GAP";
+      statusEl.className = "status gap";
+      gap++;
+      gapItems.push({name:d.name, msg:`Nothing set — start with: ${getOption(d, d.options[1].id).label}`});
+    } else if(cur.tier === target){
+      statusEl.textContent = "OPTIMAL";
+      statusEl.className = "status optimal";
+      atTarget++;
+    } else if(cur.tier < target){
+      statusEl.textContent = "BELOW";
+      statusEl.className = "status below";
+      below++;
+      const recOpt = d.options.find(o => o.tier === target);
+      gapItems.push({name:d.name, msg:`Below target — consider: ${recOpt ? recOpt.label : d.rec}`});
+    } else {
+      statusEl.textContent = "ABOVE";
+      statusEl.className = "status above";
+      atTarget++; // exceeding target still counts as covered
+    }
+
+    noteEl.innerHTML = `<b>Rec:</b> ${d.rec}`;
+  });
+
+  document.getElementById("mAtTarget").textContent = `${atTarget}/${DATA.length}`;
+  document.getElementById("mBelow").textContent = below;
+  document.getElementById("mGap").textContent = gap;
+  document.getElementById("mCost").textContent = `$${cost.toLocaleString()}`;
+  document.getElementById("scoreNum").textContent = `${Math.round((atTarget/DATA.length)*100)}%`;
+
+  const gapListEl = document.getElementById("gapList");
+  gapListEl.innerHTML = "";
+  if(gapItems.length === 0){
+    gapListEl.innerHTML = `<div class="empty-gaps">✓ Every slot meets or exceeds the ${TIERS[target]} target.</div>`;
+  } else {
+    gapItems.slice(0,6).forEach(g => {
+      const div = document.createElement("div");
+      div.className = "gap-item";
+      div.innerHTML = `<span class="dot"></span><span><b>${g.name}:</b> ${g.msg}</span>`;
+      gapListEl.appendChild(div);
+    });
+  }
+
+  drawRadar();
+}
+
+function drawRadar(){
+  const svg = document.getElementById("radar");
+  svg.innerHTML = "";
+  const cx = 140, cy = 140, maxR = 105;
+  const n = DATA.length;
+  const levels = 3;
+
+  const ns = "http://www.w3.org/2000/svg";
+  function pt(i, r){
+    const angle = (Math.PI * 2 * i / n) - Math.PI/2;
+    return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+  }
+
+  // grid rings
+  for(let l=1; l<=levels; l++){
+    const r = (maxR/levels)*l;
+    let points = [];
+    for(let i=0;i<n;i++){ points.push(pt(i,r).join(",")); }
+    const poly = document.createElementNS(ns,"polygon");
+    poly.setAttribute("points", points.join(" "));
+    poly.setAttribute("fill","none");
+    poly.setAttribute("stroke", l===levels ? "#2b3542" : "#20293380");
+    poly.setAttribute("stroke-width","1");
+    svg.appendChild(poly);
+  }
+  // spokes
+  for(let i=0;i<n;i++){
+    const [x,y] = pt(i,maxR);
+    const line = document.createElementNS(ns,"line");
+    line.setAttribute("x1",cx); line.setAttribute("y1",cy);
+    line.setAttribute("x2",x); line.setAttribute("y2",y);
+    line.setAttribute("stroke","#20293380"); line.setAttribute("stroke-width","1");
+    svg.appendChild(line);
+  }
+
+  // target tier reference shape (dashed)
+  let tpoints = [];
+  for(let i=0;i<n;i++){ tpoints.push(pt(i,(maxR/levels)*target).join(",")); }
+  const tpoly = document.createElementNS(ns,"polygon");
+  tpoly.setAttribute("points", tpoints.join(" "));
+  tpoly.setAttribute("fill","none");
+  tpoly.setAttribute("stroke","#5b8def");
+  tpoly.setAttribute("stroke-width","1.5");
+  tpoly.setAttribute("stroke-dasharray","3,4");
+  tpoly.setAttribute("opacity","0.6");
+  svg.appendChild(tpoly);
+
+  // current coverage shape (filled)
+  let cpoints = [];
+  DATA.forEach((d,i) => {
+    const cur = getOption(d, state[d.code]);
+    const r = (maxR/levels) * cur.tier;
+    cpoints.push(pt(i,r));
+  });
+  const cpoly = document.createElementNS(ns,"polygon");
+  cpoly.setAttribute("points", cpoints.map(p=>p.join(",")).join(" "));
+  cpoly.setAttribute("fill","#3ddc9733");
+  cpoly.setAttribute("stroke","#3ddc97");
+  cpoly.setAttribute("stroke-width","2");
+  cpoly.setAttribute("stroke-linejoin","round");
+  svg.appendChild(cpoly);
+
+  cpoints.forEach(([x,y]) => {
+    const c = document.createElementNS(ns,"circle");
+    c.setAttribute("cx",x); c.setAttribute("cy",y); c.setAttribute("r","2.5");
+    c.setAttribute("fill","#3ddc97");
+    svg.appendChild(c);
+  });
+
+  // axis labels (codes only, kept short)
+  DATA.forEach((d,i) => {
+    const [x,y] = pt(i, maxR + 16);
+    const t = document.createElementNS(ns,"text");
+    t.setAttribute("x",x); t.setAttribute("y",y);
+    t.setAttribute("fill","#5e6b7c");
+    t.setAttribute("font-size","8.5");
+    t.setAttribute("font-family","IBM Plex Mono, monospace");
+    t.setAttribute("text-anchor","middle");
+    t.setAttribute("dominant-baseline","middle");
+    t.textContent = d.code;
+    svg.appendChild(t);
+  });
+}
+
+document.getElementById("reportBtn").addEventListener("click", generateReport);
+
+function generateReport(){
+  const now = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+  let atTarget=0, below=0, gap=0, cost=0;
+  let lines = [];
+  lines.push("PRIVACY & SECURITY STACK — RECOMMENDATIONS REPORT");
+  lines.push(`Generated ${now} · Target tier: ${TIERS[target]}`);
+  lines.push("=".repeat(60));
+  lines.push("");
+
+  DATA.forEach(d => {
+    const cur = getOption(d, state[d.code]);
+    cost += cur.tier > 0 ? cur.cost : 0;
+    let status, action;
+    if(cur.tier === 0){
+      status = "CRITICAL GAP"; gap++;
+      const first = d.options[1];
+      action = `Start with: ${first.label}. ${d.rec}`;
+    } else if(cur.tier === target){
+      status = "OPTIMAL"; atTarget++;
+      action = "No action needed at current target tier.";
+    } else if(cur.tier < target){
+      status = "BELOW TARGET"; below++;
+      const recOpt = d.options.find(o => o.tier === target);
+      action = `Upgrade to: ${recOpt ? recOpt.label : d.rec}. ${d.rec}`;
+    } else {
+      status = "EXCEEDS TARGET"; atTarget++;
+      action = "Already above target tier — no action needed.";
+    }
+    lines.push(`[${d.code}] ${d.name}`);
+    lines.push(`  Current:  ${cur.label}`);
+    lines.push(`  Status:   ${status}`);
+    lines.push(`  Guidance: ${action}`);
+    lines.push("");
+  });
+
+  lines.push("-".repeat(60));
+  lines.push("SUMMARY");
+  lines.push(`  Slots at/above target: ${atTarget}/${DATA.length}`);
+  lines.push(`  Slots below target:    ${below}`);
+  lines.push(`  Critical gaps (none):  ${gap}`);
+  lines.push(`  Est. recurring cost:   $${cost.toLocaleString()}/yr`);
+  lines.push(`  Overall completeness:  ${Math.round((atTarget/DATA.length)*100)}%`);
+  lines.push("");
+  lines.push("-".repeat(60));
+  lines.push("SOURCES");
+  lines.push("  Recommendations derived from Privacy Guides (privacyguides.org),");
+  lines.push("  The New Oil (thenewoil.org), IntelTechniques (inteltechniques.com),");
+  lines.push("  Techlore, Consumer Reports data-removal testing, and official vendor");
+  lines.push("  documentation. Full bibliography and further-reading list:");
+  lines.push("  see recommendations-report.md.");
+  lines.push("");
+  lines.push("  This space moves fast — re-verify pricing and tier details at each");
+  lines.push("  vendor's site before purchasing, and re-run this audit periodically.");
+
+  const blob = new Blob([lines.join("\n")], {type:"text/plain"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `stack-report-${TIERS[target].toLowerCase()}-${Date.now()}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spidergraph — OPSEC Field Manual</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;
+    --surface:#171e27;
+    --surface2:#1f2732;
+    --surface3:#242e3a;
+    --border:#2b3542;
+    --border-soft:#20293380;
+    --text:#e6ecf3;
+    --muted:#8695a7;
+    --muted2:#5e6b7c;
+    --teal:#3ddc97;
+    --amber:#e8a23d;
+    --red:#e0596b;
+    --blue:#5b8def;
+    --teal-dim:#3ddc9722;
+    --amber-dim:#e8a23d22;
+    --red-dim:#e0596b22;
+    --blue-dim:#5b8def22;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 0%, #16202c 0%, transparent 45%),
+      radial-gradient(circle at 100% 20%, #141b24 0%, transparent 40%),
+      var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    padding:32px 20px 80px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;}
+
+  header{
+    display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between; align-items:flex-end;
+    border-bottom:1px solid var(--border);
+    padding-bottom:24px; margin-bottom:28px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--amber); margin-bottom:10px; display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{content:"";width:6px;height:6px;background:var(--amber);border-radius:1px; display:inline-block;}
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(28px,4vw,42px);
+    font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.05;
+  }
+  h1 span{color:var(--muted); font-weight:500;}
+  .sub{color:var(--muted); font-size:14.5px; margin-top:10px; max-width:580px; line-height:1.5;}
+
+  .reset-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted);
+    background:var(--surface); border:1px solid var(--border); border-radius:8px;
+    padding:10px 14px; cursor:pointer; height:fit-content; letter-spacing:.03em;
+    transition:all .15s ease;
+  }
+  .reset-btn:hover{color:var(--text); border-color:#374252;}
+
+  .topnav{
+    max-width:1180px; margin:0 auto 28px; display:flex; align-items:center; gap:4px;
+    flex-wrap:wrap;
+  }
+  .topnav a{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em;
+    color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:7px;
+    border:1px solid transparent; transition:all .15s ease;
+  }
+  .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
+  .topnav a.current{color:var(--amber); background:var(--amber-dim); border-color:#e8a23d55;}
+  .topnav .sep{color:var(--border); margin:0 2px;}
+
+  .layout{display:grid; grid-template-columns:1fr 340px; gap:28px;}
+  @media (max-width:900px){.layout{grid-template-columns:1fr;} .sidebar{order:-1;}}
+
+  .domain-block{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    margin-bottom:16px; overflow:hidden;
+  }
+  .domain-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 18px; border-bottom:1px solid var(--border-soft);
+  }
+  .domain-head-left{display:flex; align-items:center; gap:10px;}
+  .domain-code{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted2);
+    background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:4px 8px;
+  }
+  .domain-name{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15.5px;}
+  .domain-pct{font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;}
+
+  .item{
+    display:flex; gap:12px; align-items:flex-start;
+    padding:13px 18px; border-bottom:1px solid var(--border-soft);
+    cursor:pointer; transition:background .1s ease;
+  }
+  .item:last-child{border-bottom:none;}
+  .item:hover{background:var(--surface2);}
+  .item input[type=checkbox]{
+    appearance:none; width:18px; height:18px; border-radius:5px; border:1.5px solid var(--muted2);
+    background:var(--surface2); flex-shrink:0; margin-top:1px; cursor:pointer; position:relative;
+    transition:all .15s ease;
+  }
+  .item input[type=checkbox]:checked{background:var(--teal); border-color:var(--teal);}
+  .item input[type=checkbox]:checked::after{
+    content:""; position:absolute; left:5px; top:1px; width:5px; height:9px;
+    border:solid #0f1419; border-width:0 2px 2px 0; transform:rotate(45deg);
+  }
+  .item-text{flex:1;}
+  .item-label{font-size:13.8px; line-height:1.45;}
+  .item.checked .item-label{color:var(--muted); text-decoration:line-through; text-decoration-color:#3ddc9766;}
+  .item-crit{
+    font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--red); border:1px solid #e0596b55; background:var(--red-dim);
+    padding:2px 6px; border-radius:5px; margin-left:8px; white-space:nowrap;
+  }
+
+  .sidebar{position:sticky; top:24px; align-self:start; display:flex; flex-direction:column; gap:16px;}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px;}
+  .card-title{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted2); margin-bottom:14px;
+  }
+  svg#radar{display:block; margin:0 auto;}
+  .score-row{display:flex; justify-content:space-between; align-items:baseline; margin-top:14px;}
+  .score-num{font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700;}
+  .score-label{font-size:12px; color:var(--muted);}
+
+  .metric{display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid var(--border-soft); font-size:13px;}
+  .metric:first-of-type{border-top:none;}
+  .metric .k{color:var(--muted);}
+  .metric .v{font-family:'IBM Plex Mono',monospace; font-weight:600;}
+  .v.red{color:var(--red);} .v.amber{color:var(--amber);} .v.teal{color:var(--teal);}
+
+  .gap-list{display:flex; flex-direction:column; gap:8px; margin-top:4px;}
+  .gap-item{font-size:12.5px; display:flex; gap:8px; align-items:flex-start; color:var(--muted);}
+  .gap-item .dot{width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:5px;flex-shrink:0;}
+  .gap-item.amber .dot{background:var(--amber);}
+  .gap-item b{color:var(--text); font-weight:600;}
+  .empty-gaps{font-size:12.5px; color:var(--teal); display:flex; gap:8px; align-items:center;}
+
+  footer{
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--border);
+    font-size:12.5px; color:var(--muted2); line-height:1.6;
+  }
+  footer b{color:var(--muted);}
+
+  .brand{display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:14px; padding-right:14px; border-right:1px solid var(--border);}
+  .brand svg{display:block;}
+  .brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--text); letter-spacing:-0.2px;}
+  .brand-word span{color:var(--teal);}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
+      <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
+      <g stroke="#2b3542" stroke-width="2">
+        <line x1="60" y1="60" x2="60" y2="12"/><line x1="60" y1="60" x2="93.94" y2="26.06"/>
+        <line x1="60" y1="60" x2="108" y2="60"/><line x1="60" y1="60" x2="93.94" y2="93.94"/>
+        <line x1="60" y1="60" x2="60" y2="108"/><line x1="60" y1="60" x2="26.06" y2="93.94"/>
+        <line x1="60" y1="60" x2="12" y2="60"/><line x1="60" y1="60" x2="26.06" y2="26.06"/>
+      </g>
+      <polygon points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
+               fill="#3ddc97" fill-opacity="0.3" stroke="#3ddc97" stroke-width="4"/>
+    </svg><span class="brand-word">SPIDER<span>GRAPH</span></span></a>
+  <a href="index.html">Home</a><span class="sep">/</span>
+  <a href="playbook.html">Playbook</a><span class="sep">/</span>
+  <a href="privacy-stack-builder.html">Stack Builder</a><span class="sep">/</span>
+  <a href="opsec-field-manual.html" class="current">OPSEC Field Manual</a><span class="sep">/</span>
+  <a href="report.html">Recommendations Report</a>
+</nav>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="eyebrow">Field manual · 6 domains · <span id="itemCount">0</span> controls</div>
+      <h1>Behavioral <span>&amp; OPSEC Audit</span></h1>
+      <div class="sub">The habit-based half of the stack — nothing here is a product you buy, it's a practice you either do or don't. Check off what's already true for you; everything unchecked is your action list, ranked by how much it actually matters.</div>
+    </div>
+    <div class="reset-btn" id="resetBtn">Reset audit</div>
+  </header>
+
+  <div class="layout">
+    <div id="domains"></div>
+
+    <div class="sidebar">
+      <div class="card">
+        <div class="card-title">Readiness readout</div>
+        <svg id="radar" width="280" height="280" viewBox="0 0 280 280"></svg>
+        <div class="score-row">
+          <div>
+            <div class="score-num" id="scoreNum">0%</div>
+            <div class="score-label">overall readiness</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Summary</div>
+        <div class="metric"><span class="k">Controls in place</span><span class="v teal" id="mChecked">0/0</span></div>
+        <div class="metric"><span class="k">Critical gaps unchecked</span><span class="v red" id="mCritGap">0</span></div>
+        <div class="metric"><span class="k">Weakest domain</span><span class="v amber" id="mWeakest">—</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Priority action list</div>
+        <div id="gapList" class="gap-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Export</div>
+        <div id="reportBtn" style="text-align:center; padding:11px; cursor:pointer; background:var(--surface3); border:1px solid var(--border); border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text);">Generate report ↓</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <b>Companion tool:</b> product/tool selections (password manager, VPN, OS, etc.) live in <b>privacy-stack-builder.html</b>. This manual covers what that picker deliberately left out — the discipline layer. Full write-ups and the incident-response runbooks these controls feed into are in <b>personal-security-playbook.md</b>. Your checked/unchecked state stays in this browser tab only — nothing here is sent anywhere or saved between sessions unless you keep the tab open.
+  </footer>
+
+</div>
+
+<script>
+const DOMAINS = [
+  {code:"SE", name:"Social Engineering & Human-Layer Defense", items:[
+    {t:"I verify sender domains character-by-character before clicking links in unsolicited messages", crit:true},
+    {t:"I never act on urgency alone — a request framed as urgent gets slower, not faster, verification"},
+    {t:"My close family/contacts and I use a verbal passphrase to verify money/credential requests", crit:true},
+    {t:"For any 'urgent' institutional call, I hang up and call back using a number I already had on file, not one they gave me", crit:true},
+    {t:"I confirm unusual requests from known contacts through a second channel before acting"},
+    {t:"I don't discuss travel plans or home-alone windows on public social channels"},
+    {t:"I'm skeptical by default of unsolicited technicians, deliveries, or 'can I use your phone' requests"},
+    {t:"My security question answers aren't publicly discoverable facts (pet names, mother's maiden name, etc.)"},
+    {t:"I've had the actual 'why' conversation with close family about phishing/vishing, not just handed them an app"},
+  ]},
+  {code:"PHY", name:"Physical Security", items:[
+    {t:"Auto-lock is set to under 1 minute on every device I carry", crit:true},
+    {t:"Find My / anti-theft tracking is enabled and I've confirmed it actually works"},
+    {t:"Full-disk encryption is verified — not assumed — on every device"},
+    {t:"I use a privacy screen filter in public or shared workspaces"},
+    {t:"I never leave devices unattended in vehicles or visible in public spaces"},
+    {t:"Smart home / IoT devices sit on a segmented network, isolated from my primary devices", crit:true},
+    {t:"I use a Faraday bag or airplane mode for higher-risk travel with sensitive devices"},
+    {t:"I've actually tested a remote wipe or remote lock at least once, not just enabled the setting"},
+  ]},
+  {code:"LEG", name:"Legal & Documentation", items:[
+    {t:"Credit is frozen at all three bureaus (Equifax, Experian, TransUnion)", crit:true},
+    {t:"A trusted person has offline instructions for where my recovery info lives — not live credentials"},
+    {t:"My password manager's emergency access / legacy contact feature is actually configured"},
+    {t:"Personal accounts and any content-creator/business accounts are financially and legally separated"},
+    {t:"I've evaluated whether an LLC or equivalent makes sense given current revenue from content/business work"},
+    {t:"I have a written incident-contact list: bank fraud line, carrier fraud line, local non-emergency police line"},
+  ]},
+  {code:"BEH", name:"Operational Discipline", items:[
+    {t:"I strip metadata (EXIF/GPS) from images before posting anything publicly", crit:true},
+    {t:"I don't reuse usernames between my public-facing identity and my personal accounts", crit:true},
+    {t:"I keep browser profiles/sessions compartmentalized between identities"},
+    {t:"I review my phone's app permissions at least quarterly"},
+    {t:"I've audited old or dormant accounts still tied to my real identity"},
+    {t:"Every account password is unique and generated — no reuse anywhere"},
+    {t:"I avoid posting real-time location; anything location-tagged goes up after the fact, not during"},
+  ]},
+  {code:"IR", name:"Incident Response Readiness", items:[
+    {t:"I know the first three things I'd do in the first 15 minutes if my email were compromised", crit:true},
+    {t:"I know my mobile carrier's specific process for locking a SIM against unauthorized swap"},
+    {t:"I've actually restored a file from backup in the last 6 months to confirm it works", crit:true},
+    {t:"I know how to report doxxing or impersonation on every platform I actively use"},
+    {t:"I know exactly who I'd call first in a financial fraud incident, before I'd need to"},
+  ]},
+  {code:"AUD", name:"Maintenance & Audit Cadence", items:[
+    {t:"OS, browser, and app updates are on auto-update or checked weekly without fail"},
+    {t:"I re-run my own OSINT self-audit (searching my own name/handles/number) quarterly", crit:true},
+    {t:"I revisit my threat model — what I'm protecting, from whom — every 6 months"},
+    {t:"I do a full credential rotation review annually rather than only after a breach alert"},
+  ]},
+];
+
+let state = {}; // "CODE-idx" -> bool
+DOMAINS.forEach(d => d.items.forEach((it,i) => state[`${d.code}-${i}`] = false));
+
+const domainsEl = document.getElementById("domains");
+let totalItems = 0;
+DOMAINS.forEach(d => totalItems += d.items.length);
+document.getElementById("itemCount").textContent = totalItems;
+
+DOMAINS.forEach(d => {
+  const block = document.createElement("div");
+  block.className = "domain-block";
+  block.innerHTML = `
+    <div class="domain-head">
+      <div class="domain-head-left">
+        <span class="domain-code">${d.code}</span>
+        <span class="domain-name">${d.name}</span>
+      </div>
+      <span class="domain-pct" id="pct-${d.code}">0%</span>
+    </div>
+    <div class="items" id="items-${d.code}"></div>
+  `;
+  domainsEl.appendChild(block);
+  const itemsEl = block.querySelector(`#items-${d.code}`);
+  d.items.forEach((it, i) => {
+    const key = `${d.code}-${i}`;
+    const row = document.createElement("label");
+    row.className = "item";
+    row.id = `row-${key}`;
+    row.innerHTML = `
+      <input type="checkbox" id="cb-${key}">
+      <div class="item-text">
+        <span class="item-label">${it.t}</span>${it.crit ? '<span class="item-crit">Critical</span>' : ''}
+      </div>
+    `;
+    itemsEl.appendChild(row);
+    const cb = row.querySelector("input");
+    cb.addEventListener("change", () => {
+      state[key] = cb.checked;
+      row.classList.toggle("checked", cb.checked);
+      render();
+    });
+  });
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  Object.keys(state).forEach(k => state[k] = false);
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => { cb.checked = false; cb.closest('.item').classList.remove('checked'); });
+  render();
+});
+
+function render(){
+  let totalChecked = 0, critGaps = 0;
+  const domainPct = {};
+  const gapItems = [];
+
+  DOMAINS.forEach(d => {
+    let checked = 0;
+    d.items.forEach((it, i) => {
+      const key = `${d.code}-${i}`;
+      if(state[key]){ checked++; totalChecked++; }
+      else if(it.crit){
+        critGaps++;
+        gapItems.push({crit:true, domain:d.code, text:it.t});
+      } else {
+        gapItems.push({crit:false, domain:d.code, text:it.t});
+      }
+    });
+    const pct = Math.round((checked/d.items.length)*100);
+    domainPct[d.code] = pct;
+    document.getElementById(`pct-${d.code}`).textContent = `${pct}%`;
+    const pctEl = document.getElementById(`pct-${d.code}`);
+    pctEl.style.color = pct === 100 ? "var(--teal)" : pct >= 50 ? "var(--amber)" : "var(--red)";
+  });
+
+  document.getElementById("mChecked").textContent = `${totalChecked}/${totalItems}`;
+  document.getElementById("mCritGap").textContent = critGaps;
+  document.getElementById("scoreNum").textContent = `${Math.round((totalChecked/totalItems)*100)}%`;
+
+  let weakest = DOMAINS[0].code, weakestPct = 101;
+  DOMAINS.forEach(d => { if(domainPct[d.code] < weakestPct){ weakestPct = domainPct[d.code]; weakest = d.code; } });
+  document.getElementById("mWeakest").textContent = `${weakest} (${weakestPct}%)`;
+
+  gapItems.sort((a,b) => (b.crit - a.crit));
+  const gapListEl = document.getElementById("gapList");
+  gapListEl.innerHTML = "";
+  if(gapItems.length === 0){
+    gapListEl.innerHTML = `<div class="empty-gaps">✓ Every control checked. Full behavioral coverage.</div>`;
+  } else {
+    gapItems.slice(0,8).forEach(g => {
+      const div = document.createElement("div");
+      div.className = "gap-item" + (g.crit ? "" : " amber");
+      div.innerHTML = `<span class="dot"></span><span><b>${g.domain}:</b> ${g.text}</span>`;
+      gapListEl.appendChild(div);
+    });
+  }
+
+  drawRadar(domainPct);
+}
+
+function drawRadar(domainPct){
+  const svg = document.getElementById("radar");
+  svg.innerHTML = "";
+  const cx = 140, cy = 140, maxR = 105;
+  const n = DOMAINS.length;
+  const ns = "http://www.w3.org/2000/svg";
+  function pt(i, r){
+    const angle = (Math.PI * 2 * i / n) - Math.PI/2;
+    return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+  }
+
+  [1,2,3].forEach(l => {
+    const r = (maxR/3)*l;
+    let points = [];
+    for(let i=0;i<n;i++){ points.push(pt(i,r).join(",")); }
+    const poly = document.createElementNS(ns,"polygon");
+    poly.setAttribute("points", points.join(" "));
+    poly.setAttribute("fill","none");
+    poly.setAttribute("stroke", l===3 ? "#2b3542" : "#20293380");
+    poly.setAttribute("stroke-width","1");
+    svg.appendChild(poly);
+  });
+  for(let i=0;i<n;i++){
+    const [x,y] = pt(i,maxR);
+    const line = document.createElementNS(ns,"line");
+    line.setAttribute("x1",cx); line.setAttribute("y1",cy);
+    line.setAttribute("x2",x); line.setAttribute("y2",y);
+    line.setAttribute("stroke","#20293380"); line.setAttribute("stroke-width","1");
+    svg.appendChild(line);
+  }
+
+  let cpoints = [];
+  DOMAINS.forEach((d,i) => {
+    const pct = domainPct[d.code] || 0;
+    const r = (maxR) * (pct/100);
+    cpoints.push(pt(i,r));
+  });
+  const cpoly = document.createElementNS(ns,"polygon");
+  cpoly.setAttribute("points", cpoints.map(p=>p.join(",")).join(" "));
+  cpoly.setAttribute("fill","#e8a23d2e");
+  cpoly.setAttribute("stroke","#e8a23d");
+  cpoly.setAttribute("stroke-width","2");
+  cpoly.setAttribute("stroke-linejoin","round");
+  svg.appendChild(cpoly);
+
+  cpoints.forEach(([x,y]) => {
+    const c = document.createElementNS(ns,"circle");
+    c.setAttribute("cx",x); c.setAttribute("cy",y); c.setAttribute("r","2.5");
+    c.setAttribute("fill","#e8a23d");
+    svg.appendChild(c);
+  });
+
+  DOMAINS.forEach((d,i) => {
+    const [x,y] = pt(i, maxR + 16);
+    const t = document.createElementNS(ns,"text");
+    t.setAttribute("x",x); t.setAttribute("y",y);
+    t.setAttribute("fill","#5e6b7c");
+    t.setAttribute("font-size","9.5");
+    t.setAttribute("font-family","IBM Plex Mono, monospace");
+    t.setAttribute("text-anchor","middle");
+    t.setAttribute("dominant-baseline","middle");
+    t.textContent = d.code;
+    svg.appendChild(t);
+  });
+}
+
+document.getElementById("reportBtn").addEventListener("click", generateReport);
+
+function generateReport(){
+  const now = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+  let totalChecked = 0, critGaps = 0;
+  let lines = [];
+  lines.push("BEHAVIORAL & OPSEC AUDIT — RECOMMENDATIONS REPORT");
+  lines.push(`Generated ${now}`);
+  lines.push("=".repeat(60));
+  lines.push("");
+
+  DOMAINS.forEach(d => {
+    let checked = 0;
+    lines.push(`[${d.code}] ${d.name}`);
+    d.items.forEach((it, i) => {
+      const key = `${d.code}-${i}`;
+      const isChecked = state[key];
+      if(isChecked){ checked++; totalChecked++; }
+      else if(it.crit){ critGaps++; }
+      const mark = isChecked ? "[x]" : (it.crit ? "[ ] (CRITICAL)" : "[ ]");
+      lines.push(`  ${mark} ${it.t}`);
+    });
+    const pct = Math.round((checked/d.items.length)*100);
+    lines.push(`  -> Domain completeness: ${pct}%`);
+    lines.push("");
+  });
+
+  lines.push("-".repeat(60));
+  lines.push("SUMMARY");
+  lines.push(`  Controls in place:       ${totalChecked}/${totalItems}`);
+  lines.push(`  Critical gaps unchecked: ${critGaps}`);
+  lines.push(`  Overall readiness:       ${Math.round((totalChecked/totalItems)*100)}%`);
+  lines.push("");
+  lines.push("  Unchecked critical items are the highest-leverage next actions —");
+  lines.push("  address those before lower-weight items, regardless of domain.");
+  lines.push("");
+  lines.push("-".repeat(60));
+  lines.push("SOURCES");
+  lines.push("  Methodology drawn from Privacy Guides (privacyguides.org),");
+  lines.push("  The New Oil (thenewoil.org), IntelTechniques / Bazzell");
+  lines.push("  (inteltechniques.com), Techlore, and EFF Surveillance Self-Defense.");
+  lines.push("  Full bibliography, best-practice detail per domain, and further-");
+  lines.push("  reading recommendations: see recommendations-report.md.");
+
+  const blob = new Blob([lines.join("\n")], {type:"text/plain"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `opsec-audit-report-${Date.now()}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+render();
+</script>
+</body>
+</html>
