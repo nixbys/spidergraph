@@ -40,7 +40,9 @@
     color:var(--text); font-family:'IBM Plex Sans', sans-serif; min-height:100vh; padding:32px 20px 100px;
   }
   .wrap{max-width:1000px; margin:0 auto;}
-  .topnav{display:flex; align-items:center; gap:4px; flex-wrap:wrap; margin-bottom:56px;}
+  .topnav{position:sticky; top:0; z-index:100; margin:-32px -20px 56px; padding:14px 20px;
+    background:var(--bg); border-bottom:1px solid var(--border);}
+  .topnav-inner{max-width:1000px; margin:0 auto; display:flex; align-items:center; gap:4px; flex-wrap:wrap;}
   .topnav a{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em; color:var(--muted);
     text-decoration:none; padding:8px 12px; border-radius:7px; border:1px solid transparent; transition:all .15s ease;}
   .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
@@ -99,8 +101,8 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-  <nav class="topnav">
+<nav class="topnav">
+  <div class="topnav-inner">
     <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
       <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
       <g stroke="#2b3542" stroke-width="2">
@@ -117,7 +119,9 @@
     <a href="privacy-stack-builder.html">Stack Builder</a><span class="sep">/</span>
     <a href="opsec-field-manual.html">OPSEC Field Manual</a><span class="sep">/</span>
     <a href="report.html">Recommendations Report</a>
-  </nav>
+  </div>
+</nav>
+<div class="wrap">
 
   <div class="hero">
     <div class="eyebrow">Spidergraph · Personal security program</div>
