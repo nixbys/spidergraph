@@ -183,6 +183,8 @@
     font-size:12.5px; color:var(--muted2); line-height:1.6;
   }
   footer b{color:var(--muted);}
+  footer a{color:var(--teal); text-decoration:none; border-bottom:1px solid #3ddc9755;}
+  footer a:hover{border-bottom-color:var(--teal);}
 
   .brand{display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:14px; padding-right:14px; border-right:1px solid var(--border);}
   .brand svg{display:block;}
@@ -283,6 +285,8 @@
 
   <footer>
     <b>Not in this picker:</b> social engineering discipline, physical security habits, and legal/documentation steps aren't product slots — they're behavior, not purchases. See the companion <b>personal-security-playbook.md</b> for those domains and the full incident-response runbooks. Costs shown are rough annual estimates for the paid tier of each option and may not reflect current pricing — verify at checkout.
+    <br><br>
+    <b>On the Linux/GrapheneOS recommendations:</b> Privacy Guides and Techlore rate Linux (desktop) and GrapheneOS (Android) as the stronger privacy default because mainstream proprietary OSes ship with telemetry that's genuinely hard to fully remove — see Privacy Guides' <a href="https://www.privacyguides.org/en/os/linux-overview/" target="_blank" rel="noopener">Linux Overview</a> and <a href="https://www.privacyguides.org/en/os/windows/" target="_blank" rel="noopener">Windows Overview</a>. Neither source treats staying on Windows, macOS, or iOS as a mistake — see Techlore's <a href="https://techlore.tech/the-real-privacy-enemy-is-ourselves/" target="_blank" rel="noopener">"The Real Privacy Enemy is Ourselves"</a> on shaming beginners and people who make informed, practical platform choices. Every platform above gets a real hardening ceiling either way.
   </footer>
 
 </div>
@@ -323,21 +327,21 @@ const DATA = [
           {id:"patched", label:"Fully patched, local account, device encryption/BitLocker verified", tier:1, cost:0},
           {id:"grouppolicy", label:"Windows Pro + Group Policy privacy hardening (Recall/Copilot telemetry off)", tier:2, cost:0},
           {id:"sandboxed", label:"Windows Pro/Education hardened + Sandbox or Hyper-V VM isolation", tier:3, cost:0},
-        ], rec:"Windows has no Qubes-equivalent compartmentalization — Sandbox/Hyper-V VM isolation is the realistic ceiling. Avoid modified ISOs like Tiny11 or Windows AME: they fall behind on security updates and AV definitions."},
+        ], rec:"Privacy Guides/Techlore rate Linux as the stronger privacy default (less baked-in telemetry) — but staying on Windows for compatibility or comfort isn't a failure. Sandbox/Hyper-V VM isolation is the realistic ceiling here since Windows has no Qubes-equivalent compartmentalization. Avoid modified ISOs like Tiny11 or Windows AME: they fall behind on security updates and AV definitions."},
       macos:{
         options:[
           {id:"none", label:"macOS default settings, iCloud account", tier:0, cost:0},
           {id:"patched", label:"Fully patched, FileVault enabled, firewall on", tier:1, cost:0},
           {id:"lockdown", label:"Same + Lockdown Mode, Advanced Data Protection, Standard (non-admin) account", tier:2, cost:0},
           {id:"apple-silicon", label:"Apple Silicon (M2+) + Lockdown Mode standing default, firewall blocks all incoming", tier:3, cost:0},
-        ], rec:"FileVault + Lockdown Mode cover most of the realistic gain. No third-party antivirus needed — XProtect plus Apple Silicon's Secure Enclave is the hardware ceiling."},
+        ], rec:"Privacy Guides/Techlore rate Linux as the stronger privacy default — but neither treats staying in the Apple ecosystem as a mistake. FileVault + Lockdown Mode cover most of the realistic gain here; no third-party antivirus needed, XProtect plus Apple Silicon's Secure Enclave is the hardware ceiling."},
       linux:{
         options:[
           {id:"none", label:"Mainstream OS, default settings", tier:0, cost:0},
           {id:"patched", label:"Mainstream distro, fully patched + FDE verified", tier:1, cost:0},
           {id:"atomic", label:"Fedora Atomic (Silverblue/Kinoite)", tier:2, cost:0},
           {id:"hardened", label:"Secureblue or Qubes OS", tier:3, cost:0},
-        ], rec:"Immutable/atomic distro limits persistence of malware and config drift."},
+        ], rec:"The Privacy Guides/Techlore-preferred desktop default — avoids the telemetry baked into mainstream proprietary OSes. Immutable/atomic distro further limits persistence of malware and config drift."},
     }},
 
   {domain:"Endpoint", code:"SYS-02", name:"Mobile OS Hardening", platformAxis:"mobile",
@@ -348,14 +352,14 @@ const DATA = [
           {id:"hardened-stock", label:"Stock iOS, App Tracking Transparency off, ad ID reset", tier:1, cost:0},
           {id:"disciplined", label:"Same + quarterly privacy/permission report audits", tier:2, cost:0},
           {id:"lockdown", label:"Lockdown Mode enabled as standing default", tier:3, cost:0},
-        ], rec:"Lockdown Mode is the realistic ceiling on iOS — meaningfully shrinks attack surface at the cost of some convenience features."},
+        ], rec:"GrapheneOS on Android is Privacy Guides' preferred mobile pick, but staying on iOS is a legitimate, common choice, not a compromise to feel bad about. Lockdown Mode is the realistic ceiling here — meaningfully shrinks attack surface at the cost of some convenience features."},
       android:{
         options:[
           {id:"none", label:"Stock Android, default settings", tier:0, cost:0},
           {id:"hardened-stock", label:"Stock Android, ad ID reset, Play Protect on, hardened settings", tier:1, cost:0},
           {id:"disciplined", label:"Same + quarterly permission audits, sensitive apps in a separate profile", tier:2, cost:0},
           {id:"graphene", label:"GrapheneOS on a Pixel — full de-Googled hardened AOSP", tier:3, cost:0},
-        ], rec:"GrapheneOS on Pixel hardware is the ceiling for Android — only Pixel devices support it, due to firmware/bootloader requirements."},
+        ], rec:"GrapheneOS on Pixel hardware is the Privacy Guides-preferred mobile ceiling — only Pixel devices support it, due to firmware/bootloader requirements."},
     }},
 
   {domain:"Network", code:"NET-01", name:"VPN",
