@@ -88,7 +88,11 @@
   .reset-btn:focus-visible, #reportBtn:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
 
   .topnav{
-    max-width:1180px; margin:0 auto 28px; display:flex; align-items:center; gap:4px;
+    position:sticky; top:0; z-index:100; margin:-32px -20px 28px; padding:14px 20px;
+    background:var(--bg); border-bottom:1px solid var(--border);
+  }
+  .topnav-inner{
+    max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:4px;
     flex-wrap:wrap;
   }
   .topnav a{
@@ -105,8 +109,18 @@
 
   .domain-block{
     background:var(--surface); border:1px solid var(--border); border-radius:14px;
-    margin-bottom:16px; overflow:hidden;
+    margin-bottom:16px; overflow:hidden; scroll-margin-top:80px;
   }
+
+  .domains-toolbar{display:flex; justify-content:flex-end; margin-bottom:10px;}
+  .section-jump{
+    background:var(--surface2); color:var(--text); border:1px solid var(--border);
+    border-radius:7px; padding:7px 30px 7px 12px; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+    cursor:pointer; appearance:none; -webkit-appearance:none; max-width:220px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238695a7'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center;
+  }
+  .section-jump:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
   .domain-head{
     display:flex; justify-content:space-between; align-items:center;
     padding:16px 18px; border-bottom:1px solid var(--border-soft);
@@ -145,7 +159,19 @@
     padding:2px 6px; border-radius:5px; margin-left:8px; white-space:nowrap;
   }
 
-  .sidebar{position:sticky; top:24px; align-self:start; display:flex; flex-direction:column; gap:16px;}
+  .sidebar{position:sticky; top:80px; align-self:start; display:flex; flex-direction:column; gap:16px;}
+
+  .scroll-top-btn{
+    position:fixed; bottom:24px; right:24px; z-index:90; width:44px; height:44px; border-radius:50%;
+    background:var(--surface); border:1px solid var(--border); color:var(--amber); font-size:18px;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden; transform:translateY(8px);
+    transition:opacity .2s ease, transform .2s ease, visibility .2s; appearance:none; -webkit-appearance:none;
+    box-shadow:0 4px 14px rgba(0,0,0,.35);
+  }
+  .scroll-top-btn.visible{opacity:1; visibility:visible; transform:translateY(0);}
+  .scroll-top-btn:hover{border-color:#374252; color:var(--text);}
+  .scroll-top-btn:focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
   .card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px;}
   .card-title{
     font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
@@ -183,7 +209,8 @@
 </head>
 <body>
 <nav class="topnav">
-  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
+  <div class="topnav-inner">
+    <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
       <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
       <g stroke="#2b3542" stroke-width="2">
         <line x1="60" y1="60" x2="60" y2="12"/><line x1="60" y1="60" x2="93.94" y2="26.06"/>
@@ -194,11 +221,12 @@
       <polygon points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
                fill="#3ddc97" fill-opacity="0.3" stroke="#3ddc97" stroke-width="4"/>
     </svg><span class="brand-word">SPIDER<span>GRAPH</span></span></a>
-  <a href="index.html">Home</a><span class="sep">/</span>
-  <a href="playbook.html">Playbook</a><span class="sep">/</span>
-  <a href="privacy-stack-builder.html">Stack Builder</a><span class="sep">/</span>
-  <a href="opsec-field-manual.html" class="current">OPSEC Field Manual</a><span class="sep">/</span>
-  <a href="report.html">Recommendations Report</a>
+    <a href="index.html">Home</a><span class="sep">/</span>
+    <a href="playbook.html">Playbook</a><span class="sep">/</span>
+    <a href="privacy-stack-builder.html">Stack Builder</a><span class="sep">/</span>
+    <a href="opsec-field-manual.html" class="current">OPSEC Field Manual</a><span class="sep">/</span>
+    <a href="report.html">Recommendations Report</a>
+  </div>
 </nav>
 <div class="wrap">
 
@@ -210,6 +238,12 @@
     </div>
     <button type="button" class="reset-btn" id="resetBtn">Reset audit</button>
   </header>
+
+  <div class="domains-toolbar">
+    <select id="sectionJump" class="section-jump" aria-label="Jump to domain">
+      <option value="">Jump to domain…</option>
+    </select>
+  </div>
 
   <div class="layout">
     <div id="domains"></div>
@@ -250,6 +284,8 @@
   </footer>
 
 </div>
+
+<button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">↑</button>
 
 <script>
 const DOMAINS = [
@@ -309,7 +345,12 @@ const DOMAINS = [
 let state = {}; // "CODE-idx" -> bool
 DOMAINS.forEach(d => d.items.forEach((it,i) => state[`${d.code}-${i}`] = false));
 
+function slugify(text){
+  return text.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 const domainsEl = document.getElementById("domains");
+const jumpSel = document.getElementById("sectionJump");
 let totalItems = 0;
 DOMAINS.forEach(d => totalItems += d.items.length);
 document.getElementById("itemCount").textContent = totalItems;
@@ -317,6 +358,7 @@ document.getElementById("itemCount").textContent = totalItems;
 DOMAINS.forEach(d => {
   const block = document.createElement("div");
   block.className = "domain-block";
+  block.id = "domain-" + slugify(d.name);
   block.innerHTML = `
     <div class="domain-head">
       <div class="domain-head-left">
@@ -328,6 +370,11 @@ DOMAINS.forEach(d => {
     <div class="items" id="items-${d.code}"></div>
   `;
   domainsEl.appendChild(block);
+
+  const jumpOpt = document.createElement("option");
+  jumpOpt.value = "#" + block.id;
+  jumpOpt.textContent = d.name;
+  jumpSel.appendChild(jumpOpt);
   const itemsEl = block.querySelector(`#items-${d.code}`);
   d.items.forEach((it, i) => {
     const key = `${d.code}-${i}`;
@@ -349,6 +396,19 @@ DOMAINS.forEach(d => {
     });
   });
 });
+
+jumpSel.addEventListener("change", () => {
+  if(!jumpSel.value) return;
+  const target = document.querySelector(jumpSel.value);
+  if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+  jumpSel.value = "";
+});
+
+const scrollBtn = document.getElementById("scrollTopBtn");
+window.addEventListener("scroll", () => {
+  scrollBtn.classList.toggle("visible", window.scrollY > 400);
+}, {passive:true});
+scrollBtn.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
 
 document.getElementById("resetBtn").addEventListener("click", () => {
   Object.keys(state).forEach(k => state[k] = false);
