@@ -106,7 +106,7 @@ Privacy Guides and Techlore both point to Linux (desktop) and GrapheneOS (Androi
 
 | | **Budget** | **Mid** | **No-Limit** |
 |---|---|---|---|
-| Cloud storage | Proton Drive free (5GB) or Filen free tier | Proton Drive (bundled) for sensitive/small data + Filen (~$90/yr for 2TB) for bulk | Same, plus a self-hosted Nextcloud instance for full data ownership, encrypted offsite via Backblaze B2/Storj |
+| Cloud storage | Proton Drive free (5GB) or Filen free tier | Proton Drive (bundled) for sensitive/small data + Filen (~$90/yr for 2TB) for bulk<span class="verified-tag">✓ verified 2026-07-25</span><span class="legacy-note"><b>Legacy:</b> previously listed at ~$115/yr; corrected to ~$90/yr (Filen's actual current Pro III annual price) on 2026-07-25.</span> | Same, plus a self-hosted Nextcloud instance for full data ownership, encrypted offsite via Backblaze B2/Storj |
 | Client-side encryption | Cryptomator desktop (free) for anything going to a non-zero-knowledge provider | Same + paid mobile app for read/write on the go (~$30 one-time) | Same + VeraCrypt containers for local-only high-sensitivity archives |
 | Backup strategy | 3-2-1: local drive + one cloud copy | 3-2-1 fully implemented with Syncthing for the local-to-local leg | 3-2-1 + offline cold backup (encrypted drive in a fireproof safe or safe deposit box), quarterly restore-test verification |
 
