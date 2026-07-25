@@ -23,6 +23,8 @@ If you only take one thing from each category, take this. These are the picks th
 | Data broker removal | **EasyOptOuts** ($19.99/yr) | Outperformed DeleteMe on actual documented removal rate in Consumer Reports' 2024 test (65% vs. 27%) despite costing a fraction as much; layer in DeleteMe or Optery only if phone/fax-gated brokers matter to your exposure |
 | DNS/Router | **OpenWrt** + encrypted DNS (Mullvad DNS/Quad9) | Router firmware is the higher-leverage control; DNS provider alone is commonly oversold |
 | Backup | **3-2-1** (local + Syncthing local sync + encrypted offsite) | The structure matters more than any single product choice inside it |
+| Card masking | **Privacy.com** (free tier covers most usage) | 12 virtual cards/month, no monthly fee, funded from your bank account — a leaked merchant database exposes a disposable card number, not your real one |
+| Credit freeze | **Free freezes at all 3 bureaus** (Equifax, Experian, TransUnion) | Prevents new-account fraud outright rather than just alerting you after it happens — the highest-leverage financial control and it costs nothing |
 
 ---
 
