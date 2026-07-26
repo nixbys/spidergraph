@@ -15,7 +15,7 @@ coverage across every security domain as one shape.
 - `docs/personal-security-playbook.md` — source content for the playbook page
 - `docs/recommendations-report.md` — source content for the report page
 - `docs/logo-mark.svg`, `docs/logo-lockup.svg`, `docs/favicon.svg`, `docs/favicon-*.png`, `docs/favicon.ico` — brand assets
-- `docs/spidergraph-demo.gif` — animated coverage-shape asset for social/launch posts
+- `docs/spidergraph-demo.gif` — real Stack Builder screen recording (radar chart filling from a partial to a fully covered build) for social/launch posts
 - `LICENSE` — MIT
 
 ## Local preview
