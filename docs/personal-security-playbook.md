@@ -98,7 +98,7 @@ Privacy Guides and Techlore both point to Linux (desktop) and GrapheneOS (Androi
 |---|---|---|---|
 | Primary messaging | Signal (free) | Same, with disappearing messages + registration lock enforced org-wide (family/close contacts) | Same + SimpleX Chat for any relationship requiring zero persistent identifier |
 | High-risk/activist-grade needs | — | — | Briar (peer-to-peer, mesh/Tor-capable) |
-| Voice/video | Signal calls | Same | Same + burner VoIP numbers for anything requiring compartmentalization from a real number |
+| Voice/video | Signal calls | Same + a free Google Voice number for anything lower-trust than your real number (marketplace listings, one-off signups) | Same + a dedicated burner number (Burner or Hushed, ~$5/mo) for anything requiring full compartmentalization from a real number |
 
 ---
 
@@ -150,7 +150,7 @@ Two things follow from that:
 | Documented effectiveness | N/A — depends on your own follow-through | Varies significantly by vendor; Consumer Reports' 2024 test found EasyOptOuts (65% removal) meaningfully outperformed DeleteMe (27%) despite costing far less — see the Recommendations Report for the full comparison |
 | Best for | Anyone willing to spend ~1 hour/quarter | Anyone who has tried the manual route and knows they won't keep up with it, or who wants broader coverage than a free list provides |
 
-**Use the <a href="../broker-removal-tracker/">Broker Removal Tracker</a>** to work through opt-out requests for the ~13 highest-traffic broker sites directly, with progress tracked locally in your browser. It links out to each site's own official opt-out page — never a third party claiming to submit it "for" you for free, which is itself a common scam pattern in this space.
+**Use the <a href="../broker-removal-tracker/">Broker Removal Tracker</a>** to work through opt-out requests for the ~16 highest-traffic broker sites directly, with progress tracked locally in your browser. It links out to each site's own official opt-out page — never a third party claiming to submit it "for" you for free, which is itself a common scam pattern in this space.
 
 ---
 
@@ -255,6 +255,14 @@ Adapted from the Preparation → Detection → Containment → Eradication → R
 3. **Verify**: Call back using a number you already had on file, or the family passphrase system from Domain 9.
 4. **Recover**: If any information was given before you caught it, treat it like Runbook A/D depending on what was disclosed.
 5. **Lessons learned**: Share the specific pretext used with anyone else who might be targeted the same way (family, close contacts) — social engineers often run the same script against multiple people in a network.
+
+### Runbook G: Financial Fraud / Unauthorized Transaction
+
+1. **Detect**: An unrecognized charge, a bank/card fraud alert, a new account or credit inquiry you didn't initiate, or money missing that you didn't move.
+2. **Contain (first 15 minutes)**: Call the fraud line on the back of your card or your bank's official number — not a number from a text or email claiming to be them. Freeze the specific card/account if the institution supports instant in-app freezing; this is faster than waiting on hold and doesn't require explaining anything yet.
+3. **Eradicate**: Dispute the specific transaction(s) formally, in writing where the institution allows it, not just verbally. If a new account or credit line was opened in your name, that's identity theft, not just card fraud — file a report at [identitytheft.gov](https://www.identitytheft.gov) (the FTC's official recovery process) in addition to the bank dispute.
+4. **Recover**: If a credit freeze wasn't already in place at all three bureaus (Domain 7/11), put one on now to block further new-account fraud while the dispute is investigated. Rotate the password on the affected account and any account that shares a password with it.
+5. **Lessons learned**: Trace how the exposure likely happened — card skimmed, merchant breach, phished, or a data-broker-listed detail used for account takeover — and close that specific gap. This is exactly why the incident-contact list from the OPSEC Field Manual's Legal & Documentation domain (bank fraud line, carrier fraud line, non-emergency police line, written down *before* you need it) is worth having ready rather than searched for mid-incident.
 
 ---
 

@@ -3,27 +3,65 @@
 **Live site: https://nixbys.github.io/spidergraph/**
 
 A self-contained, client-side privacy and security program: a tiered reference playbook,
-two interactive audit tools, and a live coverage visualization — no backend, no accounts,
-no tracking. Named after its own signature visual: a radar chart that plots your real
-coverage across every security domain as one shape.
+three interactive audit tools, a generated-report mechanism, and a live coverage
+visualization — no backend, no accounts, no tracking. Named after its own signature
+visual: a radar chart that plots your real coverage across every security domain as one
+shape.
+
+## What's on the site
+
+| Page | URL | What it is |
+|---|---|---|
+| Home | `/` | Hub/landing page linking everything below |
+| Personal Security Playbook | `/playbook/` | Reference doc: threat modeling, 12 tiered control domains (Budget → Mid → No-Limit), 7 incident-response runbooks, and a maintenance-cadence calendar |
+| Stack Builder | `/privacy-stack-builder/` | Interactive tool — pick a target tier, select what you actually run across 15 product/tool slots, see live gap analysis, cost totals, and a radar chart. Modeled on a PC-part-picker build sheet |
+| OPSEC Field Manual | `/opsec-field-manual/` | Interactive tool — 44 behavioral controls across 6 domains (social engineering, physical security, legal documentation, operational discipline, incident readiness, maintenance cadence). Habits, not purchases |
+| Broker Removal Tracker | `/broker-removal-tracker/` | Interactive tool — self-audit checklist across the 16 highest-traffic people-search/background-check sites, with a direct link to each site's own official opt-out page and progress tracked locally |
+| Recommendations Report | `/report/` | Generated capstone doc — top pick per category, best practices to close any gap to 100%, and full source documentation. Both audit tools can also export a personalized version of this same report reflecting your live selections |
+
+The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC
+Field Manual audit your actual setup against it; the Broker Removal Tracker is narrower by
+design — it only tracks opt-out progress on real broker sites, nothing about anyone else.
+Nothing entered in any tool ever leaves your browser.
+
+**Deliberately out of scope, by design**: this project only ever helps a user audit and
+reduce *their own* exposure. It does not include, and should not grow, any feature that
+looks up or aggregates personal data about other people — that's the category of site the
+Broker Removal Tracker exists to help users escape, not emulate.
 
 ## Structure
 
-- `docs/index.html` — hub / landing page
-- `docs/playbook/index.html` — renders `personal-security-playbook.md`, served at `/playbook/`
-- `docs/report/index.html` — renders `recommendations-report.md`, served at `/report/`
-- `docs/privacy-stack-builder/index.html` — interactive product/tool picker with live gap analysis, served at `/privacy-stack-builder/`
-- `docs/opsec-field-manual/index.html` — interactive behavioral/OPSEC self-audit checklist, served at `/opsec-field-manual/`
-- `docs/personal-security-playbook.md` — source content for the playbook page
-- `docs/recommendations-report.md` — source content for the report page
-- `docs/logo-mark.svg`, `docs/logo-lockup.svg`, `docs/favicon.svg`, `docs/favicon-*.png`, `docs/favicon.ico` — brand assets
-- `docs/spidergraph-demo.gif` — real Stack Builder screen recording (radar chart filling from a partial to a fully covered build) for social/launch posts
-- `LICENSE` — MIT
+```
+docs/
+├── index.html                                 # hub / landing page, served at /
+├── playbook/index.html                        # renders personal-security-playbook.md, served at /playbook/
+├── report/index.html                          # renders recommendations-report.md, served at /report/
+├── privacy-stack-builder/index.html            # interactive product/tool picker + radar chart, served at /privacy-stack-builder/
+├── opsec-field-manual/index.html               # interactive behavioral/OPSEC self-audit + radar chart, served at /opsec-field-manual/
+├── broker-removal-tracker/index.html           # interactive data-broker opt-out checklist (no radar — flat list, not domain-scored), served at /broker-removal-tracker/
+├── personal-security-playbook.md               # source content for the playbook page
+├── recommendations-report.md                   # source content for the report page
+├── logo-mark.svg, logo-lockup.svg, favicon.svg, favicon-*.png, favicon.ico  # brand assets
+├── robots.txt, sitemap.xml
+└── spidergraph-demo.gif                        # real Stack Builder screen recording (radar chart filling from a partial to a fully covered build), for social/launch posts
+LICENSE                                         # MIT
+.github/workflows/deploy.yml                    # GitHub Pages deploy on push to main
+```
+
+Every page except the home page (`playbook/`, `report/`, `privacy-stack-builder/`,
+`opsec-field-manual/`, `broker-removal-tracker/`) is its own directory with an `index.html`,
+so the served URL never has a `.html` extension. This means each of those five files is one
+directory level deeper than `docs/index.html` — their asset links and inter-page nav links
+use `../` to reach files at the `docs/` root.
+
+The nav bar, favicon links, and design-token CSS block are duplicated across all six HTML
+files rather than shared via a build step — see the Astro note below.
 
 ## Local preview
 
-Because the doc pages fetch their markdown at runtime, opening the HTML files directly
-(`file://`) will not load the content — serve the `docs/` folder over local HTTP instead:
+Because the doc pages (`playbook/`, `report/`) fetch their markdown at runtime, opening the
+HTML files directly (`file://`) will not load the content — serve the `docs/` folder over
+local HTTP instead:
 
 ```bash
 cd docs && python3 -m http.server 8000
@@ -34,8 +72,8 @@ cd docs && python3 -m http.server 8000
 
 Deployed automatically via GitHub Actions to GitHub Pages (`.github/workflows/deploy.yml`)
 on every push to `main`, publishing the `docs/` folder directly — no build step. If this
-project ever grows past five pages, Astro is the planned upgrade path for shared
-nav/component reuse; not needed at the current size.
+project ever grows past six hand-duplicated page shells, Astro is the planned upgrade path
+for shared nav/component reuse; not needed at the current size.
 
 ## Brand
 
@@ -44,9 +82,14 @@ generically as a chart-type synonym (radar/spider charts) across various dashboa
 tools, and as an unrelated font marketplace, but not as a privacy/security product brand.
 The logo mark is an original geometric construction (not derived from any existing logo)
 built directly from the same radar-chart math the tools render live — see `logo-mark.svg`.
+Each interactive tool has its own accent color so a user can tell them apart at a glance:
+Stack Builder = teal, OPSEC Field Manual = amber, Broker Removal Tracker = red; the Playbook
+is blue and the Report is teal.
 
 ## Maintenance
 
 Tool and pricing recommendations in this project are time-sensitive. Re-verify against
 current sources (see the Recommendations Report's sources section) on a quarterly cadence
-rather than treating this as a one-time build.
+rather than treating this as a one-time build. A `verified:"YYYY-MM-DD"` date on a claim
+means a person or agent actually re-checked that specific figure on that date — never
+backfill one without doing the check.
