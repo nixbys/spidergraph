@@ -3,7 +3,7 @@
 **Live site: https://nixbys.github.io/spidergraph/**
 
 A self-contained, client-side privacy and security program: a tiered reference playbook,
-three interactive audit tools, a generated-report mechanism, and a live coverage
+four interactive audit tools, a generated-report mechanism, and a live coverage
 visualization — no backend, no accounts, no tracking. Named after its own signature
 visual: a radar chart that plots your real coverage across every security domain as one
 shape.
@@ -17,12 +17,14 @@ shape.
 | Stack Builder | `/privacy-stack-builder/` | Interactive tool — pick a target tier, select what you actually run across 15 product/tool slots, see live gap analysis, cost totals, and a radar chart. Modeled on a PC-part-picker build sheet |
 | OPSEC Field Manual | `/opsec-field-manual/` | Interactive tool — 44 behavioral controls across 6 domains (social engineering, physical security, legal documentation, operational discipline, incident readiness, maintenance cadence). Habits, not purchases |
 | Broker Removal Tracker | `/broker-removal-tracker/` | Interactive tool — self-audit checklist across the 16 highest-traffic people-search/background-check sites, with a direct link to each site's own official opt-out page and progress tracked locally |
+| Breach Check Tracker | `/breach-check-tracker/` | Interactive tool — add your own email addresses/aliases and track your own quarterly Have I Been Pwned check for each one; this page never performs a lookup itself, it only remembers what you've checked |
 | Recommendations Report | `/report/` | Generated capstone doc — top pick per category, best practices to close any gap to 100%, and full source documentation. Both audit tools can also export a personalized version of this same report reflecting your live selections |
 
 The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC
-Field Manual audit your actual setup against it; the Broker Removal Tracker is narrower by
-design — it only tracks opt-out progress on real broker sites, nothing about anyone else.
-Nothing entered in any tool ever leaves your browser.
+Field Manual audit your actual setup against it; the Broker Removal Tracker and Breach Check
+Tracker are narrower by design — flat checklists tracking your own progress against real,
+external sites, not domain-scored against the Playbook, and neither one aggregates data about
+anyone else. Nothing entered in any tool ever leaves your browser.
 
 **Deliberately out of scope, by design**: this project only ever helps a user audit and
 reduce *their own* exposure. It does not include, and should not grow, any feature that
@@ -39,6 +41,8 @@ docs/
 ├── privacy-stack-builder/index.html            # interactive product/tool picker + radar chart, served at /privacy-stack-builder/
 ├── opsec-field-manual/index.html               # interactive behavioral/OPSEC self-audit + radar chart, served at /opsec-field-manual/
 ├── broker-removal-tracker/index.html           # interactive data-broker opt-out checklist (no radar — flat list, not domain-scored), served at /broker-removal-tracker/
+├── breach-check-tracker/index.html             # interactive HIBP self-check tracker (no radar, user-managed list), served at /breach-check-tracker/
+├── shared/                                     # tokens.css, nav.css, nav.js, persist.js, doc-page.css, doc-page.js — linked by all seven pages, no build step
 ├── personal-security-playbook.md               # source content for the playbook page
 ├── recommendations-report.md                   # source content for the report page
 ├── logo-mark.svg, logo-lockup.svg, favicon.svg, favicon-*.png, favicon.ico  # brand assets
@@ -49,13 +53,22 @@ LICENSE                                         # MIT
 ```
 
 Every page except the home page (`playbook/`, `report/`, `privacy-stack-builder/`,
-`opsec-field-manual/`, `broker-removal-tracker/`) is its own directory with an `index.html`,
-so the served URL never has a `.html` extension. This means each of those five files is one
-directory level deeper than `docs/index.html` — their asset links and inter-page nav links
-use `../` to reach files at the `docs/` root.
+`opsec-field-manual/`, `broker-removal-tracker/`, `breach-check-tracker/`) is its own directory
+with an `index.html`, so the served URL never has a `.html` extension. This means each of
+those six files is one directory level deeper than `docs/index.html` — their asset links and
+inter-page nav links use `../` to reach files at the `docs/` root.
 
-The nav bar, favicon links, and design-token CSS block are duplicated across all six HTML
-files rather than shared via a build step — see the Astro note below.
+The design tokens, nav bar CSS/JS, the localStorage helper, and (for the two markdown-rendering
+pages) the doc-shell CSS/JS live in `docs/shared/` and are linked by all seven HTML files via
+plain `<link>`/`<script src>` — still zero build step, just no longer copy-pasted. What's left
+duplicated per-page: the inline brand SVG markup and the favicon `<link>` lines, since their
+paths differ by directory depth and there's no include mechanism to inject markup without a
+build step — see the Astro note below.
+
+All four interactive tools (Stack Builder, OPSEC Field Manual, Broker Removal Tracker, Breach
+Check Tracker) save your selections to `localStorage` and reload them on your next visit, with
+a `Reset` button in each to clear it — nothing here means a backend or account, `localStorage`
+never leaves your browser.
 
 ## Local preview
 
@@ -72,8 +85,8 @@ cd docs && python3 -m http.server 8000
 
 Deployed automatically via GitHub Actions to GitHub Pages (`.github/workflows/deploy.yml`)
 on every push to `main`, publishing the `docs/` folder directly — no build step. If this
-project ever grows past six hand-duplicated page shells, Astro is the planned upgrade path
-for shared nav/component reuse; not needed at the current size.
+project ever grows past the current seven hand-duplicated page shells, Astro is the planned
+upgrade path for shared nav/component reuse; not needed at the current size.
 
 ## Brand
 
@@ -84,7 +97,8 @@ The logo mark is an original geometric construction (not derived from any existi
 built directly from the same radar-chart math the tools render live — see `logo-mark.svg`.
 Each interactive tool has its own accent color so a user can tell them apart at a glance:
 Stack Builder = teal, OPSEC Field Manual = amber, Broker Removal Tracker = red; the Playbook
-is blue and the Report is teal.
+is blue and the Report is teal. The Breach Check Tracker reuses the Playbook's blue (the
+palette only has four accents — Report already reuses Stack Builder's teal on the same basis).
 
 ## Maintenance
 

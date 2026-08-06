@@ -25,38 +25,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/tokens.css">
+<link rel="stylesheet" href="../shared/nav.css">
 <style>
-  :root{
-    --bg:#0f1419;
-    --surface:#171e27;
-    --surface2:#1f2732;
-    --surface3:#242e3a;
-    --border:#2b3542;
-    --border-soft:#20293380;
-    --text:#e6ecf3;
-    --muted:#8695a7;
-    --muted2:#8395ad;
-    --teal:#3ddc97;
-    --amber:#e8a23d;
-    --red:#e0596b;
-    --blue:#5b8def;
-    --teal-dim:#3ddc9722;
-    --amber-dim:#e8a23d22;
-    --red-dim:#e0596b22;
-    --blue-dim:#5b8def22;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:
-      radial-gradient(circle at 15% 0%, #16202c 0%, transparent 45%),
-      radial-gradient(circle at 100% 20%, #141b24 0%, transparent 40%),
-      var(--bg);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    min-height:100vh;
-    padding:32px 20px 80px;
-  }
+  /* Stack Builder-only overrides + layout. Shared tokens/nav/brand live in shared/. */
+  :root{ --accent:var(--teal); --accent-dim:var(--teal-dim); --accent-border:#3ddc9755; }
+  body{padding-bottom:80px;}
   .wrap{max-width:1180px;margin:0 auto;}
 
   /* header */
@@ -157,29 +131,14 @@
   }
   select:focus{outline:2px solid var(--blue); outline-offset:1px;}
 
-  .topnav{
-    position:sticky; top:0; z-index:100; margin:-32px -20px 28px; padding:14px 20px;
-    background:var(--bg); border-bottom:1px solid var(--border);
+  .reset-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted);
+    background:var(--surface); border:1px solid var(--border); border-radius:8px;
+    padding:9px 14px; cursor:pointer; letter-spacing:.03em; align-self:flex-start;
+    transition:all .15s ease; appearance:none; -webkit-appearance:none; margin:0;
   }
-  .topnav-inner{
-    max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:4px;
-    flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;
-  }
-  .topnav-inner::-webkit-scrollbar{display:none;}
-  .topnav a{
-    font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em;
-    color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:7px;
-    border:1px solid transparent; transition:all .15s ease;
-    white-space:nowrap; flex-shrink:0;
-  }
-  .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
-  .topnav a.current{color:var(--teal); background:var(--teal-dim); border-color:#3ddc9755;}
-  .topnav .sep{color:var(--border); margin:0 2px;}
-  .topnav::before,.topnav::after{content:"";position:absolute;top:0;bottom:0;width:32px;pointer-events:none;opacity:0;transition:opacity .15s ease;z-index:2;}
-  .topnav::before{left:0;background:linear-gradient(to right, var(--bg), transparent);}
-  .topnav::after{right:0;background:linear-gradient(to left, var(--bg), transparent);}
-  .topnav.can-scroll-left::before{opacity:1;}
-  .topnav.can-scroll-right::after{opacity:1;}
+  .reset-btn:hover{color:var(--text); border-color:#374252;}
+  .reset-btn:focus-visible{outline:2px solid var(--teal); outline-offset:1px;}
 
   .status{
     font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.03em;
@@ -233,11 +192,6 @@
   footer b{color:var(--muted);}
   footer a{color:var(--teal); text-decoration:none; border-bottom:1px solid #3ddc9755;}
   footer a:hover{border-bottom-color:var(--teal);}
-
-  .brand{display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:14px; padding-right:14px; border-right:1px solid var(--border); flex-shrink:0;}
-  .brand svg{display:block;}
-  .brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--text); letter-spacing:-0.2px;}
-  .brand-word span{color:var(--teal);}
 </style>
 </head>
 <body>
@@ -259,32 +213,17 @@
     <a href="./" class="current">Stack Builder</a><span class="sep">/</span>
     <a href="../opsec-field-manual/">OPSEC Field Manual</a><span class="sep">/</span>
     <a href="../broker-removal-tracker/">Broker Removal Tracker</a><span class="sep">/</span>
+    <a href="../breach-check-tracker/">Breach Check Tracker</a><span class="sep">/</span>
     <a href="../report/">Recommendations Report</a>
   </div>
 </nav>
-<script>
-(function(){
-  document.querySelectorAll('.topnav').forEach(function(nav){
-    var inner = nav.querySelector('.topnav-inner');
-    if(!inner) return;
-    function update(){
-      var overflowing = inner.scrollWidth > inner.clientWidth + 2;
-      var atStart = inner.scrollLeft <= 2;
-      var atEnd = inner.scrollLeft + inner.clientWidth >= inner.scrollWidth - 2;
-      nav.classList.toggle('can-scroll-left', overflowing && !atStart);
-      nav.classList.toggle('can-scroll-right', overflowing && !atEnd);
-    }
-    inner.addEventListener('scroll', update, {passive:true});
-    window.addEventListener('resize', update);
-    update();
-  });
-})();
-</script>
+<script src="../shared/nav.js"></script>
+<script src="../shared/persist.js"></script>
 <div class="wrap">
 
   <header>
     <div>
-      <div class="eyebrow">Configurator · 14 slots</div>
+      <div class="eyebrow">Configurator · 15 slots</div>
       <h1>Stack <span>Builder</span></h1>
       <div class="sub">Pick what you currently run in each slot. The build compares it against the recommended part for your target tier and flags gaps — same idea as a hardware parts list, applied to a security stack.</div>
     </div>
@@ -295,6 +234,7 @@
         <button type="button" class="tier-btn active" data-tier="2" aria-pressed="true">Mid</button>
         <button type="button" class="tier-btn" data-tier="3" aria-pressed="false">No-Limit</button>
       </div>
+      <button type="button" class="reset-btn" id="resetBtn">Reset build</button>
     </div>
   </header>
 
@@ -364,6 +304,8 @@
     <b>On the Linux/GrapheneOS recommendations:</b> Privacy Guides and Techlore rate Linux (desktop) and GrapheneOS (Android) as the stronger privacy default because mainstream proprietary OSes ship with telemetry that's genuinely hard to fully remove — see Privacy Guides' <a href="https://www.privacyguides.org/en/os/linux-overview/" target="_blank" rel="noopener">Linux Overview</a> and <a href="https://www.privacyguides.org/en/os/windows/" target="_blank" rel="noopener">Windows Overview</a>. Neither source treats staying on Windows, macOS, or iOS as a mistake — see Techlore's <a href="https://techlore.tech/the-real-privacy-enemy-is-ourselves/" target="_blank" rel="noopener">"The Real Privacy Enemy is Ourselves"</a> on shaming beginners and people who make informed, practical platform choices. Every platform above gets a real hardening ceiling either way.
     <br><br>
     <b>On the ✓ verified / Legacy tags:</b> this isn't a static list — slots get re-checked against current vendor pricing and source guidance on the project's quarterly cycle (see <b>SOURCES</b> in a generated report). A <span class="verified-tag" style="margin-left:0;">✓ verified</span> tag shows the date a slot's figures were last confirmed current; a slot with no tag hasn't been re-checked recently. When a figure changes, the old value isn't silently deleted — it's kept as a <b>Legacy</b> note directly under the current recommendation, so you can see what changed and when.
+    <br><br>
+    Your build stays in this browser only, in <code>localStorage</code> — nothing is sent anywhere, so it's still here next time you come back for the quarterly re-audit the Playbook recommends. <b>Reset build</b> clears it.
   </footer>
 
 </div>
@@ -548,17 +490,34 @@ function detectPlatform(){
   return {desktop, mobile};
 }
 
+const store = spidergraphStore("spidergraph-stack-builder-v1");
+const savedRaw = store.load();
+// Back-compat: pre-persist.js saves were {target, platformState, state} directly, not {data, lastUpdated}.
+const saved = savedRaw ? (savedRaw.data !== undefined ? savedRaw.data : savedRaw) : null;
+
 let platformState = {desktop:"windows", mobile:"android"};
 const detected = detectPlatform();
 if(detected.desktop) platformState.desktop = detected.desktop;
 if(detected.mobile) platformState.mobile = detected.mobile;
+if(saved && saved.platformState){
+  if(["windows","macos","linux"].includes(saved.platformState.desktop)) platformState.desktop = saved.platformState.desktop;
+  if(["ios","android"].includes(saved.platformState.mobile)) platformState.mobile = saved.platformState.mobile;
+}
 
 function currentOptions(d){ return d.platformAxis ? d.platforms[platformState[d.platformAxis]].options : d.options; }
 function currentRec(d){ return d.platformAxis ? d.platforms[platformState[d.platformAxis]].rec : d.rec; }
 
-let target = 2;
+let target = (saved && [1,2,3].includes(saved.target)) ? saved.target : 2;
 let state = {}; // id -> selected option id
-DATA.forEach(d => state[d.code] = currentOptions(d)[0].id);
+DATA.forEach(d => {
+  const fallback = currentOptions(d)[0].id;
+  const savedVal = saved && saved.state ? saved.state[d.code] : undefined;
+  state[d.code] = (savedVal && currentOptions(d).some(o => o.id === savedVal)) ? savedVal : fallback;
+});
+
+function persist(){
+  store.save({target, platformState, state});
+}
 
 function populateSelect(d){
   const sel = document.getElementById(`sel-${d.code}`);
@@ -611,12 +570,18 @@ DATA.forEach((d, idx) => {
   const sel = row.querySelector(`#sel-${d.code}`);
   sel.addEventListener("change", () => {
     state[d.code] = sel.value;
+    persist();
     render();
   });
 });
 
 document.getElementById("platformDesktop").value = platformState.desktop;
 document.getElementById("platformMobile").value = platformState.mobile;
+document.querySelectorAll("#tierBtns .tier-btn").forEach(b => {
+  const isActive = parseInt(b.dataset.tier, 10) === target;
+  b.classList.toggle("active", isActive);
+  b.setAttribute("aria-pressed", isActive ? "true" : "false");
+});
 
 jumpSel.addEventListener("change", () => {
   if(!jumpSel.value) return;
@@ -644,6 +609,7 @@ function onPlatformChange(axis, newValue){
     state[d.code] = matched.id;
     populateSelect(d);
   });
+  persist();
   render();
 }
 
@@ -656,8 +622,21 @@ document.querySelectorAll("#tierBtns .tier-btn").forEach(btn => {
     btn.classList.add("active");
     btn.setAttribute("aria-pressed", "true");
     target = parseInt(btn.dataset.tier, 10);
+    persist();
     render();
   });
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  target = 2;
+  DATA.forEach(d => { state[d.code] = currentOptions(d)[0].id; populateSelect(d); });
+  document.querySelectorAll("#tierBtns .tier-btn").forEach(b => {
+    const isActive = parseInt(b.dataset.tier, 10) === target;
+    b.classList.toggle("active", isActive);
+    b.setAttribute("aria-pressed", isActive ? "true" : "false");
+  });
+  store.clear();
+  render();
 });
 
 function getOption(d, id){ return currentOptions(d).find(o => o.id === id); }

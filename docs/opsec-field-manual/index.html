@@ -25,38 +25,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/tokens.css">
+<link rel="stylesheet" href="../shared/nav.css">
 <style>
-  :root{
-    --bg:#0f1419;
-    --surface:#171e27;
-    --surface2:#1f2732;
-    --surface3:#242e3a;
-    --border:#2b3542;
-    --border-soft:#20293380;
-    --text:#e6ecf3;
-    --muted:#8695a7;
-    --muted2:#8395ad;
-    --teal:#3ddc97;
-    --amber:#e8a23d;
-    --red:#e0596b;
-    --blue:#5b8def;
-    --teal-dim:#3ddc9722;
-    --amber-dim:#e8a23d22;
-    --red-dim:#e0596b22;
-    --blue-dim:#5b8def22;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:
-      radial-gradient(circle at 15% 0%, #16202c 0%, transparent 45%),
-      radial-gradient(circle at 100% 20%, #141b24 0%, transparent 40%),
-      var(--bg);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    min-height:100vh;
-    padding:32px 20px 80px;
-  }
+  /* OPSEC Field Manual-only overrides + layout. Shared tokens/nav/brand live in shared/. */
+  :root{ --accent:var(--amber); --accent-dim:var(--amber-dim); --accent-border:#e8a23d55; }
+  body{padding-bottom:80px;}
   .wrap{max-width:1180px;margin:0 auto;}
 
   header{
@@ -86,30 +60,6 @@
   }
   .reset-btn:hover{color:var(--text); border-color:#374252;}
   .reset-btn:focus-visible, #reportBtn:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
-
-  .topnav{
-    position:sticky; top:0; z-index:100; margin:-32px -20px 28px; padding:14px 20px;
-    background:var(--bg); border-bottom:1px solid var(--border);
-  }
-  .topnav-inner{
-    max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:4px;
-    flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;
-  }
-  .topnav-inner::-webkit-scrollbar{display:none;}
-  .topnav a{
-    font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em;
-    color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:7px;
-    border:1px solid transparent; transition:all .15s ease;
-    white-space:nowrap; flex-shrink:0;
-  }
-  .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
-  .topnav a.current{color:var(--amber); background:var(--amber-dim); border-color:#e8a23d55;}
-  .topnav .sep{color:var(--border); margin:0 2px;}
-  .topnav::before,.topnav::after{content:"";position:absolute;top:0;bottom:0;width:32px;pointer-events:none;opacity:0;transition:opacity .15s ease;z-index:2;}
-  .topnav::before{left:0;background:linear-gradient(to right, var(--bg), transparent);}
-  .topnav::after{right:0;background:linear-gradient(to left, var(--bg), transparent);}
-  .topnav.can-scroll-left::before{opacity:1;}
-  .topnav.can-scroll-right::after{opacity:1;}
 
   .layout{display:grid; grid-template-columns:1fr 340px; gap:28px;}
   @media (max-width:900px){.layout{grid-template-columns:1fr;} .sidebar{order:-1;}}
@@ -207,11 +157,6 @@
     font-size:12.5px; color:var(--muted2); line-height:1.6;
   }
   footer b{color:var(--muted);}
-
-  .brand{display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:14px; padding-right:14px; border-right:1px solid var(--border); flex-shrink:0;}
-  .brand svg{display:block;}
-  .brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--text); letter-spacing:-0.2px;}
-  .brand-word span{color:var(--teal);}
 </style>
 </head>
 <body>
@@ -233,27 +178,12 @@
     <a href="../privacy-stack-builder/">Stack Builder</a><span class="sep">/</span>
     <a href="./" class="current">OPSEC Field Manual</a><span class="sep">/</span>
     <a href="../broker-removal-tracker/">Broker Removal Tracker</a><span class="sep">/</span>
+    <a href="../breach-check-tracker/">Breach Check Tracker</a><span class="sep">/</span>
     <a href="../report/">Recommendations Report</a>
   </div>
 </nav>
-<script>
-(function(){
-  document.querySelectorAll('.topnav').forEach(function(nav){
-    var inner = nav.querySelector('.topnav-inner');
-    if(!inner) return;
-    function update(){
-      var overflowing = inner.scrollWidth > inner.clientWidth + 2;
-      var atStart = inner.scrollLeft <= 2;
-      var atEnd = inner.scrollLeft + inner.clientWidth >= inner.scrollWidth - 2;
-      nav.classList.toggle('can-scroll-left', overflowing && !atStart);
-      nav.classList.toggle('can-scroll-right', overflowing && !atEnd);
-    }
-    inner.addEventListener('scroll', update, {passive:true});
-    window.addEventListener('resize', update);
-    update();
-  });
-})();
-</script>
+<script src="../shared/nav.js"></script>
+<script src="../shared/persist.js"></script>
 <div class="wrap">
 
   <header>
@@ -306,7 +236,7 @@
   </div>
 
   <footer>
-    <b>Companion tool:</b> product/tool selections (password manager, VPN, OS, etc.) live in <b>privacy-stack-builder.html</b>. This manual covers what that picker deliberately left out — the discipline layer. The AUD domain's broker-recheck item points to the <b>Broker Removal Tracker</b> for the actual site-by-site checklist. Full write-ups and the incident-response runbooks these controls feed into are in <b>personal-security-playbook.md</b>. Your checked/unchecked state stays in this browser tab only — nothing here is sent anywhere or saved between sessions unless you keep the tab open.
+    <b>Companion tool:</b> product/tool selections (password manager, VPN, OS, etc.) live in the <b>Stack Builder</b>. This manual covers what that picker deliberately left out — the discipline layer. The AUD domain's broker-recheck item points to the <b>Broker Removal Tracker</b> for the actual site-by-site checklist. Full write-ups and the incident-response runbooks these controls feed into are in <b>personal-security-playbook.md</b>. Your checked/unchecked state stays in this browser only, in <code>localStorage</code> — nothing is sent anywhere, so it's still here next time you come back for the quarterly re-audit this manual's own AUD domain recommends. <b>Reset audit</b> clears it.
   </footer>
 
 </div>
@@ -373,8 +303,15 @@ const DOMAINS = [
   ]},
 ];
 
+const store = spidergraphStore("spidergraph-opsec-v1");
 let state = {}; // "CODE-idx" -> bool
 DOMAINS.forEach(d => d.items.forEach((it,i) => state[`${d.code}-${i}`] = false));
+const saved = store.load();
+if(saved){
+  // Back-compat: pre-persist.js saves were the flat map itself, not {data, lastUpdated}.
+  const savedMap = saved.data !== undefined ? saved.data : saved;
+  Object.keys(state).forEach(k => { if(k in savedMap) state[k] = !!savedMap[k]; });
+}
 
 function slugify(text){
   return text.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
@@ -410,10 +347,10 @@ DOMAINS.forEach(d => {
   d.items.forEach((it, i) => {
     const key = `${d.code}-${i}`;
     const row = document.createElement("label");
-    row.className = "item";
+    row.className = "item" + (state[key] ? " checked" : "");
     row.id = `row-${key}`;
     row.innerHTML = `
-      <input type="checkbox" id="cb-${key}">
+      <input type="checkbox" id="cb-${key}" ${state[key] ? "checked" : ""}>
       <div class="item-text">
         <span class="item-label">${it.t}</span>${it.crit ? '<span class="item-crit">Critical</span>' : ''}
       </div>
@@ -423,6 +360,7 @@ DOMAINS.forEach(d => {
     cb.addEventListener("change", () => {
       state[key] = cb.checked;
       row.classList.toggle("checked", cb.checked);
+      store.save(state);
       render();
     });
   });
@@ -443,6 +381,7 @@ scrollBtn.addEventListener("click", () => window.scrollTo({top:0, behavior:"smoo
 
 document.getElementById("resetBtn").addEventListener("click", () => {
   Object.keys(state).forEach(k => state[k] = false);
+  store.clear();
   document.querySelectorAll('input[type=checkbox]').forEach(cb => { cb.checked = false; cb.closest('.item').classList.remove('checked'); });
   render();
 });

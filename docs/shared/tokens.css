@@ -1,0 +1,16 @@
+/* Spidergraph design tokens — shared across every page.
+   Single source of truth for the palette documented in CLAUDE.md.
+   Edit here, not per-page — this file is linked by all six HTML shells. */
+:root{
+  --bg:#0f1419; --surface:#171e27; --surface2:#1f2732; --surface3:#242e3a;
+  --border:#2b3542; --border-soft:#20293380; --text:#e6ecf3; --muted:#8695a7; --muted2:#8395ad;
+  --teal:#3ddc97; --amber:#e8a23d; --red:#e0596b; --blue:#5b8def;
+  --teal-dim:#3ddc9722; --amber-dim:#e8a23d22; --red-dim:#e0596b22; --blue-dim:#5b8def22;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:radial-gradient(circle at 15% 0%, #16202c 0%, transparent 45%),
+    radial-gradient(circle at 100% 20%, #141b24 0%, transparent 40%), var(--bg);
+  color:var(--text); font-family:'IBM Plex Sans', sans-serif; min-height:100vh; padding:32px 20px 100px;
+}
