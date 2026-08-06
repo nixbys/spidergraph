@@ -105,6 +105,11 @@
   .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
   .topnav a.current{color:var(--amber); background:var(--amber-dim); border-color:#e8a23d55;}
   .topnav .sep{color:var(--border); margin:0 2px;}
+  .topnav::before,.topnav::after{content:"";position:absolute;top:0;bottom:0;width:32px;pointer-events:none;opacity:0;transition:opacity .15s ease;z-index:2;}
+  .topnav::before{left:0;background:linear-gradient(to right, var(--bg), transparent);}
+  .topnav::after{right:0;background:linear-gradient(to left, var(--bg), transparent);}
+  .topnav.can-scroll-left::before{opacity:1;}
+  .topnav.can-scroll-right::after{opacity:1;}
 
   .layout{display:grid; grid-template-columns:1fr 340px; gap:28px;}
   @media (max-width:900px){.layout{grid-template-columns:1fr;} .sidebar{order:-1;}}
@@ -227,9 +232,28 @@
     <a href="../playbook/">Playbook</a><span class="sep">/</span>
     <a href="../privacy-stack-builder/">Stack Builder</a><span class="sep">/</span>
     <a href="./" class="current">OPSEC Field Manual</a><span class="sep">/</span>
+    <a href="../broker-removal-tracker/">Broker Removal Tracker</a><span class="sep">/</span>
     <a href="../report/">Recommendations Report</a>
   </div>
 </nav>
+<script>
+(function(){
+  document.querySelectorAll('.topnav').forEach(function(nav){
+    var inner = nav.querySelector('.topnav-inner');
+    if(!inner) return;
+    function update(){
+      var overflowing = inner.scrollWidth > inner.clientWidth + 2;
+      var atStart = inner.scrollLeft <= 2;
+      var atEnd = inner.scrollLeft + inner.clientWidth >= inner.scrollWidth - 2;
+      nav.classList.toggle('can-scroll-left', overflowing && !atStart);
+      nav.classList.toggle('can-scroll-right', overflowing && !atEnd);
+    }
+    inner.addEventListener('scroll', update, {passive:true});
+    window.addEventListener('resize', update);
+    update();
+  });
+})();
+</script>
 <div class="wrap">
 
   <header>

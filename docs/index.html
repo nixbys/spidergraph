@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
 <title>Spidergraph — Personal Security Program</title>
-<meta name="description" content="A free, open-source privacy and security program — a tiered playbook, two interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
+<meta name="description" content="A free, open-source privacy and security program — a tiered playbook, three interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
 <meta name="theme-color" content="#0f1419">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Spidergraph — Personal Security Program">
-<meta property="og:description" content="A free, open-source privacy and security program — a tiered playbook, two interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
+<meta property="og:description" content="A free, open-source privacy and security program — a tiered playbook, three interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
 <meta property="og:url" content="https://nixbys.github.io/spidergraph/">
 <meta property="og:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spidergraph — Personal Security Program">
-<meta name="twitter:description" content="A free, open-source privacy and security program — a tiered playbook, two interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
+<meta name="twitter:description" content="A free, open-source privacy and security program — a tiered playbook, three interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
 <meta name="twitter:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
@@ -50,6 +50,11 @@
   .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
   .topnav a.current{color:var(--text); background:var(--surface2); border-color:var(--border);}
   .topnav .sep{color:var(--border); margin:0 2px;}
+  .topnav::before,.topnav::after{content:"";position:absolute;top:0;bottom:0;width:32px;pointer-events:none;opacity:0;transition:opacity .15s ease;z-index:2;}
+  .topnav::before{left:0;background:linear-gradient(to right, var(--bg), transparent);}
+  .topnav::after{right:0;background:linear-gradient(to left, var(--bg), transparent);}
+  .topnav.can-scroll-left::before{opacity:1;}
+  .topnav.can-scroll-right::after{opacity:1;}
 
   .hero{margin-bottom:64px;}
   .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
@@ -68,7 +73,8 @@
   .flow .arrow{color:var(--border);}
 
   .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
-  @media (max-width:720px){.grid{grid-template-columns:1fr;}}
+  .grid .card:last-child:nth-child(odd){grid-column:1 / -1;}
+  @media (max-width:720px){.grid{grid-template-columns:1fr;} .grid .card:last-child:nth-child(odd){grid-column:auto;}}
 
   .card{
     background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px;
@@ -89,6 +95,8 @@
   .card.tool .go{color:var(--teal);}
   .card.tool2 .card-type{color:var(--amber);}
   .card.tool2 .go{color:var(--amber);}
+  .card.tool3 .card-type{color:var(--red);}
+  .card.tool3 .go{color:var(--red);}
   .card.gen .card-type{color:var(--teal);}
   .card.gen .go{color:var(--teal);}
 
@@ -120,9 +128,28 @@
     <a href="playbook/">Playbook</a><span class="sep">/</span>
     <a href="privacy-stack-builder/">Stack Builder</a><span class="sep">/</span>
     <a href="opsec-field-manual/">OPSEC Field Manual</a><span class="sep">/</span>
+    <a href="broker-removal-tracker/">Broker Removal Tracker</a><span class="sep">/</span>
     <a href="report/">Recommendations Report</a>
   </div>
 </nav>
+<script>
+(function(){
+  document.querySelectorAll('.topnav').forEach(function(nav){
+    var inner = nav.querySelector('.topnav-inner');
+    if(!inner) return;
+    function update(){
+      var overflowing = inner.scrollWidth > inner.clientWidth + 2;
+      var atStart = inner.scrollLeft <= 2;
+      var atEnd = inner.scrollLeft + inner.clientWidth >= inner.scrollWidth - 2;
+      nav.classList.toggle('can-scroll-left', overflowing && !atStart);
+      nav.classList.toggle('can-scroll-right', overflowing && !atEnd);
+    }
+    inner.addEventListener('scroll', update, {passive:true});
+    window.addEventListener('resize', update);
+    update();
+  });
+})();
+</script>
 <div class="wrap">
 
   <div class="hero">
@@ -158,6 +185,13 @@
       <div class="go">Start the audit →</div>
     </a>
 
+    <a class="card tool3" href="broker-removal-tracker/">
+      <div class="card-top"><span class="card-code">TOOL-03</span><span class="card-type">Interactive</span></div>
+      <h2>Broker Removal Tracker</h2>
+      <p>Direct links to the official opt-out page for the ~13 highest-traffic people-search sites — Spokeo, BeenVerified, Whitepages, MyLife, and more — with your progress tracked locally as you work through them.</p>
+      <div class="go">Start tracking →</div>
+    </a>
+
     <a class="card gen" href="report/">
       <div class="card-top"><span class="card-code">DOC-02</span><span class="card-type">Generated</span></div>
       <h2>Recommendations Report</h2>
@@ -168,7 +202,7 @@
 
   <div class="about">
     <h3>How the pieces connect</h3>
-    <p>The Playbook is the source of truth for every recommendation. Both tools audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either tool rather than reading the static version here if you want your own results. Nothing you enter in either tool leaves your browser; there's no backend, no account, and no tracking.</p>
+    <p>The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC Field Manual audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either one rather than reading the static version here if you want your own results. The Broker Removal Tracker is narrower by design: it tracks opt-out progress across real people-search sites and exports its own plain-text checklist. Nothing you enter in any tool leaves your browser; there's no backend, no account, and no tracking.</p>
   </div>
 </div>
 </body>

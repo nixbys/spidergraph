@@ -175,6 +175,11 @@
   .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
   .topnav a.current{color:var(--teal); background:var(--teal-dim); border-color:#3ddc9755;}
   .topnav .sep{color:var(--border); margin:0 2px;}
+  .topnav::before,.topnav::after{content:"";position:absolute;top:0;bottom:0;width:32px;pointer-events:none;opacity:0;transition:opacity .15s ease;z-index:2;}
+  .topnav::before{left:0;background:linear-gradient(to right, var(--bg), transparent);}
+  .topnav::after{right:0;background:linear-gradient(to left, var(--bg), transparent);}
+  .topnav.can-scroll-left::before{opacity:1;}
+  .topnav.can-scroll-right::after{opacity:1;}
 
   .status{
     font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.03em;
@@ -253,9 +258,28 @@
     <a href="../playbook/">Playbook</a><span class="sep">/</span>
     <a href="./" class="current">Stack Builder</a><span class="sep">/</span>
     <a href="../opsec-field-manual/">OPSEC Field Manual</a><span class="sep">/</span>
+    <a href="../broker-removal-tracker/">Broker Removal Tracker</a><span class="sep">/</span>
     <a href="../report/">Recommendations Report</a>
   </div>
 </nav>
+<script>
+(function(){
+  document.querySelectorAll('.topnav').forEach(function(nav){
+    var inner = nav.querySelector('.topnav-inner');
+    if(!inner) return;
+    function update(){
+      var overflowing = inner.scrollWidth > inner.clientWidth + 2;
+      var atStart = inner.scrollLeft <= 2;
+      var atEnd = inner.scrollLeft + inner.clientWidth >= inner.scrollWidth - 2;
+      nav.classList.toggle('can-scroll-left', overflowing && !atStart);
+      nav.classList.toggle('can-scroll-right', overflowing && !atEnd);
+    }
+    inner.addEventListener('scroll', update, {passive:true});
+    window.addEventListener('resize', update);
+    update();
+  });
+})();
+</script>
 <div class="wrap">
 
   <header>
@@ -488,7 +512,7 @@ const DATA = [
       {id:"manual", label:"Manual opt-outs via free broker lists", tier:1, cost:0},
       {id:"easyoptouts", label:"EasyOptOuts (automated, quarterly)", tier:2, cost:20},
       {id:"layered", label:"EasyOptOuts + DeleteMe layered, or Optery Ultimate", tier:3, cost:149},
-    ], rec:"EasyOptOuts alone out-performs DeleteMe alone on documented removal rate — layer, don't just upgrade."},
+    ], rec:"EasyOptOuts alone out-performs DeleteMe alone on documented removal rate — layer, don't just upgrade. Doing the manual tier yourself? The <a href='../broker-removal-tracker/' style='color:var(--red)'>Broker Removal Tracker</a> walks the top ~13 sites one by one with direct links to each site's own opt-out page."},
 ];
 
 // Platform detection: guess desktop/mobile OS from the browser, default to the

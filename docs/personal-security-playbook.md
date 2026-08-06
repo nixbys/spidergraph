@@ -132,6 +132,26 @@ Privacy Guides and Techlore both point to Linux (desktop) and GrapheneOS (Androi
 
 **This is the domain most people under-invest in relative to its actual leverage.** A perfect VPN setup doesn't matter if a handle you use publicly is one Google search away from your real name via a decade-old forum account.
 
+### How people-search sites actually work
+
+Sites like Spokeo, BeenVerified, Whitepages, MyLife, Radaris, PeekYou, Intelius, TruthFinder, and dozens of smaller ones are **data brokers**: they buy bulk records from public sources (voter files, property records, court filings) and commercial data feeds (marketing lists, app SDKs, loyalty programs), stitch them into a profile under your name, and sell access — either per-lookup or via subscription — to anyone who searches you. A handful of parent companies own many brands at once (PeopleConnect alone owns Intelius, TruthFinder, USSearch, and Instant Checkmate), so one company's data mistake or breach can propagate your listing across several "different" sites simultaneously.
+
+Two things follow from that:
+
+- **Opting out removes a listing, not the underlying record.** These sites re-scrape their sources on a cycle, so a removed profile can reappear weeks or months later — this is why "verified removed" is never a permanent state, only a snapshot, and why quarterly re-checking matters more than the initial opt-out itself.
+- **Opting out at one broker doesn't touch the others.** There's no shared suppression list across companies (aside from the PeopleConnect-family exception above) — each site's opt-out only ever covers that site.
+
+**DIY vs. paying someone else to do it**, concretely:
+
+| | **Manual (free)** | **Paid automated** |
+|---|---|---|
+| What you're paying for | Nothing — your own time, repeated quarterly | Someone else re-submitting requests on a recurring schedule so you don't have to remember to |
+| Coverage | As wide as the list you work from | Whatever that vendor covers — varies by vendor, check their published broker list |
+| Documented effectiveness | N/A — depends on your own follow-through | Varies significantly by vendor; Consumer Reports' 2024 test found EasyOptOuts (65% removal) meaningfully outperformed DeleteMe (27%) despite costing far less — see the Recommendations Report for the full comparison |
+| Best for | Anyone willing to spend ~1 hour/quarter | Anyone who has tried the manual route and knows they won't keep up with it, or who wants broader coverage than a free list provides |
+
+**Use the <a href="../broker-removal-tracker/">Broker Removal Tracker</a>** to work through opt-out requests for the ~13 highest-traffic broker sites directly, with progress tracked locally in your browser. It links out to each site's own official opt-out page — never a third party claiming to submit it "for" you for free, which is itself a common scam pattern in this space.
+
 ---
 
 ## 9. Social Engineering & Human-Layer Defense
