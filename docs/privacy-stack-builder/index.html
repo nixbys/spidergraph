@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
 <title>Spidergraph — Stack Builder</title>
-<meta name="description" content="Pick a target tier, select what you actually run across 14 product slots, and see live gap analysis and a radar chart of your security coverage — modeled on a PC-part-picker build sheet.">
+<meta name="description" content="Pick a target tier, select what you actually run across 15 product slots, and see live gap analysis and a radar chart of your security coverage — modeled on a PC-part-picker build sheet.">
 <meta name="theme-color" content="#0f1419">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Spidergraph — Stack Builder">
-<meta property="og:description" content="Pick a target tier, select what you actually run across 14 product slots, and see live gap analysis and a radar chart of your security coverage.">
+<meta property="og:description" content="Pick a target tier, select what you actually run across 15 product slots, and see live gap analysis and a radar chart of your security coverage.">
 <meta property="og:url" content="https://nixbys.github.io/spidergraph/privacy-stack-builder/">
 <meta property="og:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spidergraph — Stack Builder">
-<meta name="twitter:description" content="Pick a target tier, select what you actually run across 14 product slots, and see live gap analysis and a radar chart of your security coverage.">
+<meta name="twitter:description" content="Pick a target tier, select what you actually run across 15 product slots, and see live gap analysis and a radar chart of your security coverage.">
 <meta name="twitter:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
@@ -474,6 +474,14 @@ const DATA = [
       {id:"simplex", label:"Signal (hardened) + SimpleX for zero-identifier needs", tier:3, cost:0},
     ], rec:"Signal covers nearly everyone; SimpleX is the ceiling for relationships needing no persistent ID."},
 
+  {domain:"Communications", code:"COM-02", name:"Voice/Video & Burner Numbers", verified:"2026-08-06",
+    options:[
+      {id:"none", label:"Real number given out for calls/texts everywhere", tier:0, cost:0},
+      {id:"signal-calls", label:"Signal voice/video for contacts already on Signal", tier:1, cost:0},
+      {id:"google-voice", label:"Same + free Google Voice number for lower-trust contexts (US only)", tier:2, cost:0},
+      {id:"burner", label:"Same + a dedicated burner number (Burner or Hushed, ~$5/mo) for full compartmentalization", tier:3, cost:60},
+    ], rec:"Google Voice covers most 'give this out instead of my real number' needs for free; pay for Burner/Hushed only when the number itself needs to be disposable, not just separate."},
+
   {domain:"Data", code:"DATA-01", name:"Cloud Storage & Encryption",
     options:[
       {id:"none", label:"Unencrypted mainstream cloud storage", tier:0, cost:0},
@@ -512,7 +520,7 @@ const DATA = [
       {id:"manual", label:"Manual opt-outs via free broker lists", tier:1, cost:0},
       {id:"easyoptouts", label:"EasyOptOuts (automated, quarterly)", tier:2, cost:20},
       {id:"layered", label:"EasyOptOuts + DeleteMe layered, or Optery Ultimate", tier:3, cost:149},
-    ], rec:"EasyOptOuts alone out-performs DeleteMe alone on documented removal rate — layer, don't just upgrade. Doing the manual tier yourself? The <a href='../broker-removal-tracker/' style='color:var(--red)'>Broker Removal Tracker</a> walks the top ~13 sites one by one with direct links to each site's own opt-out page."},
+    ], rec:"EasyOptOuts alone out-performs DeleteMe alone on documented removal rate — layer, don't just upgrade. Doing the manual tier yourself? The <a href='../broker-removal-tracker/' style='color:var(--red)'>Broker Removal Tracker</a> walks the top ~16 sites one by one with direct links to each site's own opt-out page."},
 ];
 
 // Platform detection: guess desktop/mobile OS from the browser, default to the

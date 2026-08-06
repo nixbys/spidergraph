@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
 <title>Spidergraph — OPSEC Field Manual</title>
-<meta name="description" content="A 39-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence. Habits, not purchases.">
+<meta name="description" content="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence. Habits, not purchases.">
 <meta name="theme-color" content="#0f1419">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Spidergraph — OPSEC Field Manual">
-<meta property="og:description" content="A 39-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence.">
+<meta property="og:description" content="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence.">
 <meta property="og:url" content="https://nixbys.github.io/spidergraph/opsec-field-manual/">
 <meta property="og:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spidergraph — OPSEC Field Manual">
-<meta name="twitter:description" content="A 39-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence.">
+<meta name="twitter:description" content="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence.">
 <meta name="twitter:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
@@ -306,7 +306,7 @@
   </div>
 
   <footer>
-    <b>Companion tool:</b> product/tool selections (password manager, VPN, OS, etc.) live in <b>privacy-stack-builder.html</b>. This manual covers what that picker deliberately left out — the discipline layer. Full write-ups and the incident-response runbooks these controls feed into are in <b>personal-security-playbook.md</b>. Your checked/unchecked state stays in this browser tab only — nothing here is sent anywhere or saved between sessions unless you keep the tab open.
+    <b>Companion tool:</b> product/tool selections (password manager, VPN, OS, etc.) live in <b>privacy-stack-builder.html</b>. This manual covers what that picker deliberately left out — the discipline layer. The AUD domain's broker-recheck item points to the <b>Broker Removal Tracker</b> for the actual site-by-site checklist. Full write-ups and the incident-response runbooks these controls feed into are in <b>personal-security-playbook.md</b>. Your checked/unchecked state stays in this browser tab only — nothing here is sent anywhere or saved between sessions unless you keep the tab open.
   </footer>
 
 </div>
@@ -359,10 +359,15 @@ const DOMAINS = [
     {t:"I've actually restored a file from backup in the last 6 months to confirm it works", crit:true},
     {t:"I know how to report doxxing or impersonation on every platform I actively use"},
     {t:"I know exactly who I'd call first in a financial fraud incident, before I'd need to"},
+    {t:"If I suspect malware, I disconnect the device from the network immediately rather than trying to clean an infected OS in place", crit:true},
+    {t:"I have access to clean rescue/boot media (USB) to scan or reinstall a compromised device without trusting the infected OS"},
+    {t:"If I ever give up any information during a social-engineering attempt, I treat it as a credential-compromise incident right away, not something to just note and move on from"},
   ]},
   {code:"AUD", name:"Maintenance & Audit Cadence", items:[
     {t:"OS, browser, and app updates are on auto-update or checked weekly without fail"},
+    {t:"I review recent account activity/login alerts on email and financial accounts monthly, not just after an alert fires"},
     {t:"I re-run my own OSINT self-audit (searching my own name/handles/number) quarterly", crit:true},
+    {t:"I work through the Broker Removal Tracker at least once and revisit it quarterly — broker listings reappear on their own re-scrape cycle"},
     {t:"I revisit my threat model — what I'm protecting, from whom — every 6 months"},
     {t:"I do a full credential rotation review annually rather than only after a breach alert"},
   ]},

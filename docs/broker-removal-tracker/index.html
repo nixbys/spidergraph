@@ -212,7 +212,7 @@
 
   <header>
     <div>
-      <div class="eyebrow">Self-audit · 13 broker requests tracked</div>
+      <div class="eyebrow">Self-audit · 16 broker requests tracked</div>
       <h1>Broker <span>Removal Tracker</span></h1>
       <div class="sub">Search your own name on each site below, then use that site's own official opt-out page to request removal. Check it off once submitted — nothing here is sent anywhere, this is just a local checklist for your own follow-through.</div>
     </div>
@@ -252,7 +252,7 @@
 
       <div class="card">
         <div class="card-title">Long tail</div>
-        <p class="small">This list covers the ~13 highest-traffic broker sites. Dozens more exist. For the full, actively-maintained free list, use Bazzell's workbook or EFF's opt-out guide.</p>
+        <p class="small">This list covers the ~16 highest-traffic broker sites. Dozens more exist. For the full, actively-maintained free list, use Bazzell's workbook or EFF's opt-out guide.</p>
         <a class="card-link" href="https://inteltechniques.com/workbook.html" target="_blank" rel="noopener">IntelTechniques workbook ↗</a>
       </div>
 
@@ -310,6 +310,15 @@ const BROKERS = [
   {id:"socialcatfish", name:"Social Catfish", method:"form", methodLabel:"Self-service form",
     note:"Standard \"Do Not Sell My Info\" request form.",
     url:"https://socialcatfish.com/opt-out/", time:"Up to 15 days", verified:"2026-08-05"},
+  {id:"truepeoplesearch", name:"TruePeopleSearch", method:"email", methodLabel:"Email confirm",
+    note:"Select \"the subject of the request\" for yourself, then confirm via the emailed link — it expires in 24 hours.",
+    url:"https://www.truepeoplesearch.com/removal", time:"A few days", verified:"2026-08-06"},
+  {id:"usphonebook", name:"USPhoneBook", method:"form", methodLabel:"Self-service form",
+    note:"Confirmation link expires in 24 hours — check your email promptly after submitting.",
+    url:"https://www.usphonebook.com/opt-out", time:"Up to 72 hrs", verified:"2026-08-06"},
+  {id:"clustrmaps", name:"ClustrMaps", method:"form", methodLabel:"Self-service form",
+    note:"Enter your name, email, listing URL, and address, then tick which fields to remove and submit.",
+    url:"https://clustrmaps.com/bl/opt-out", time:"A few days", verified:"2026-08-06"},
 ];
 
 const STORAGE_KEY = "spidergraph-broker-tracker-v1";

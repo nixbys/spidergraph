@@ -19,6 +19,7 @@ If you only take one thing from each category, take this. These are the picks th
 | VPN | **Mullvad** or **Proton VPN** | No-logs, privacy-preserving payment options (Mullvad takes cash/Monero, no email required), WireGuard support |
 | Browser | **Firefox + uBlock Origin** | Highest value-per-minute-of-setup control in the entire stack; **Mullvad Browser** as the upgrade when fingerprinting resistance matters more than convenience |
 | Messaging | **Signal** | Free, minimal metadata collection, easiest adoption curve for non-technical contacts; **SimpleX Chat** as the ceiling for zero-persistent-identifier needs |
+| Voice/video masking | **Google Voice** (free) | Covers most "give this out instead of my real number" needs at zero cost; upgrade to **Burner** or **Hushed** (~$5/mo) only when the number itself needs to be disposable, not just separate from your primary line |
 | Cloud storage | **Proton Drive** (sensitive/small) + **Filen** or **Cryptomator + Backblaze B2** (bulk media) | Splits by data sensitivity rather than forcing everything into one provider's pricing tier |
 | Data broker removal | **EasyOptOuts** ($19.99/yr) | Outperformed DeleteMe on actual documented removal rate in Consumer Reports' 2024 test (65% vs. 27%) despite costing a fraction as much; layer in DeleteMe or Optery only if phone/fax-gated brokers matter to your exposure |
 | DNS/Router | **OpenWrt** + encrypted DNS (Mullvad DNS/Quad9) | Router firmware is the higher-leverage control; DNS provider alone is commonly oversold |
@@ -82,6 +83,8 @@ Organized to match the OPSEC Field Manual's six domains. If a domain isn't at 10
 - **Proton** (proton.me, official blog, pricing pages, community UserVoice forum) — Unlimited plan pricing/bundling, hardware key 2FA behavior, Drive Linux roadmap
 - **Cryptomator** (cryptomator.org) — licensing model, platform availability, technical architecture (AES-256-SIV, zero-knowledge design)
 - **Filen, Backblaze, Mullvad, Bitwarden, Signal, EasyOptOuts** — official pricing and feature pages for each respective tool
+- **Burner, Hushed, Google Voice** — official pricing pages, verified 2026-08-06 for the Voice/Video & Burner Numbers recommendation
+- **Spokeo, BeenVerified, Whitepages, PeopleConnect (Intelius/TruthFinder/USSearch/Instant Checkmate), MyLife, Radaris, PeekYou, FastPeopleSearch, PeopleFinders, Nuwber, CheckPeople, BackgroundChecks.com, Social Catfish, TruePeopleSearch, USPhoneBook, ClustrMaps** — each site's own opt-out page, checked directly rather than sourced from a third-party guide, for the Broker Removal Tracker
 
 ### Referenced but not directly cited
 - **Electronic Frontier Foundation (EFF) Surveillance Self-Defense** — referenced in Cryptomator source material as the standard justification for client-side encryption; worth reading directly (see Part 4)
