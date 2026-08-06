@@ -58,7 +58,7 @@ Organized to match the OPSEC Field Manual's six domains. If a domain isn't at 10
 - **Know each platform's specific report-abuse flow before you need it** — Meta, X, and Reddit all have different doxxing/impersonation reporting paths; bookmark them.
 
 ### Maintenance & Audit Cadence
-- **Anchor the quarterly OSINT self-audit to a recurring calendar date you already have** (e.g., the same week as a bill or subscription renewal) rather than an arbitrary "every 3 months" that quietly slips.
+- **Anchor the quarterly OSINT self-audit to a recurring calendar date you already have** (e.g., the same week as a bill or subscription renewal) rather than an arbitrary "every 3 months" that quietly slips. Pair it with a pass through the <a href="../broker-removal-tracker/">Broker Removal Tracker</a> — broker listings reappear on their own re-scrape cycle, so this is a recurring task, not a one-time fix.
 - **Treat the annual credential rotation as a checklist, not a vibe**: export a list of every account your password manager tracks, sort by last-changed date, and rotate anything over a year old, prioritizing the ones tied to financial or identity recovery.
 
 ---
