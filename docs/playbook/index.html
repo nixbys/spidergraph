@@ -26,92 +26,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js" integrity="sha384-/TQbtLCAerC3jgaim+N78RZSDYV7ryeoBCVqTuzRrFec2akfBkHS7ACQ3PQhvMVi" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../shared/tokens.css">
+<link rel="stylesheet" href="../shared/nav.css">
+<link rel="stylesheet" href="../shared/doc-page.css">
 <style>
-  :root{
-    --bg:#0f1419; --surface:#171e27; --surface2:#1f2732; --surface3:#242e3a;
-    --border:#2b3542; --border-soft:#20293380; --text:#e6ecf3; --muted:#8695a7; --muted2:#8395ad;
-    --teal:#3ddc97; --amber:#e8a23d; --red:#e0596b; --blue:#5b8def;
-    --teal-dim:#3ddc9722; --amber-dim:#e8a23d22; --red-dim:#e0596b22; --blue-dim:#5b8def22;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:radial-gradient(circle at 15% 0%, #16202c 0%, transparent 45%),
-      radial-gradient(circle at 100% 20%, #141b24 0%, transparent 40%), var(--bg);
-    color:var(--text); font-family:'IBM Plex Sans', sans-serif; min-height:100vh; padding:32px 20px 100px;
-  }
-  .topnav{position:sticky; top:0; z-index:100; margin:-32px -20px 28px; padding:14px 20px;
-    background:var(--bg); border-bottom:1px solid var(--border);}
-  .topnav-inner{max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:4px; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;}
-  .topnav-inner::-webkit-scrollbar{display:none;}
-  .topnav a{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em; color:var(--muted);
-    text-decoration:none; padding:8px 12px; border-radius:7px; border:1px solid transparent; transition:all .15s ease;
-    white-space:nowrap; flex-shrink:0;}
-  .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
-  .topnav a.current{color:var(--blue); background:var(--blue-dim); border-color:#5b8def55;}
-  .topnav .sep{color:var(--border); margin:0 2px;}
-  .topnav::before,.topnav::after{content:"";position:absolute;top:0;bottom:0;width:32px;pointer-events:none;opacity:0;transition:opacity .15s ease;z-index:2;}
-  .topnav::before{left:0;background:linear-gradient(to right, var(--bg), transparent);}
-  .topnav::after{right:0;background:linear-gradient(to left, var(--bg), transparent);}
-  .topnav.can-scroll-left::before{opacity:1;}
-  .topnav.can-scroll-right::after{opacity:1;}
-
-  .doc-wrap{max-width:840px; margin:0 auto; background:var(--surface); border:1px solid var(--border);
-    border-radius:16px; padding:48px clamp(20px,5vw,64px);}
-  .doc-head{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;}
-  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--blue); display:flex; align-items:center; gap:8px;}
-  .eyebrow::before{content:"";width:6px;height:6px;background:var(--blue);border-radius:1px; display:inline-block;}
-  .section-jump{
-    background:var(--surface2); color:var(--text); border:1px solid var(--border);
-    border-radius:7px; padding:7px 30px 7px 12px; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
-    cursor:pointer; appearance:none; -webkit-appearance:none; max-width:220px;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238695a7'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 12px center;
-  }
-  .section-jump:focus-visible{outline:2px solid var(--blue); outline-offset:1px;}
-
-  .scroll-top-btn{
-    position:fixed; bottom:24px; right:24px; z-index:90; width:44px; height:44px; border-radius:50%;
-    background:var(--surface); border:1px solid var(--border); color:var(--blue); font-size:18px;
-    cursor:pointer; display:flex; align-items:center; justify-content:center;
-    opacity:0; visibility:hidden; transform:translateY(8px);
-    transition:opacity .2s ease, transform .2s ease, visibility .2s; appearance:none; -webkit-appearance:none;
-    box-shadow:0 4px 14px rgba(0,0,0,.35);
-  }
-  .scroll-top-btn.visible{opacity:1; visibility:visible; transform:translateY(0);}
-  .scroll-top-btn:hover{border-color:#374252; color:var(--text);}
-  .scroll-top-btn:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
-
-  #content h1{font-family:'Space Grotesk',sans-serif; font-size:clamp(26px,4vw,36px); font-weight:700;
-    letter-spacing:-.01em; margin:0 0 8px; scroll-margin-top:80px;}
-  #content h2{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; margin:44px 0 16px;
-    padding-bottom:10px; border-bottom:1px solid var(--border); color:var(--text); scroll-margin-top:80px;}
-  #content h3{font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:600; margin:28px 0 10px; color:var(--blue);}
-  #content p{color:var(--text); line-height:1.7; font-size:14.5px; margin:0 0 14px;}
-  #content strong{color:var(--text); font-weight:600;}
-  #content ul,#content ol{color:var(--text); line-height:1.75; font-size:14.5px; padding-left:22px; margin:0 0 16px;}
-  #content li{margin-bottom:6px;}
-  #content li::marker{color:var(--muted2);}
-  #content hr{border:none; border-top:1px solid var(--border); margin:36px 0;}
-  #content code{font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:var(--surface2);
-    border:1px solid var(--border); padding:2px 6px; border-radius:5px; color:var(--teal);}
-  #content a{color:var(--blue);}
-  #content .legacy-note{display:block; font-size:12px; color:var(--muted2); font-style:italic; margin-top:4px;}
-  #content .legacy-note b{color:var(--muted2); font-weight:600; font-style:normal;}
-  #content .verified-tag{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--teal); margin-left:6px;}
-  #content table{width:100%; border-collapse:collapse; margin:18px 0 22px; font-size:13px; display:block; overflow-x:auto;}
-  #content th{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
-    color:var(--muted2); text-align:left; padding:10px 14px; border-bottom:1px solid var(--border); white-space:nowrap;}
-  #content td{padding:11px 14px; border-bottom:1px solid var(--border-soft); color:var(--text); vertical-align:top;}
-  #content tr:hover td{background:var(--surface2);}
-
-  .loading{color:var(--muted); font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center; padding:60px 0;}
-
-  .brand{display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:14px; padding-right:14px; border-right:1px solid var(--border); flex-shrink:0;}
-  .brand svg{display:block;}
-  .brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--text); letter-spacing:-0.2px;}
-  .brand-word span{color:var(--teal);}
+  /* Playbook-only override: accent color for nav-current/eyebrow/section-jump/scroll-btn. */
+  :root{ --accent:var(--blue); --accent-dim:var(--blue-dim); --accent-border:#5b8def55; }
 </style>
 </head>
 <body>
@@ -133,27 +53,11 @@
     <a href="../privacy-stack-builder/">Stack Builder</a><span class="sep">/</span>
     <a href="../opsec-field-manual/">OPSEC Field Manual</a><span class="sep">/</span>
     <a href="../broker-removal-tracker/">Broker Removal Tracker</a><span class="sep">/</span>
+    <a href="../breach-check-tracker/">Breach Check Tracker</a><span class="sep">/</span>
     <a href="../report/">Recommendations Report</a>
   </div>
 </nav>
-<script>
-(function(){
-  document.querySelectorAll('.topnav').forEach(function(nav){
-    var inner = nav.querySelector('.topnav-inner');
-    if(!inner) return;
-    function update(){
-      var overflowing = inner.scrollWidth > inner.clientWidth + 2;
-      var atStart = inner.scrollLeft <= 2;
-      var atEnd = inner.scrollLeft + inner.clientWidth >= inner.scrollWidth - 2;
-      nav.classList.toggle('can-scroll-left', overflowing && !atStart);
-      nav.classList.toggle('can-scroll-right', overflowing && !atEnd);
-    }
-    inner.addEventListener('scroll', update, {passive:true});
-    window.addEventListener('resize', update);
-    update();
-  });
-})();
-</script>
+<script src="../shared/nav.js"></script>
 <div class="doc-wrap">
   <div class="doc-head">
     <div class="eyebrow">Reference document</div>
@@ -161,50 +65,9 @@
       <option value="">Jump to section…</option>
     </select>
   </div>
-  <div id="content"><div class="loading">Loading playbook…</div></div>
+  <div id="content" data-src="../personal-security-playbook.md"><div class="loading">Loading playbook…</div></div>
 </div>
 <button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">↑</button>
-<script>
-  function slugify(text){
-    return text.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
-  }
-
-  function buildSectionJump(){
-    const headings = document.querySelectorAll('#content h1, #content h2');
-    const seen = {};
-    const jumpSel = document.getElementById('sectionJump');
-    headings.forEach(h => {
-      let slug = slugify(h.textContent) || 'section';
-      if(seen[slug] !== undefined){ seen[slug]++; slug = `${slug}-${seen[slug]}`; } else { seen[slug] = 0; }
-      h.id = slug;
-      if(h.tagName === 'H2'){
-        const opt = document.createElement('option');
-        opt.value = '#' + slug;
-        opt.textContent = h.textContent;
-        jumpSel.appendChild(opt);
-      }
-    });
-    jumpSel.addEventListener('change', () => {
-      if(!jumpSel.value) return;
-      const target = document.querySelector(jumpSel.value);
-      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
-      jumpSel.value = '';
-    });
-  }
-
-  fetch('../personal-security-playbook.md')
-    .then(r => { if(!r.ok) throw new Error('fetch failed'); return r.text(); })
-    .then(md => { document.getElementById('content').innerHTML = marked.parse(md); buildSectionJump(); })
-    .catch(() => {
-      document.getElementById('content').innerHTML =
-        '<div class="loading">Could not load personal-security-playbook.md — this page needs to be served over HTTP (e.g. GitHub Pages or a local server), not opened directly as a file.</div>';
-    });
-
-  const scrollBtn = document.getElementById('scrollTopBtn');
-  window.addEventListener('scroll', () => {
-    scrollBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive:true});
-  scrollBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
-</script>
+<script src="../shared/doc-page.js"></script>
 </body>
 </html>
