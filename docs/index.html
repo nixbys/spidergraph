@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
 <title>Spidergraph — Personal Security Program</title>
-<meta name="description" content="A free, open-source privacy and security program — a tiered playbook, three interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
+<meta name="description" content="A free, open-source privacy and security program — a tiered playbook, four interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
 <meta name="theme-color" content="#0f1419">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Spidergraph — Personal Security Program">
-<meta property="og:description" content="A free, open-source privacy and security program — a tiered playbook, three interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
+<meta property="og:description" content="A free, open-source privacy and security program — a tiered playbook, four interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
 <meta property="og:url" content="https://nixbys.github.io/spidergraph/">
 <meta property="og:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spidergraph — Personal Security Program">
-<meta name="twitter:description" content="A free, open-source privacy and security program — a tiered playbook, three interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
+<meta name="twitter:description" content="A free, open-source privacy and security program — a tiered playbook, four interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
 <meta name="twitter:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
@@ -25,36 +25,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/tokens.css">
+<link rel="stylesheet" href="shared/nav.css">
 <style>
-  :root{
-    --bg:#0f1419; --surface:#171e27; --surface2:#1f2732; --surface3:#242e3a;
-    --border:#2b3542; --border-soft:#20293380; --text:#e6ecf3; --muted:#8695a7; --muted2:#8395ad;
-    --teal:#3ddc97; --amber:#e8a23d; --red:#e0596b; --blue:#5b8def;
-    --teal-dim:#3ddc9722; --amber-dim:#e8a23d22; --red-dim:#e0596b22; --blue-dim:#5b8def22;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:radial-gradient(circle at 15% 0%, #16202c 0%, transparent 45%),
-      radial-gradient(circle at 100% 20%, #141b24 0%, transparent 40%), var(--bg);
-    color:var(--text); font-family:'IBM Plex Sans', sans-serif; min-height:100vh; padding:32px 20px 100px;
-  }
+  /* Home-page-only overrides + layout. Shared tokens/nav/brand live in shared/. */
+  .topnav{margin-bottom:56px;}
   .wrap{max-width:1000px; margin:0 auto;}
-  .topnav{position:sticky; top:0; z-index:100; margin:-32px -20px 56px; padding:14px 20px;
-    background:var(--bg); border-bottom:1px solid var(--border);}
-  .topnav-inner{max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:4px; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;}
-  .topnav-inner::-webkit-scrollbar{display:none;}
-  .topnav a{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em; color:var(--muted);
-    text-decoration:none; padding:8px 12px; border-radius:7px; border:1px solid transparent; transition:all .15s ease;
-    white-space:nowrap; flex-shrink:0;}
-  .topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
-  .topnav a.current{color:var(--text); background:var(--surface2); border-color:var(--border);}
-  .topnav .sep{color:var(--border); margin:0 2px;}
-  .topnav::before,.topnav::after{content:"";position:absolute;top:0;bottom:0;width:32px;pointer-events:none;opacity:0;transition:opacity .15s ease;z-index:2;}
-  .topnav::before{left:0;background:linear-gradient(to right, var(--bg), transparent);}
-  .topnav::after{right:0;background:linear-gradient(to left, var(--bg), transparent);}
-  .topnav.can-scroll-left::before{opacity:1;}
-  .topnav.can-scroll-right::after{opacity:1;}
 
   .hero{margin-bottom:64px;}
   .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
@@ -71,6 +47,28 @@
   }
   .flow .node{background:var(--surface); border:1px solid var(--border); border-radius:7px; padding:7px 12px; color:var(--muted);}
   .flow .arrow{color:var(--border);}
+
+  .mystatus{margin-bottom:40px;}
+  .mystatus-head{display:flex; align-items:baseline; gap:10px; margin-bottom:12px; flex-wrap:wrap;}
+  .mystatus-head h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0; color:var(--text);}
+  .mystatus-head .hint{font-size:12px; color:var(--muted2);}
+  .mystatus-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+  @media (max-width:900px){.mystatus-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:480px){.mystatus-grid{grid-template-columns:1fr;}}
+  .mystatus-item{
+    display:block; text-decoration:none; background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:14px 16px; transition:all .15s ease;
+  }
+  .mystatus-item:hover{border-color:#374252;}
+  .mystatus-item.not-started{opacity:.6;}
+  .mystatus-item.not-started:hover{opacity:1;}
+  .mystatus-label{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted2); margin-bottom:8px;}
+  .mystatus-value{color:var(--text); font-size:13.5px; font-weight:500; margin-bottom:4px; line-height:1.4;}
+  .mystatus-ago{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);}
+  .mystatus-item.tool-teal .mystatus-label{color:var(--teal);}
+  .mystatus-item.tool-amber .mystatus-label{color:var(--amber);}
+  .mystatus-item.tool-red .mystatus-label{color:var(--red);}
+  .mystatus-item.tool-blue .mystatus-label{color:var(--blue);}
 
   .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
   .grid .card:last-child:nth-child(odd){grid-column:1 / -1;}
@@ -97,17 +95,14 @@
   .card.tool2 .go{color:var(--amber);}
   .card.tool3 .card-type{color:var(--red);}
   .card.tool3 .go{color:var(--red);}
+  .card.tool4 .card-type{color:var(--blue);}
+  .card.tool4 .go{color:var(--blue);}
   .card.gen .card-type{color:var(--teal);}
   .card.gen .go{color:var(--teal);}
 
   .about{margin-top:60px; padding-top:32px; border-top:1px solid var(--border);}
   .about h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0 0 12px; color:var(--muted);}
   .about p{color:var(--muted2); font-size:13px; line-height:1.7; max-width:680px;}
-
-  .brand{display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:14px; padding-right:14px; border-right:1px solid var(--border); flex-shrink:0;}
-  .brand svg{display:block;}
-  .brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--text); letter-spacing:-0.2px;}
-  .brand-word span{color:var(--teal);}
 </style>
 </head>
 <body>
@@ -129,27 +124,11 @@
     <a href="privacy-stack-builder/">Stack Builder</a><span class="sep">/</span>
     <a href="opsec-field-manual/">OPSEC Field Manual</a><span class="sep">/</span>
     <a href="broker-removal-tracker/">Broker Removal Tracker</a><span class="sep">/</span>
+    <a href="breach-check-tracker/">Breach Check Tracker</a><span class="sep">/</span>
     <a href="report/">Recommendations Report</a>
   </div>
 </nav>
-<script>
-(function(){
-  document.querySelectorAll('.topnav').forEach(function(nav){
-    var inner = nav.querySelector('.topnav-inner');
-    if(!inner) return;
-    function update(){
-      var overflowing = inner.scrollWidth > inner.clientWidth + 2;
-      var atStart = inner.scrollLeft <= 2;
-      var atEnd = inner.scrollLeft + inner.clientWidth >= inner.scrollWidth - 2;
-      nav.classList.toggle('can-scroll-left', overflowing && !atStart);
-      nav.classList.toggle('can-scroll-right', overflowing && !atEnd);
-    }
-    inner.addEventListener('scroll', update, {passive:true});
-    window.addEventListener('resize', update);
-    update();
-  });
-})();
-</script>
+<script src="shared/nav.js"></script>
 <div class="wrap">
 
   <div class="hero">
@@ -161,6 +140,14 @@
       <span class="node">Audit tools &amp; habits</span><span class="arrow">→</span>
       <span class="node">See your Spidergraph</span>
     </div>
+  </div>
+
+  <div class="mystatus" id="myStatus">
+    <div class="mystatus-head">
+      <h3>Your Spidergraph</h3>
+      <span class="hint">— read live from this browser's storage, nothing is fetched or sent anywhere</span>
+    </div>
+    <div class="mystatus-grid" id="myStatusGrid"></div>
   </div>
 
   <div class="grid">
@@ -192,6 +179,13 @@
       <div class="go">Start tracking →</div>
     </a>
 
+    <a class="card tool4" href="breach-check-tracker/">
+      <div class="card-top"><span class="card-code">TOOL-04</span><span class="card-type">Interactive</span></div>
+      <h2>Breach Check Tracker</h2>
+      <p>List your own email addresses and aliases, then work through your own quarterly Have I Been Pwned check for each — this page tracks your progress locally, it never looks anything up for you.</p>
+      <div class="go">Start tracking →</div>
+    </a>
+
     <a class="card gen" href="report/">
       <div class="card-top"><span class="card-code">DOC-02</span><span class="card-type">Generated</span></div>
       <h2>Recommendations Report</h2>
@@ -202,8 +196,74 @@
 
   <div class="about">
     <h3>How the pieces connect</h3>
-    <p>The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC Field Manual audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either one rather than reading the static version here if you want your own results. The Broker Removal Tracker is narrower by design: it tracks opt-out progress across real people-search sites and exports its own plain-text checklist. Nothing you enter in any tool leaves your browser; there's no backend, no account, and no tracking.</p>
+    <p>The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC Field Manual audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either one rather than reading the static version here if you want your own results. The Broker Removal Tracker and Breach Check Tracker are narrower by design: flat checklists that track your own progress against real external sites and export their own plain-text checklist. Nothing you enter in any tool leaves your browser; there's no backend, no account, and no tracking.</p>
   </div>
 </div>
+<script src="shared/persist.js"></script>
+<script>
+(function(){
+  function timeAgo(iso){
+    if(!iso) return null;
+    const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+    if(days <= 0) return "today";
+    if(days === 1) return "1 day ago";
+    if(days < 30) return `${days} days ago`;
+    const months = Math.floor(days / 30);
+    return months === 1 ? "1 month ago" : `${months} months ago`;
+  }
+  function pctChecked(map){
+    const keys = Object.keys(map);
+    if(keys.length === 0) return null;
+    const done = keys.filter(k => map[k] === true).length;
+    return {done, total: keys.length, pct: Math.round((done / keys.length) * 100)};
+  }
+  const TIER_NAMES = {1:"Budget", 2:"Mid", 3:"No-Limit"};
+
+  const TOOLS = [
+    {key:"spidergraph-stack-builder-v1", label:"Stack Builder", href:"privacy-stack-builder/", accent:"tool-teal",
+      summarize(data){
+        if(!data || !data.state) return "Not started yet";
+        const count = Object.keys(data.state).length;
+        const tier = TIER_NAMES[data.target] || "—";
+        return `Target: ${tier} tier · ${count} slots configured`;
+      }},
+    {key:"spidergraph-opsec-v1", label:"OPSEC Field Manual", href:"opsec-field-manual/", accent:"tool-amber",
+      summarize(data){
+        const p = data ? pctChecked(data) : null;
+        return p ? `${p.done}/${p.total} controls checked (${p.pct}%)` : "Not started yet";
+      }},
+    {key:"spidergraph-broker-tracker-v1", label:"Broker Removal Tracker", href:"broker-removal-tracker/", accent:"tool-red",
+      summarize(data){
+        const p = data ? pctChecked(data) : null;
+        return p ? `${p.done}/${p.total} sites requested (${p.pct}%)` : "Not started yet";
+      }},
+    {key:"spidergraph-breach-check-v1", label:"Breach Check Tracker", href:"breach-check-tracker/", accent:"tool-blue",
+      summarize(data){
+        if(!data || !Array.isArray(data) || data.length === 0) return "Not started yet";
+        const done = data.filter(it => it.checked).length;
+        const pct = Math.round((done / data.length) * 100);
+        return `${done}/${data.length} addresses checked (${pct}%)`;
+      }},
+  ];
+
+  const grid = document.getElementById("myStatusGrid");
+  TOOLS.forEach(t => {
+    const store = spidergraphStore(t.key);
+    const saved = store.load();
+    const data = saved ? (saved.data !== undefined ? saved.data : saved) : null;
+    const started = !!saved;
+    const el = document.createElement("a");
+    el.className = "mystatus-item " + t.accent + (started ? "" : " not-started");
+    el.href = t.href;
+    const ago = started && saved.lastUpdated ? timeAgo(saved.lastUpdated) : null;
+    el.innerHTML = `
+      <div class="mystatus-label">${t.label}</div>
+      <div class="mystatus-value">${t.summarize(data)}</div>
+      <div class="mystatus-ago">${ago ? `Updated ${ago}` : (started ? "" : "Start →")}</div>
+    `;
+    grid.appendChild(el);
+  });
+})();
+</script>
 </body>
 </html>
