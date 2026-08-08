@@ -94,6 +94,7 @@
 }
 .nav-tools-item:hover{background:var(--surface2);}
 .nav-tools-item.current{background:var(--accent-dim, var(--surface2));}
+.nav-tools-item:focus-visible{outline:2px solid var(--blue); outline-offset:-2px;}
 .nav-tools-dot{
   width:7px; height:7px; border-radius:1px; flex-shrink:0; margin-top:6px;
 }
@@ -116,3 +117,17 @@
 .nav-tools-item-code.red{color:var(--red);}
 .nav-tools-item-code.blue{color:var(--blue);}
 .nav-tools-item-blurb{font-size:11.5px; color:var(--muted2); line-height:1.4;}
+
+/* Below ~600px, "Tools" itself can wrap to a second/third line at almost any horizontal
+   position depending on how much of Home/Playbook/Report wrapped above it — anchoring the
+   panel to .nav-tools's own position (like the default rule above does) can push a
+   320px-wide panel straight off the edge of a narrow viewport. Anchor to .topnav instead
+   (position:sticky already gives it a positioning context) so the panel always sits
+   edge-to-edge under the whole nav bar regardless of where the trigger landed. */
+@media (max-width:600px){
+  .nav-tools{position:static;}
+  .nav-tools-panel{
+    position:absolute; left:16px; right:16px; top:100%;
+    width:auto; max-width:none;
+  }
+}
