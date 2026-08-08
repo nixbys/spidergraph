@@ -1,35 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
-<title>Spidergraph — OPSEC Field Manual</title>
-<meta name="description" content="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence. Habits, not purchases.">
-<meta name="theme-color" content="#0f1419">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Spidergraph — OPSEC Field Manual">
-<meta property="og:description" content="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence.">
-<meta property="og:url" content="https://nixbys.github.io/spidergraph/opsec-field-manual/">
-<meta property="og:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spidergraph — OPSEC Field Manual">
-<meta name="twitter:description" content="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence.">
-<meta name="twitter:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
-<link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
-<link rel="icon" type="image/png" sizes="48x48" href="../favicon-48.png">
-<link rel="apple-touch-icon" href="../favicon-180.png">
-<link rel="icon" href="../favicon.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../shared/tokens.css">
-<link rel="stylesheet" href="../shared/nav.css">
-<style>
-  /* OPSEC Field Manual-only overrides + layout. Shared tokens/nav/brand live in shared/. */
-  :root{ --accent:var(--amber); --accent-dim:var(--amber-dim); --accent-border:#e8a23d55; }
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout
+  title="Spidergraph — OPSEC Field Manual"
+  description="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence. Habits, not purchases."
+  ogDescription="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence."
+  path="opsec-field-manual/"
+  current="opsec"
+  accent="amber"
+>
+<style slot="head" is:global>
+  /* OPSEC Field Manual-only overrides + layout. Shared tokens/nav/brand live in shared/.
+     is:global — this page creates domain blocks/items/history entries via JS at runtime. */
   body{padding-bottom:80px;}
   .wrap{max-width:1180px;margin:0 auto;}
 
@@ -134,6 +117,13 @@
     font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
     color:var(--muted2); margin-bottom:14px;
   }
+  .card p.small{font-size:12.5px; color:var(--muted2); line-height:1.6; margin:0 0 12px;}
+  .card p.small:last-child{margin-bottom:0;}
+  .history-list{display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;}
+  .history-item{background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:12px;}
+  .history-item .h-date{font-family:'IBM Plex Mono',monospace; color:var(--muted2); font-size:10.5px; margin-bottom:3px;}
+  .history-item .h-summary{color:var(--text); line-height:1.4;}
+  .history-empty{font-size:12px; color:var(--muted2); font-style:italic;}
   svg#radar{display:block; margin:0 auto; width:100%; height:auto; max-width:280px;}
   .score-row{display:flex; justify-content:space-between; align-items:baseline; margin-top:14px;}
   .score-num{font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700;}
@@ -158,32 +148,7 @@
   }
   footer b{color:var(--muted);}
 </style>
-</head>
-<body>
-<nav class="topnav">
-  <div class="topnav-inner">
-    <a href="../" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
-      <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
-      <g stroke="#2b3542" stroke-width="2">
-        <line x1="60" y1="60" x2="60" y2="12"/><line x1="60" y1="60" x2="93.94" y2="26.06"/>
-        <line x1="60" y1="60" x2="108" y2="60"/><line x1="60" y1="60" x2="93.94" y2="93.94"/>
-        <line x1="60" y1="60" x2="60" y2="108"/><line x1="60" y1="60" x2="26.06" y2="93.94"/>
-        <line x1="60" y1="60" x2="12" y2="60"/><line x1="60" y1="60" x2="26.06" y2="26.06"/>
-      </g>
-      <polygon points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
-               fill="#3ddc97" fill-opacity="0.3" stroke="#3ddc97" stroke-width="4"/>
-    </svg><span class="brand-word">SPIDER<span>GRAPH</span></span></a>
-    <a href="../">Home</a><span class="sep">/</span>
-    <a href="../playbook/">Playbook</a><span class="sep">/</span>
-    <a href="../privacy-stack-builder/">Stack Builder</a><span class="sep">/</span>
-    <a href="./" class="current">OPSEC Field Manual</a><span class="sep">/</span>
-    <a href="../broker-removal-tracker/">Broker Removal Tracker</a><span class="sep">/</span>
-    <a href="../breach-check-tracker/">Breach Check Tracker</a><span class="sep">/</span>
-    <a href="../report/">Recommendations Report</a>
-  </div>
-</nav>
-<script src="../shared/nav.js"></script>
-<script src="../shared/persist.js"></script>
+
 <div class="wrap">
 
   <header>
@@ -232,6 +197,13 @@
         <div class="card-title">Export</div>
         <button type="button" id="reportBtn" style="display:block; width:100%; text-align:center; padding:11px; cursor:pointer; background:var(--surface3); border:1px solid var(--border); border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text);">Generate report ↓</button>
       </div>
+
+      <div class="card">
+        <div class="card-title">History</div>
+        <p class="small">Save a dated checkpoint to compare your audit against past versions of itself.</p>
+        <button type="button" id="snapshotBtn" class="reset-btn" style="width:100%; margin-bottom:12px;">Save snapshot</button>
+        <div id="historyList" class="history-list"></div>
+      </div>
     </div>
   </div>
 
@@ -243,7 +215,9 @@
 
 <button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">↑</button>
 
-<script>
+<script src={`${base}shared/persist.js`} is:inline></script>
+<script src={`${base}shared/history.js`} is:inline></script>
+<script is:inline>
 const DOMAINS = [
   {code:"SE", name:"Social Engineering & Human-Layer Defense", items:[
     {t:"I verify sender domains character-by-character before clicking links in unsolicited messages", crit:true},
@@ -556,7 +530,31 @@ function generateReport(){
   URL.revokeObjectURL(url);
 }
 
+const history = spidergraphHistory("spidergraph-opsec-v1");
+
+function renderHistory(){
+  const snapshots = history.list().slice().reverse();
+  const el = document.getElementById("historyList");
+  if(snapshots.length === 0){
+    el.innerHTML = '<div class="history-empty">No snapshots yet — save one to start tracking your audit over time.</div>';
+    return;
+  }
+  el.innerHTML = snapshots.map(s => {
+    const d = new Date(s.date).toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
+    return `<div class="history-item"><div class="h-date">${d}</div><div class="h-summary">${s.summary}</div></div>`;
+  }).join("");
+}
+
+document.getElementById("snapshotBtn").addEventListener("click", () => {
+  const total = Object.keys(state).length;
+  const done = Object.values(state).filter(v => v === true).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const summary = `${done}/${total} controls checked (${pct}%)`;
+  history.save(summary, state);
+  renderHistory();
+});
+
 render();
+renderHistory();
 </script>
-</body>
-</html>
+</BaseLayout>

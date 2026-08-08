@@ -1,34 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
-<title>Spidergraph — Personal Security Program</title>
-<meta name="description" content="A free, open-source privacy and security program — a tiered playbook, four interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
-<meta name="theme-color" content="#0f1419">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Spidergraph — Personal Security Program">
-<meta property="og:description" content="A free, open-source privacy and security program — a tiered playbook, four interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
-<meta property="og:url" content="https://nixbys.github.io/spidergraph/">
-<meta property="og:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spidergraph — Personal Security Program">
-<meta name="twitter:description" content="A free, open-source privacy and security program — a tiered playbook, four interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.">
-<meta name="twitter:image" content="https://nixbys.github.io/spidergraph/favicon-512.png">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
-<link rel="apple-touch-icon" href="favicon-180.png">
-<link rel="icon" href="favicon.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared/tokens.css">
-<link rel="stylesheet" href="shared/nav.css">
-<style>
-  /* Home-page-only overrides + layout. Shared tokens/nav/brand live in shared/. */
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout
+  title="Spidergraph — Personal Security Program"
+  description="A free, open-source privacy and security program — a tiered playbook, six interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking."
+  path=""
+  current="home"
+>
+<style slot="head" is:global>
+  /* Home-page-only overrides + layout. Shared tokens/nav/brand live in shared/.
+     is:global is required: this page's JS creates .mystatus-item elements at runtime
+     (document.createElement), and Astro's default scoped CSS only matches elements
+     present in the template at build time — scoped styles would silently not apply
+     to anything JS renders. Every tool page has the same requirement; see CLAUDE.md. */
   .topnav{margin-bottom:56px;}
   .wrap{max-width:1000px; margin:0 auto;}
 
@@ -52,7 +37,7 @@
   .mystatus-head{display:flex; align-items:baseline; gap:10px; margin-bottom:12px; flex-wrap:wrap;}
   .mystatus-head h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0; color:var(--text);}
   .mystatus-head .hint{font-size:12px; color:var(--muted2);}
-  .mystatus-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+  .mystatus-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
   @media (max-width:900px){.mystatus-grid{grid-template-columns:repeat(2,1fr);}}
   @media (max-width:480px){.mystatus-grid{grid-template-columns:1fr;}}
   .mystatus-item{
@@ -97,6 +82,10 @@
   .card.tool3 .go{color:var(--red);}
   .card.tool4 .card-type{color:var(--blue);}
   .card.tool4 .go{color:var(--blue);}
+  .card.tool5 .card-type{color:var(--amber);}
+  .card.tool5 .go{color:var(--amber);}
+  .card.tool6 .card-type{color:var(--amber);}
+  .card.tool6 .go{color:var(--amber);}
   .card.gen .card-type{color:var(--teal);}
   .card.gen .go{color:var(--teal);}
 
@@ -104,31 +93,7 @@
   .about h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0 0 12px; color:var(--muted);}
   .about p{color:var(--muted2); font-size:13px; line-height:1.7; max-width:680px;}
 </style>
-</head>
-<body>
-<nav class="topnav">
-  <div class="topnav-inner">
-    <a href="./" class="brand"><svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
-      <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
-      <g stroke="#2b3542" stroke-width="2">
-        <line x1="60" y1="60" x2="60" y2="12"/><line x1="60" y1="60" x2="93.94" y2="26.06"/>
-        <line x1="60" y1="60" x2="108" y2="60"/><line x1="60" y1="60" x2="93.94" y2="93.94"/>
-        <line x1="60" y1="60" x2="60" y2="108"/><line x1="60" y1="60" x2="26.06" y2="93.94"/>
-        <line x1="60" y1="60" x2="12" y2="60"/><line x1="60" y1="60" x2="26.06" y2="26.06"/>
-      </g>
-      <polygon points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
-               fill="#3ddc97" fill-opacity="0.3" stroke="#3ddc97" stroke-width="4"/>
-    </svg><span class="brand-word">SPIDER<span>GRAPH</span></span></a>
-  <a href="./" class="current">Home</a><span class="sep">/</span>
-    <a href="playbook/">Playbook</a><span class="sep">/</span>
-    <a href="privacy-stack-builder/">Stack Builder</a><span class="sep">/</span>
-    <a href="opsec-field-manual/">OPSEC Field Manual</a><span class="sep">/</span>
-    <a href="broker-removal-tracker/">Broker Removal Tracker</a><span class="sep">/</span>
-    <a href="breach-check-tracker/">Breach Check Tracker</a><span class="sep">/</span>
-    <a href="report/">Recommendations Report</a>
-  </div>
-</nav>
-<script src="shared/nav.js"></script>
+
 <div class="wrap">
 
   <div class="hero">
@@ -151,42 +116,56 @@
   </div>
 
   <div class="grid">
-    <a class="card doc" href="playbook/">
+    <a class="card doc" href={`${base}playbook/`}>
       <div class="card-top"><span class="card-code">DOC-01</span><span class="card-type">Reference</span></div>
       <h2>Personal Security Playbook</h2>
       <p>Twelve control domains, each tiered Budget → Mid → No-Limit, plus seven incident-response runbooks written in the Detect → Contain → Eradicate → Recover structure security teams actually use.</p>
       <div class="go">Read the playbook →</div>
     </a>
 
-    <a class="card tool" href="privacy-stack-builder/">
+    <a class="card tool" href={`${base}privacy-stack-builder/`}>
       <div class="card-top"><span class="card-code">TOOL-01</span><span class="card-type">Interactive</span></div>
       <h2>Privacy Stack Builder</h2>
       <p>Pick a target tier, select what you currently run across 15 product slots, and see live gap analysis, cost totals, and a radar chart of your coverage — modeled on a PC-part-picker build sheet.</p>
       <div class="go">Open the builder →</div>
     </a>
 
-    <a class="card tool2" href="opsec-field-manual/">
+    <a class="card tool2" href={`${base}opsec-field-manual/`}>
       <div class="card-top"><span class="card-code">TOOL-02</span><span class="card-type">Interactive</span></div>
       <h2>OPSEC Field Manual</h2>
       <p>44 behavioral controls across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence. Habits, not purchases.</p>
       <div class="go">Start the audit →</div>
     </a>
 
-    <a class="card tool3" href="broker-removal-tracker/">
+    <a class="card tool3" href={`${base}broker-removal-tracker/`}>
       <div class="card-top"><span class="card-code">TOOL-03</span><span class="card-type">Interactive</span></div>
       <h2>Broker Removal Tracker</h2>
       <p>Direct links to the official opt-out page for the ~16 highest-traffic people-search sites — Spokeo, BeenVerified, Whitepages, MyLife, and more — with your progress tracked locally as you work through them.</p>
       <div class="go">Start tracking →</div>
     </a>
 
-    <a class="card tool4" href="breach-check-tracker/">
+    <a class="card tool4" href={`${base}breach-check-tracker/`}>
       <div class="card-top"><span class="card-code">TOOL-04</span><span class="card-type">Interactive</span></div>
       <h2>Breach Check Tracker</h2>
       <p>List your own email addresses and aliases, then work through your own quarterly Have I Been Pwned check for each — this page tracks your progress locally, it never looks anything up for you.</p>
       <div class="go">Start tracking →</div>
     </a>
 
-    <a class="card gen" href="report/">
+    <a class="card tool5" href={`${base}digital-legacy-worksheet/`}>
+      <div class="card-top"><span class="card-code">TOOL-05</span><span class="card-type">Interactive</span></div>
+      <h2>Digital Legacy Worksheet</h2>
+      <p>Organize who should be able to reach your accounts in an emergency and where recovery info lives — without ever writing down a live password. Export a working note, not a legal document.</p>
+      <div class="go">Start the worksheet →</div>
+    </a>
+
+    <a class="card tool6" href={`${base}incident-response-card/`}>
+      <div class="card-top"><span class="card-code">TOOL-06</span><span class="card-type">Interactive</span></div>
+      <h2>Incident Response Card</h2>
+      <p>Fill in your own bank, card, and carrier fraud lines once, then print or export a compact card with the first three things to do — ready before you need it under pressure.</p>
+      <div class="go">Build your card →</div>
+    </a>
+
+    <a class="card gen" href={`${base}report/`}>
       <div class="card-top"><span class="card-code">DOC-02</span><span class="card-type">Generated</span></div>
       <h2>Recommendations Report</h2>
       <p>Top picks per category, best practices to close any gap to 100%, and full source documentation — both the research trail behind this project and where to keep learning going forward.</p>
@@ -196,11 +175,11 @@
 
   <div class="about">
     <h3>How the pieces connect</h3>
-    <p>The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC Field Manual audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either one rather than reading the static version here if you want your own results. The Broker Removal Tracker and Breach Check Tracker are narrower by design: flat checklists that track your own progress against real external sites and export their own plain-text checklist. Nothing you enter in any tool leaves your browser; there's no backend, no account, and no tracking.</p>
+    <p>The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC Field Manual audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either one rather than reading the static version here if you want your own results. The Broker Removal Tracker, Breach Check Tracker, Digital Legacy Worksheet, and Incident Response Card are narrower by design: flat checklists and worksheets that track your own progress and export their own plain-text (or printable) output, rather than scoring you against the Playbook's domains. Nothing you enter in any tool leaves your browser; there's no backend, no account, and no tracking.</p>
   </div>
 </div>
-<script src="shared/persist.js"></script>
-<script>
+<script src={`${base}shared/persist.js`} is:inline></script>
+<script define:vars={{ base }} is:inline>
 (function(){
   function timeAgo(iso){
     if(!iso) return null;
@@ -220,29 +199,47 @@
   const TIER_NAMES = {1:"Budget", 2:"Mid", 3:"No-Limit"};
 
   const TOOLS = [
-    {key:"spidergraph-stack-builder-v1", label:"Stack Builder", href:"privacy-stack-builder/", accent:"tool-teal",
+    {key:"spidergraph-stack-builder-v1", label:"Stack Builder", href: base + "privacy-stack-builder/", accent:"tool-teal",
       summarize(data){
         if(!data || !data.state) return "Not started yet";
         const count = Object.keys(data.state).length;
         const tier = TIER_NAMES[data.target] || "—";
         return `Target: ${tier} tier · ${count} slots configured`;
       }},
-    {key:"spidergraph-opsec-v1", label:"OPSEC Field Manual", href:"opsec-field-manual/", accent:"tool-amber",
+    {key:"spidergraph-opsec-v1", label:"OPSEC Field Manual", href: base + "opsec-field-manual/", accent:"tool-amber",
       summarize(data){
         const p = data ? pctChecked(data) : null;
         return p ? `${p.done}/${p.total} controls checked (${p.pct}%)` : "Not started yet";
       }},
-    {key:"spidergraph-broker-tracker-v1", label:"Broker Removal Tracker", href:"broker-removal-tracker/", accent:"tool-red",
+    {key:"spidergraph-broker-tracker-v1", label:"Broker Removal Tracker", href: base + "broker-removal-tracker/", accent:"tool-red",
       summarize(data){
         const p = data ? pctChecked(data) : null;
         return p ? `${p.done}/${p.total} sites requested (${p.pct}%)` : "Not started yet";
       }},
-    {key:"spidergraph-breach-check-v1", label:"Breach Check Tracker", href:"breach-check-tracker/", accent:"tool-blue",
+    {key:"spidergraph-breach-check-v1", label:"Breach Check Tracker", href: base + "breach-check-tracker/", accent:"tool-blue",
       summarize(data){
         if(!data || !Array.isArray(data) || data.length === 0) return "Not started yet";
         const done = data.filter(it => it.checked).length;
         const pct = Math.round((done / data.length) * 100);
         return `${done}/${data.length} addresses checked (${pct}%)`;
+      }},
+    {key:"spidergraph-digital-legacy-v1", label:"Digital Legacy Worksheet", href: base + "digital-legacy-worksheet/", accent:"tool-amber",
+      summarize(data){
+        if(!data) return "Not started yet";
+        let filled = 0;
+        if((data.contactName || "").trim()) filled++;
+        if((data.contactMethod || "").trim()) filled++;
+        if((data.recoveryLocation || "").trim()) filled++;
+        if(data.emergencyAccess) filled++;
+        if(Array.isArray(data.accounts) && data.accounts.length > 0) filled++;
+        if((data.notes || "").trim()) filled++;
+        return filled === 0 ? "Not started yet" : `${filled}/6 sections filled in`;
+      }},
+    {key:"spidergraph-incident-card-v1", label:"Incident Response Card", href: base + "incident-response-card/", accent:"tool-amber",
+      summarize(data){
+        if(!data) return "Not started yet";
+        const filled = [data.bankLine, data.cardLine, data.carrierLine, data.policeLine].filter(v => (v || "").trim()).length;
+        return filled === 0 ? "Not started yet" : `${filled}/4 numbers filled in`;
       }},
   ];
 
@@ -265,5 +262,4 @@
   });
 })();
 </script>
-</body>
-</html>
+</BaseLayout>

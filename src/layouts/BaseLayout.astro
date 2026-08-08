@@ -1,0 +1,64 @@
+---
+// Shared page shell: head boilerplate + nav. This is what used to be copy-pasted into
+// six-then-nine inline <style>/<head> blocks — see SESSION-NOTES.md for the history.
+// Each page still owns its own visual layout via the "styles" slot (page-specific CSS is
+// legitimately different per tool) and its body content via the default slot.
+import Nav from '../components/Nav.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  ogDescription?: string;
+  path: string; // e.g. "playbook/" — used for the canonical/og:url and Nav's `current`-adjacent link building
+  current: 'home' | 'playbook' | 'report' | 'stack-builder' | 'opsec' | 'broker-tracker' | 'breach-check' | 'digital-legacy' | 'incident-response';
+  accent?: 'blue' | 'teal' | 'amber' | 'red' | 'none';
+  noPrint?: boolean;
+}
+const { title, description, ogDescription = description, path, current, accent = 'none', noPrint = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const canonical = `https://nixbys.github.io${base}${path}`;
+const accentVar: Record<string, string> = {
+  blue: ':root{ --accent:var(--blue); --accent-dim:var(--blue-dim); --accent-border:#5b8def55; }',
+  teal: ':root{ --accent:var(--teal); --accent-dim:var(--teal-dim); --accent-border:#3ddc9755; }',
+  amber: ':root{ --accent:var(--amber); --accent-dim:var(--amber-dim); --accent-border:#e8a23d55; }',
+  red: ':root{ --accent:var(--red); --accent-dim:var(--red-dim); --accent-border:#e0596b55; }',
+  none: '',
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
+<title>{title}</title>
+<meta name="description" content={description}>
+<meta name="theme-color" content="#0f1419">
+<meta property="og:type" content="website">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={ogDescription}>
+<meta property="og:url" content={canonical}>
+<meta property="og:image" content={`https://nixbys.github.io${base}favicon-512.png`}>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={ogDescription}>
+<meta name="twitter:image" content={`https://nixbys.github.io${base}favicon-512.png`}>
+<link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`}>
+<link rel="icon" type="image/png" sizes="16x16" href={`${base}favicon-16.png`}>
+<link rel="icon" type="image/png" sizes="32x32" href={`${base}favicon-32.png`}>
+<link rel="icon" type="image/png" sizes="48x48" href={`${base}favicon-48.png`}>
+<link rel="apple-touch-icon" href={`${base}favicon-180.png`}>
+<link rel="icon" href={`${base}favicon.ico`}>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href={`${base}shared/tokens.css`}>
+<link rel="stylesheet" href={`${base}shared/nav.css`}>
+{accentVar[accent] && <style set:html={accentVar[accent]} />}
+<slot name="head" />
+</head>
+<body>
+<Nav current={current} noPrint={noPrint} />
+<slot />
+</body>
+</html>
