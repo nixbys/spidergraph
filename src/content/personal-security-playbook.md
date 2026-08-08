@@ -1,7 +1,7 @@
 # Personal Security Playbook
 ### Budget → No-Limit, Zero to Full Coverage
 
-Modeled on the structure real security teams use — domain-by-domain controls, tiered by investment, backed by incident-response runbooks for when prevention fails. This is the reference document; the companion `privacy-stack-builder.html` is the interactive tool for auditing your current setup against it.
+Modeled on the structure real security teams use — domain-by-domain controls, tiered by investment, backed by incident-response runbooks for when prevention fails. This is the reference document; the companion **Stack Builder** is the interactive tool for auditing your current setup against it.
 
 ---
 

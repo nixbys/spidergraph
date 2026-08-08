@@ -1,7 +1,7 @@
 # Recommendations Report
 ### Synthesized from the Personal Security Playbook, Stack Builder, and OPSEC Field Manual
 
-This is the capstone document — it pulls the highly-recommended picks and best-practice guidance out of the other three files into one report, and documents exactly where every claim in this project came from. Both interactive tools (`privacy-stack-builder.html` and `opsec-field-manual.html`) now also have a **Generate Report** button that exports a version of this same report reflecting your actual live selections — this document is the reference version; theirs is the personalized one.
+This is the capstone document — it pulls the highly-recommended picks and best-practice guidance out of the other three files into one report, and documents exactly where every claim in this project came from. Both interactive tools (the **Stack Builder** and **OPSEC Field Manual**) also have a **Generate Report** button that exports a version of this same report reflecting your actual live selections — this document is the reference version; theirs is the personalized one.
 
 ---
 
@@ -66,7 +66,7 @@ Organized to match the OPSEC Field Manual's six domains. If a domain isn't at 10
 
 ## Part 3: Sources This Report Draws On
 
-### Primary methodology sources (the four requested at the start of this project)
+### Primary methodology sources (the four foundational sources this project synthesizes)
 - **Privacy Guides** — [privacyguides.org](https://www.privacyguides.org) — tool recommendations and comparison criteria; most frequently updated of the four, treated as source of truth for "which product"
 - **The New Oil** — [thenewoil.org](https://thenewoil.org) — sequencing/tiering philosophy (Most/Moderately/Less Important framing adapted into this project's Budget/Mid/No-Limit tiers)
 - **IntelTechniques (Michael Bazzell)** — [inteltechniques.com](https://inteltechniques.com) — OSINT self-audit methodology, the "Extreme Privacy" workbook approach behind the OSINT/username-reuse guidance throughout this project
