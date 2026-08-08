@@ -3,7 +3,7 @@
 **Live site: https://nixbys.github.io/spidergraph/**
 
 A self-contained, client-side privacy and security program: a tiered reference playbook,
-four interactive audit tools, a generated-report mechanism, and a live coverage
+six interactive audit tools, a generated-report mechanism, and a live coverage
 visualization — no backend, no accounts, no tracking. Named after its own signature
 visual: a radar chart that plots your real coverage across every security domain as one
 shape.
@@ -18,13 +18,15 @@ shape.
 | OPSEC Field Manual | `/opsec-field-manual/` | Interactive tool — 44 behavioral controls across 6 domains (social engineering, physical security, legal documentation, operational discipline, incident readiness, maintenance cadence). Habits, not purchases |
 | Broker Removal Tracker | `/broker-removal-tracker/` | Interactive tool — self-audit checklist across the 16 highest-traffic people-search/background-check sites, with a direct link to each site's own official opt-out page and progress tracked locally |
 | Breach Check Tracker | `/breach-check-tracker/` | Interactive tool — add your own email addresses/aliases and track your own quarterly Have I Been Pwned check for each one; this page never performs a lookup itself, it only remembers what you've checked |
+| Digital Legacy Worksheet | `/digital-legacy-worksheet/` | Interactive tool — a local-only worksheet for your trusted contact, where recovery info lives, and your password manager's emergency-access status; exports a working note, never a live password |
+| Incident Response Card | `/incident-response-card/` | Interactive tool — fill in your own bank/card/carrier/police fraud lines once, then print or export a compact card with the Playbook's "first 15 minutes" steps |
 | Recommendations Report | `/report/` | Generated capstone doc — top pick per category, best practices to close any gap to 100%, and full source documentation. Both audit tools can also export a personalized version of this same report reflecting your live selections |
 
 The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC
-Field Manual audit your actual setup against it; the Broker Removal Tracker and Breach Check
-Tracker are narrower by design — flat checklists tracking your own progress against real,
-external sites, not domain-scored against the Playbook, and neither one aggregates data about
-anyone else. Nothing entered in any tool ever leaves your browser.
+Field Manual audit your actual setup against it; the other four interactive tools are narrower
+by design — flat checklists and worksheets tracking your own progress against real, external
+sites or your own emergency-preparedness info, never domain-scored against the Playbook and
+never aggregating data about anyone else. Nothing entered in any tool ever leaves your browser.
 
 **Deliberately out of scope, by design**: this project only ever helps a user audit and
 reduce *their own* exposure. It does not include, and should not grow, any feature that
@@ -33,60 +35,71 @@ Broker Removal Tracker exists to help users escape, not emulate.
 
 ## Structure
 
+Built with [Astro](https://astro.build) (static output only — no server, no SSR adapter). The
+site started as plain hand-duplicated HTML across 9 pages and migrated to Astro once that
+duplication (a full copy of the nav/brand markup in every page) became real, felt friction —
+see `CLAUDE.md` and `SESSION-NOTES.md` for the trigger and the full history.
+
 ```
-docs/
-├── index.html                                 # hub / landing page, served at /
-├── playbook/index.html                        # renders personal-security-playbook.md, served at /playbook/
-├── report/index.html                          # renders recommendations-report.md, served at /report/
-├── privacy-stack-builder/index.html            # interactive product/tool picker + radar chart, served at /privacy-stack-builder/
-├── opsec-field-manual/index.html               # interactive behavioral/OPSEC self-audit + radar chart, served at /opsec-field-manual/
-├── broker-removal-tracker/index.html           # interactive data-broker opt-out checklist (no radar — flat list, not domain-scored), served at /broker-removal-tracker/
-├── breach-check-tracker/index.html             # interactive HIBP self-check tracker (no radar, user-managed list), served at /breach-check-tracker/
-├── shared/                                     # tokens.css, nav.css, nav.js, persist.js, doc-page.css, doc-page.js — linked by all seven pages, no build step
-├── personal-security-playbook.md               # source content for the playbook page
-├── recommendations-report.md                   # source content for the report page
-├── logo-mark.svg, logo-lockup.svg, favicon.svg, favicon-*.png, favicon.ico  # brand assets
+src/
+├── pages/                              # one folder per route → clean URL, no .html
+│   ├── index.astro                     # hub / landing page
+│   ├── playbook/index.astro            # compiles personal-security-playbook.md to HTML at build time
+│   ├── report/index.astro              # compiles recommendations-report.md to HTML at build time
+│   ├── privacy-stack-builder/index.astro
+│   ├── opsec-field-manual/index.astro
+│   ├── broker-removal-tracker/index.astro
+│   ├── breach-check-tracker/index.astro
+│   ├── digital-legacy-worksheet/index.astro
+│   └── incident-response-card/index.astro
+├── layouts/BaseLayout.astro            # shared <head> + nav for every page
+├── components/Nav.astro                # the one copy of the brand SVG + top nav + Tools ▾ dropdown
+└── content/                            # markdown source — edit these, not the .astro files
+    ├── personal-security-playbook.md
+    └── recommendations-report.md
+public/                                 # served as-is at the site root
+├── shared/                             # tokens.css, nav.css, nav.js, persist.js, history.js, doc-page.css, doc-page.js
+├── logo-mark.svg, logo-lockup.svg, favicon.svg, favicon-*.png, favicon.ico
 ├── robots.txt, sitemap.xml
-└── spidergraph-demo.gif                        # real Stack Builder screen recording (radar chart filling from a partial to a fully covered build), for social/launch posts
-LICENSE                                         # MIT
-.github/workflows/deploy.yml                    # GitHub Pages deploy on push to main
+└── spidergraph-demo.gif                # real Stack Builder screen recording, for social/launch posts
+astro.config.mjs                        # site + base path config, build output → dist/
+LICENSE                                 # MIT
+.github/workflows/deploy.yml            # npm ci && npm run build, deploy dist/ to GitHub Pages
 ```
 
-Every page except the home page (`playbook/`, `report/`, `privacy-stack-builder/`,
-`opsec-field-manual/`, `broker-removal-tracker/`, `breach-check-tracker/`) is its own directory
-with an `index.html`, so the served URL never has a `.html` extension. This means each of
-those six files is one directory level deeper than `docs/index.html` — their asset links and
-inter-page nav links use `../` to reach files at the `docs/` root.
+`dist/` (Astro's build output) is gitignored and regenerated on every deploy — never hand-edit
+anything there. Shared assets (design tokens, nav, `localStorage` helpers) live in `public/shared/`
+and are linked by every page via `src/layouts/BaseLayout.astro`/`src/components/Nav.astro`, which
+resolve asset URLs through Astro's `import.meta.env.BASE_URL` — no more hand-tracking `../` by
+directory depth per page.
 
-The design tokens, nav bar CSS/JS, the localStorage helper, and (for the two markdown-rendering
-pages) the doc-shell CSS/JS live in `docs/shared/` and are linked by all seven HTML files via
-plain `<link>`/`<script src>` — still zero build step, just no longer copy-pasted. What's left
-duplicated per-page: the inline brand SVG markup and the favicon `<link>` lines, since their
-paths differ by directory depth and there's no include mechanism to inject markup without a
-build step — see the Astro note below.
-
-All four interactive tools (Stack Builder, OPSEC Field Manual, Broker Removal Tracker, Breach
-Check Tracker) save your selections to `localStorage` and reload them on your next visit, with
-a `Reset` button in each to clear it — nothing here means a backend or account, `localStorage`
-never leaves your browser.
+All six interactive tools (Stack Builder, OPSEC Field Manual, Broker Removal Tracker, Breach
+Check Tracker, Digital Legacy Worksheet, Incident Response Card) save your progress to
+`localStorage` and reload it on your next visit, with a `Reset` button in each to clear it —
+nothing here means a backend or account, `localStorage` never leaves your browser. Each also has
+a "Save snapshot" history card for dated checkpoints, separate from the live autosave.
 
 ## Local preview
 
-Because the doc pages (`playbook/`, `report/`) fetch their markdown at runtime, opening the
-HTML files directly (`file://`) will not load the content — serve the `docs/` folder over
-local HTTP instead:
-
 ```bash
-cd docs && python3 -m http.server 8000
-# then visit http://localhost:8000
+npm install
+npm run dev            # hot-reloading dev server at http://localhost:4321/spidergraph/
+# — or, to check the exact production build —
+npm run build && npm run preview
 ```
+
+Markdown now compiles to HTML at build time (not fetched client-side), so there's no more
+`file://`-doesn't-work caveat for the Playbook/Report pages specifically — but this is still an
+Astro site, not flat files, so use one of the commands above rather than opening `dist/*.html`
+directly.
 
 ## Deployment
 
-Deployed automatically via GitHub Actions to GitHub Pages (`.github/workflows/deploy.yml`)
-on every push to `main`, publishing the `docs/` folder directly — no build step. If this
-project ever grows past the current seven hand-duplicated page shells, Astro is the planned
-upgrade path for shared nav/component reuse; not needed at the current size.
+Deployed automatically via GitHub Actions to GitHub Pages (`.github/workflows/deploy.yml`) on
+every push to `main`: the workflow installs dependencies, runs `npm run build`, and publishes
+`dist/` — Astro's static build output — as the Pages artifact. The top nav is `Home / Playbook /
+Tools ▾ / Recommendations Report`, with all six interactive tools grouped inside a native
+`<details>` dropdown rather than as flat top-level links.
 
 ## Brand
 
@@ -94,11 +107,14 @@ upgrade path for shared nav/component reuse; not needed at the current size.
 generically as a chart-type synonym (radar/spider charts) across various dashboarding
 tools, and as an unrelated font marketplace, but not as a privacy/security product brand.
 The logo mark is an original geometric construction (not derived from any existing logo)
-built directly from the same radar-chart math the tools render live — see `logo-mark.svg`.
-Each interactive tool has its own accent color so a user can tell them apart at a glance:
-Stack Builder = teal, OPSEC Field Manual = amber, Broker Removal Tracker = red; the Playbook
-is blue and the Report is teal. The Breach Check Tracker reuses the Playbook's blue (the
-palette only has four accents — Report already reuses Stack Builder's teal on the same basis).
+built directly from the same radar-chart math the tools render live — see `public/logo-mark.svg`,
+drawn once in `src/components/Nav.astro`.
+Each interactive tool has its own accent color so a user can tell them apart at a glance —
+though the palette only has four accents and reuse is now the norm past the first four pages:
+Stack Builder = teal, OPSEC Field Manual = amber, Broker Removal Tracker = red, Breach Check
+Tracker = blue (reuses Playbook's), Digital Legacy Worksheet = amber and Incident Response
+Card = amber (both reuse OPSEC's, since both operationalize an OPSEC Field Manual domain — LEG
+and IR respectively); the Playbook is blue and the Report is teal.
 
 ## Maintenance
 

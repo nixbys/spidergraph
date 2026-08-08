@@ -1,11 +1,12 @@
-// Shared behavior for the two markdown-rendering pages (playbook/, report/):
-// fetches the page's source .md (from #content's data-src attribute), renders it
-// via marked.js, builds the section-jump dropdown, and wires the scroll-to-top button.
+// Shared behavior for the two markdown-rendering pages (playbook/, report/).
 //
-// IMPORTANT: marked.js must already be loaded (non-deferred, in <head>) before this
-// script runs, and this script itself must not be deferred — it must execute inline,
-// after #content exists in the DOM, same as the code it replaces. See the marked.js
-// defer gotcha noted in CLAUDE.md / project memory.
+// 2026-08-05 Astro migration: markdown now compiles to HTML at BUILD time (see
+// src/pages/playbook/index.astro / report/index.astro, which import `marked` as an npm
+// dependency and render server-side) instead of being fetched and parsed client-side.
+// That means the "must be served over HTTP, not opened as a file://" caveat this file used
+// to guard against no longer applies — #content already has its final HTML when this script
+// runs. This file now only builds the section-jump dropdown and wires the scroll-to-top
+// button; it no longer fetches or calls marked.parse() itself.
 (function(){
   function slugify(text){
     return text.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
@@ -34,16 +35,7 @@
     });
   }
 
-  const contentEl = document.getElementById('content');
-  const src = contentEl.getAttribute('data-src');
-
-  fetch(src)
-    .then(r => { if(!r.ok) throw new Error('fetch failed'); return r.text(); })
-    .then(md => { contentEl.innerHTML = marked.parse(md); buildSectionJump(); })
-    .catch(() => {
-      contentEl.innerHTML =
-        '<div class="loading">Could not load ' + src.split('/').pop() + ' — this page needs to be served over HTTP (e.g. GitHub Pages or a local server), not opened directly as a file.</div>';
-    });
+  buildSectionJump();
 
   const scrollBtn = document.getElementById('scrollTopBtn');
   window.addEventListener('scroll', () => {

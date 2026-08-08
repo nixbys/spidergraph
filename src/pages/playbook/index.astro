@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { marked } from 'marked';
+// `?raw` is a Vite import suffix — it bundles the file's text content as a plain string
+// at build time rather than reading from disk at runtime. Markdown compiles to HTML here,
+// at BUILD time, replacing the old client-side fetch() + marked.parse() (see
+// public/shared/doc-page.js for what's left of that flow: just section-jump + scroll-to-top
+// wiring, run against HTML that's already present).
+import md from '../../content/personal-security-playbook.md?raw';
+
+const contentHtml = marked.parse(md) as string;
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout
+  title="Spidergraph — Playbook"
+  description="The Personal Security Playbook: twelve control domains tiered Budget to No-Limit, plus incident-response runbooks, sourced from Privacy Guides, The New Oil, IntelTechniques, and Techlore."
+  path="playbook/"
+  current="playbook"
+  accent="blue"
+>
+<link rel="stylesheet" href={`${base}shared/doc-page.css`} slot="head">
+<div class="doc-wrap">
+  <div class="doc-head">
+    <div class="eyebrow">Reference document</div>
+    <select id="sectionJump" class="section-jump" aria-label="Jump to section">
+      <option value="">Jump to section…</option>
+    </select>
+  </div>
+  <div id="content" set:html={contentHtml}></div>
+</div>
+<button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">↑</button>
+<script src={`${base}shared/doc-page.js`} is:inline></script>
+</BaseLayout>

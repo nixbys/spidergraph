@@ -1,0 +1,432 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout
+  title="Spidergraph — Digital Legacy Worksheet"
+  description="A local-only worksheet for organizing who should be able to reach your accounts in an emergency, without ever writing down a live password. Nothing you enter here leaves your browser."
+  ogDescription="A local-only worksheet for organizing who should be able to reach your accounts in an emergency, without ever writing down a live password."
+  path="digital-legacy-worksheet/"
+  current="digital-legacy"
+  accent="amber"
+>
+<style slot="head" is:global>
+  /* Digital Legacy Worksheet-only overrides + layout. Shared tokens/nav/brand live in shared/.
+     is:global — this page creates account rows/history entries via JS at runtime. */
+  body{padding-bottom:80px;}
+  .wrap{max-width:1180px; margin:0 auto;}
+
+  header{
+    display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between; align-items:flex-end;
+    border-bottom:1px solid var(--border); padding-bottom:24px; margin-bottom:24px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--amber); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .eyebrow::before{content:"";width:6px;height:6px;background:var(--amber);border-radius:1px; display:inline-block;}
+  h1{font-family:'Space Grotesk', sans-serif; font-size:clamp(28px,4vw,42px); font-weight:700; margin:0;
+    letter-spacing:-.01em; line-height:1.05;}
+  h1 span{color:var(--muted); font-weight:500;}
+  .sub{color:var(--muted); font-size:14.5px; margin-top:10px; max-width:600px; line-height:1.5;}
+
+  .reset-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted);
+    background:var(--surface); border:1px solid var(--border); border-radius:8px;
+    padding:10px 14px; cursor:pointer; height:fit-content; letter-spacing:.03em;
+    transition:all .15s ease; appearance:none; -webkit-appearance:none; margin:0;
+  }
+  .reset-btn:hover{color:var(--text); border-color:#374252;}
+  .reset-btn:focus-visible, #exportBtn:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
+
+  .intro-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:20px 22px; margin-bottom:24px; font-size:13.5px; line-height:1.65; color:var(--muted2);
+  }
+  .intro-card b{color:var(--text);}
+  .intro-card .warn{
+    display:flex; gap:10px; align-items:flex-start; margin-top:14px; padding:12px 14px;
+    background:var(--red-dim); border:1px solid #e0596b55; border-radius:10px; color:var(--text); font-size:13px; line-height:1.55;
+  }
+  .intro-card .warn b{color:var(--red);}
+  .intro-card .links{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
+  .intro-card .links a{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--text); text-decoration:none;
+    background:var(--surface2); border:1px solid var(--border); border-radius:7px; padding:8px 12px;
+    display:inline-flex; align-items:center; gap:6px; transition:all .15s ease;
+  }
+  .intro-card .links a:hover{border-color:#374252; background:var(--surface3);}
+
+  .layout{display:grid; grid-template-columns:1fr 320px; gap:28px;}
+  @media (max-width:900px){.layout{grid-template-columns:1fr;} .sidebar{order:-1;}}
+
+  .form-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:22px; margin-bottom:16px;
+  }
+  .form-card-title{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted2); margin-bottom:16px;
+  }
+  .field{margin-bottom:16px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{display:block; font-size:13px; font-weight:500; color:var(--text); margin-bottom:6px;}
+  .field .hint{display:block; font-size:12px; color:var(--muted2); margin-top:5px; line-height:1.5;}
+  .field input[type=text], .field textarea, .field select{
+    width:100%; background:var(--surface2); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:10px 12px; font-family:'IBM Plex Sans',sans-serif; font-size:13.5px;
+  }
+  .field textarea{resize:vertical; min-height:70px; font-family:'IBM Plex Sans',sans-serif;}
+  .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
+  .radio-group{display:flex; flex-direction:column; gap:8px;}
+  .radio-option{display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--text); cursor:pointer;}
+  .radio-option input{margin-top:3px; accent-color:var(--amber);}
+  .radio-option .opt-label{font-weight:500;}
+  .radio-option .opt-desc{display:block; font-size:12px; color:var(--muted2); margin-top:2px;}
+
+  .acct-list{display:flex; flex-direction:column; gap:8px; margin-bottom:10px;}
+  .acct-row{display:flex; gap:8px; align-items:center; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 10px;}
+  .acct-row span{flex:1; font-size:13px; word-break:break-word;}
+  .acct-row button{
+    background:none; border:none; color:var(--muted2); cursor:pointer; font-size:15px;
+    padding:2px 6px; flex-shrink:0; appearance:none; -webkit-appearance:none; line-height:1;
+  }
+  .acct-row button:hover{color:var(--red);}
+  .add-row{display:flex; gap:8px;}
+  .add-row input{
+    flex:1; background:var(--surface2); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:9px 12px; font-family:'IBM Plex Sans',sans-serif; font-size:13.5px;
+  }
+  .add-row input:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
+  .add-row button{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:#0f1419;
+    background:var(--amber); border:1px solid var(--amber); border-radius:8px; padding:9px 16px;
+    cursor:pointer; white-space:nowrap; appearance:none; -webkit-appearance:none;
+  }
+  .add-row button:hover{opacity:.9;}
+  .no-accounts{font-size:12.5px; color:var(--muted2); font-style:italic;}
+
+  .sidebar{position:sticky; top:80px; align-self:start; display:flex; flex-direction:column; gap:16px;}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px;}
+  .card-title{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted2); margin-bottom:14px;}
+  .score-row{display:flex; justify-content:space-between; align-items:baseline; margin-top:14px;}
+  .score-num{font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700;}
+  .score-label{font-size:12px; color:var(--muted);}
+  .card p.small{font-size:12.5px; color:var(--muted2); line-height:1.6; margin:0 0 12px;}
+  .card p.small:last-child{margin-bottom:0;}
+  .history-list{display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;}
+  .history-item{background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:12px;}
+  .history-item .h-date{font-family:'IBM Plex Mono',monospace; color:var(--muted2); font-size:10.5px; margin-bottom:3px;}
+  .history-item .h-summary{color:var(--text); line-height:1.4;}
+  .history-empty{font-size:12px; color:var(--muted2); font-style:italic;}
+  .card a.card-link{
+    display:block; text-align:center; padding:11px; cursor:pointer; background:var(--surface3);
+    border:1px solid var(--border); border-radius:8px; font-family:'IBM Plex Mono',monospace;
+    font-size:12px; color:var(--text); text-decoration:none; transition:all .15s ease;
+  }
+  .card a.card-link:hover{border-color:#374252;}
+  button#exportBtn{width:100%;}
+  .save-indicator{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted2); margin-top:10px; min-height:14px;}
+
+  footer{margin-top:32px; padding-top:20px; border-top:1px solid var(--border);
+    font-size:12.5px; color:var(--muted2); line-height:1.6;}
+  footer b{color:var(--muted);}
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="eyebrow">Worksheet · Domain 11: Legal &amp; Documentation</div>
+      <h1>Digital Legacy <span>Worksheet</span></h1>
+      <div class="sub">Get a trusted person oriented before you need them to be — where things are, who to contact, and how to reach your accounts without you ever writing down a live password.</div>
+    </div>
+    <button type="button" class="reset-btn" id="resetBtn">Reset worksheet</button>
+  </header>
+
+  <div class="intro-card">
+    <b>Why this exists:</b> Domain 11 of the Playbook recommends "a written, offline document listing account recovery info location for a trusted person, without exposing live credentials." This turns that recommendation into something you actually fill out. It is <b>not</b> a will, a legal document, or a substitute for an estate attorney — it's a working note.
+    <div class="warn"><b>Never write an actual password here.</b> Use your password manager's built-in emergency access feature (Bitwarden and Proton Pass both support a trusted-contact request-and-wait-period model) so a trusted person can get in without a live credential ever existing in writing.</div>
+    <div class="links">
+      <a href="../playbook/#11-legal-documentation">📖 Read Domain 11 in the Playbook →</a>
+      <a href="../privacy-stack-builder/">⚙️ Compare password managers with emergency access →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="form-card">
+        <div class="form-card-title">Trusted contact</div>
+        <div class="field">
+          <label for="contactName">Who should be contacted in an emergency?</label>
+          <input type="text" id="contactName" placeholder="Name or relationship (e.g. &quot;my sister, Jamie&quot;)" maxlength="120">
+        </div>
+        <div class="field">
+          <label for="contactMethod">How will they know to act, and how do you reach them?</label>
+          <textarea id="contactMethod" placeholder="e.g. a note in my will names them; their number is saved in my phone under..." maxlength="500"></textarea>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-title">Where recovery info lives</div>
+        <div class="field">
+          <label for="recoveryLocation">Physical or logical location of recovery materials</label>
+          <textarea id="recoveryLocation" placeholder="e.g. fireproof document safe in the hall closet; safe deposit box at [bank], key location..." maxlength="500"></textarea>
+          <span class="hint">Recovery codes, a printed list of accounts, attorney contact info — the location, not the credentials themselves.</span>
+        </div>
+        <div class="field">
+          <label>Password manager emergency access</label>
+          <div class="radio-group" id="emergencyAccessGroup">
+            <label class="radio-option"><input type="radio" name="ea" value="not-set-up"><span><span class="opt-label">Not set up yet</span><span class="opt-desc">The single highest-leverage step this worksheet points to — see the Stack Builder link above.</span></span></label>
+            <label class="radio-option"><input type="radio" name="ea" value="set-up-untested"><span><span class="opt-label">Set up, not tested</span><span class="opt-desc">Configured in Bitwarden/Proton Pass but never actually verified end-to-end.</span></span></label>
+            <label class="radio-option"><input type="radio" name="ea" value="set-up-tested"><span><span class="opt-label">Set up and tested</span><span class="opt-desc">Your trusted contact has actually confirmed they can request and receive access.</span></span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-title">Accounts to flag for your trusted contact</div>
+        <div class="field" style="margin-bottom:10px;">
+          <span class="hint" style="margin-top:0;">Labels only — email, financial, password manager, etc. Never an actual username, password, or account number.</span>
+        </div>
+        <div id="acctList" class="acct-list"></div>
+        <div id="noAccounts" class="no-accounts" hidden>No accounts flagged yet.</div>
+        <div class="add-row">
+          <input type="text" id="acctInput" placeholder="e.g. Primary email (Proton), Password manager (Bitwarden)" aria-label="Account label to flag" maxlength="120">
+          <button type="button" id="acctAddBtn">Add</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-title">Additional notes</div>
+        <div class="field">
+          <textarea id="notes" placeholder="Anything else your trusted contact would need to know — attorney contact, business/creator entity details, anything from Domain 11 that applies to you." maxlength="1000" style="min-height:100px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="card">
+        <div class="card-title">Completeness</div>
+        <div class="score-row">
+          <div>
+            <div class="score-num" id="scoreNum">0/6</div>
+            <div class="score-label">sections filled in</div>
+          </div>
+        </div>
+        <div class="save-indicator" id="saveIndicator"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Companion tool</div>
+        <p class="small">The other half of "what happens if something goes wrong" is the Incident Response Card — the numbers you call, not the person who calls them for you.</p>
+        <a class="card-link" href="../incident-response-card/">Incident Response Card →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Export</div>
+        <button type="button" id="exportBtn" class="reset-btn">Export worksheet ↓</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">History</div>
+        <p class="small">Save a dated checkpoint to compare completeness over time.</p>
+        <button type="button" id="snapshotBtn" class="reset-btn" style="width:100%; margin-bottom:12px;">Save snapshot</button>
+        <div id="historyList" class="history-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <b>Companion pages:</b> the "why" behind this worksheet is Domain 11 of the <b>Playbook</b>. Everything you type here stays in this browser only, in <code>localStorage</code> — nothing is sent anywhere, ever, and this page never asks for or stores an actual password. <b>Reset worksheet</b> clears everything.
+  </footer>
+
+</div>
+
+<script src={`${base}shared/persist.js`} is:inline></script>
+<script src={`${base}shared/history.js`} is:inline></script>
+<script is:inline>
+const store = spidergraphStore("spidergraph-digital-legacy-v1");
+const saved = store.load();
+const savedData = saved ? (saved.data !== undefined ? saved.data : saved) : null;
+
+let state = {
+  contactName: "",
+  contactMethod: "",
+  recoveryLocation: "",
+  emergencyAccess: "",
+  accounts: [],
+  notes: "",
+};
+if(savedData) state = Object.assign(state, savedData);
+
+const el = {
+  contactName: document.getElementById("contactName"),
+  contactMethod: document.getElementById("contactMethod"),
+  recoveryLocation: document.getElementById("recoveryLocation"),
+  notes: document.getElementById("notes"),
+  acctList: document.getElementById("acctList"),
+  noAccounts: document.getElementById("noAccounts"),
+  acctInput: document.getElementById("acctInput"),
+  scoreNum: document.getElementById("scoreNum"),
+  saveIndicator: document.getElementById("saveIndicator"),
+};
+
+el.contactName.value = state.contactName;
+el.contactMethod.value = state.contactMethod;
+el.recoveryLocation.value = state.recoveryLocation;
+el.notes.value = state.notes;
+document.querySelectorAll('input[name="ea"]').forEach(r => { r.checked = (r.value === state.emergencyAccess); });
+
+let saveTimer = null;
+function persist(){
+  store.save(state);
+  el.saveIndicator.textContent = "Saved locally just now";
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => { el.saveIndicator.textContent = ""; }, 2000);
+  renderScore();
+}
+
+function debounce(fn, ms){
+  let t = null;
+  return function(...args){ clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
+}
+const persistDebounced = debounce(persist, 500);
+
+el.contactName.addEventListener("input", () => { state.contactName = el.contactName.value; persistDebounced(); });
+el.contactMethod.addEventListener("input", () => { state.contactMethod = el.contactMethod.value; persistDebounced(); });
+el.recoveryLocation.addEventListener("input", () => { state.recoveryLocation = el.recoveryLocation.value; persistDebounced(); });
+el.notes.addEventListener("input", () => { state.notes = el.notes.value; persistDebounced(); });
+document.querySelectorAll('input[name="ea"]').forEach(r => {
+  r.addEventListener("change", () => { state.emergencyAccess = r.value; persist(); });
+});
+
+function renderAccounts(){
+  el.acctList.innerHTML = "";
+  el.noAccounts.hidden = state.accounts.length > 0;
+  state.accounts.forEach((label, i) => {
+    const row = document.createElement("div");
+    row.className = "acct-row";
+    row.innerHTML = `<span></span><button type="button" aria-label="Remove ${label}" title="Remove">✕</button>`;
+    row.querySelector("span").textContent = label;
+    row.querySelector("button").addEventListener("click", () => {
+      state.accounts.splice(i, 1);
+      renderAccounts();
+      persist();
+    });
+    el.acctList.appendChild(row);
+  });
+}
+
+document.getElementById("acctAddBtn").addEventListener("click", addAccount);
+el.acctInput.addEventListener("keydown", e => { if(e.key === "Enter") addAccount(); });
+function addAccount(){
+  const label = el.acctInput.value.trim();
+  if(!label) return;
+  state.accounts.push(label);
+  el.acctInput.value = "";
+  renderAccounts();
+  persist();
+  el.acctInput.focus();
+}
+
+function renderScore(){
+  let filled = 0;
+  if(state.contactName.trim()) filled++;
+  if(state.contactMethod.trim()) filled++;
+  if(state.recoveryLocation.trim()) filled++;
+  if(state.emergencyAccess) filled++;
+  if(state.accounts.length > 0) filled++;
+  if(state.notes.trim()) filled++;
+  el.scoreNum.textContent = `${filled}/6`;
+}
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  state = {contactName:"", contactMethod:"", recoveryLocation:"", emergencyAccess:"", accounts:[], notes:""};
+  store.clear();
+  el.contactName.value = "";
+  el.contactMethod.value = "";
+  el.recoveryLocation.value = "";
+  el.notes.value = "";
+  document.querySelectorAll('input[name="ea"]').forEach(r => r.checked = false);
+  renderAccounts();
+  renderScore();
+  el.saveIndicator.textContent = "";
+});
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const now = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+  const eaLabels = {"not-set-up":"Not set up yet", "set-up-untested":"Set up, not tested", "set-up-tested":"Set up and tested"};
+  let lines = [];
+  lines.push("DIGITAL LEGACY WORKSHEET — EXPORT");
+  lines.push(`Generated ${now}`);
+  lines.push("This is a working note, not a legal document or a substitute for an attorney.");
+  lines.push("=".repeat(60));
+  lines.push("");
+  lines.push("TRUSTED CONTACT");
+  lines.push(state.contactName || "(not filled in)");
+  lines.push(state.contactMethod || "");
+  lines.push("");
+  lines.push("WHERE RECOVERY INFO LIVES");
+  lines.push(state.recoveryLocation || "(not filled in)");
+  lines.push("");
+  lines.push("PASSWORD MANAGER EMERGENCY ACCESS");
+  lines.push(eaLabels[state.emergencyAccess] || "(not set)");
+  lines.push("");
+  lines.push("ACCOUNTS FLAGGED");
+  if(state.accounts.length === 0){
+    lines.push("(none yet)");
+  } else {
+    state.accounts.forEach(a => lines.push(`- ${a}`));
+  }
+  lines.push("");
+  lines.push("NOTES");
+  lines.push(state.notes || "(none)");
+  lines.push("");
+  lines.push("-".repeat(60));
+  lines.push("Reminder: no actual password or account number should ever appear in this");
+  lines.push("file. Use your password manager's emergency access feature instead — see");
+  lines.push("Domain 11 of the Playbook and the Stack Builder for details.");
+
+  const blob = new Blob([lines.join("\n")], {type:"text/plain"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `digital-legacy-worksheet-${Date.now()}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+const history = spidergraphHistory("spidergraph-digital-legacy-v1");
+
+function renderHistory(){
+  const snapshots = history.list().slice().reverse();
+  const el = document.getElementById("historyList");
+  if(snapshots.length === 0){
+    el.innerHTML = '<div class="history-empty">No snapshots yet — save one to start tracking completeness over time.</div>';
+    return;
+  }
+  el.innerHTML = snapshots.map(s => {
+    const d = new Date(s.date).toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
+    return `<div class="history-item"><div class="h-date">${d}</div><div class="h-summary">${s.summary}</div></div>`;
+  }).join("");
+}
+
+document.getElementById("snapshotBtn").addEventListener("click", () => {
+  let filled = 0;
+  if(state.contactName.trim()) filled++;
+  if(state.contactMethod.trim()) filled++;
+  if(state.recoveryLocation.trim()) filled++;
+  if(state.emergencyAccess) filled++;
+  if(state.accounts.length > 0) filled++;
+  if(state.notes.trim()) filled++;
+  history.save(`${filled}/6 sections filled in`, state);
+  renderHistory();
+});
+
+renderAccounts();
+renderScore();
+renderHistory();
+</script>
+</BaseLayout>
