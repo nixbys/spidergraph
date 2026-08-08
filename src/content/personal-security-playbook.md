@@ -37,7 +37,7 @@ The root layer. Everything downstream depends on this being solid first.
 
 | | **Budget ($0–50/yr)** | **Mid ($50–300/yr)** | **No-Limit ($300+/yr)** |
 |---|---|---|---|
-| Password manager | Bitwarden free tier | Bitwarden Premium ($10/yr) or Proton Pass (bundled) | 1Password with Families/Business-grade admin controls + dedicated secrets manager for any dev work |
+| Password manager | Bitwarden free tier | Bitwarden Premium ($20/yr) or Proton Pass (bundled)<span class="verified-tag">✓ verified 2026-08-07</span><span class="legacy-note"><b>Legacy:</b> previously listed at $10/yr; corrected to $20/yr on 2026-08-07 following Bitwarden's January 2026 price increase ($9.99→$19.80/yr, its first change in ten years).</span> | 1Password with Families/Business-grade admin controls + dedicated secrets manager for any dev work |
 | Email | Proton Mail free (1 address) | Proton Mail Plus or full Proton Unlimited | Proton Unlimited + a second, fully compartmentalized provider (e.g. Tuta) for identity separation, custom domain email |
 | Email aliasing | SimpleLogin/Addy.io free tier (10 aliases) | SimpleLogin Premium (bundled free in Proton Unlimited) | Custom domain + catch-all aliasing so every relationship gets a unique, revocable address |
 | Unique passwords everywhere | Manual rotation using the free password manager | Same, fully enforced | Same + breach-monitoring integration (Have I Been Pwned API watch on all aliases) |
