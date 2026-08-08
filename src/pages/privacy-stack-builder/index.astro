@@ -291,14 +291,14 @@ const base = import.meta.env.BASE_URL;
 const TIERS = {1:"Budget", 2:"Mid", 3:"No-Limit"};
 
 const DATA = [
-  {domain:"Identity & Accounts", code:"IDN-01", name:"Password Manager", verified:"2026-07-25",
+  {domain:"Identity & Accounts", code:"IDN-01", name:"Password Manager", verified:"2026-08-07",
     options:[
       {id:"none", label:"None / browser-saved passwords", tier:0, cost:0},
       {id:"bw-free", label:"Bitwarden (Free)", tier:1, cost:0},
-      {id:"bw-prem", label:"Bitwarden Premium / Proton Pass", tier:2, cost:10},
+      {id:"bw-prem", label:"Bitwarden Premium / Proton Pass", tier:2, cost:20},
       {id:"1p", label:"1Password (Families/Business-grade)", tier:3, cost:72},
     ], rec:"Bitwarden Premium or Proton Pass — cross-platform, hardware-key lockable.",
-    legacyNotes:["1Password (Families/Business-grade) was listed at $60/yr; corrected to $72/yr on 2026-07-25 following 1Password's March 2026 price increase ($59.88→$71.88/yr)."]},
+    legacyNotes:["1Password (Families/Business-grade) was listed at $60/yr; corrected to $72/yr on 2026-07-25 following 1Password's March 2026 price increase ($59.88→$71.88/yr).","Bitwarden Premium was listed at $10/yr; corrected to $20/yr on 2026-08-07 following Bitwarden's January 2026 price increase ($9.99→$19.80/yr, its first change in ten years)."]},
 
   {domain:"Identity & Accounts", code:"IDN-02", name:"Email & Aliasing", verified:"2026-07-25",
     options:[
@@ -399,13 +399,14 @@ const DATA = [
       {id:"burner", label:"Same + a dedicated burner number (Burner or Hushed, ~$5/mo) for full compartmentalization", tier:3, cost:60},
     ], rec:"Google Voice covers most 'give this out instead of my real number' needs for free; pay for Burner/Hushed only when the number itself needs to be disposable, not just separate."},
 
-  {domain:"Data", code:"DATA-01", name:"Cloud Storage & Encryption",
+  {domain:"Data", code:"DATA-01", name:"Cloud Storage & Encryption", verified:"2026-08-07",
     options:[
       {id:"none", label:"Unencrypted mainstream cloud storage", tier:0, cost:0},
       {id:"free-tier", label:"Proton Drive / Filen free tier", tier:1, cost:0},
-      {id:"cryptomator", label:"Zero-knowledge provider + Cryptomator client-side encryption", tier:2, cost:115},
+      {id:"cryptomator", label:"Zero-knowledge provider + Cryptomator client-side encryption", tier:2, cost:90},
       {id:"selfhost", label:"Self-hosted Nextcloud + encrypted offsite (B2/Storj)", tier:3, cost:250},
-    ], rec:"Client-side encryption (Cryptomator) matters more than which provider you pick."},
+    ], rec:"Client-side encryption (Cryptomator) matters more than which provider you pick.",
+    legacyNotes:["This slot's cryptomator-tier cost was still listed at $115/yr — the Playbook's own equivalent row was corrected to ~$90/yr (Filen's actual Pro III annual price) on 2026-07-25, but that correction was never propagated here, so the two representations of this recommendation had drifted apart. Synced to $90/yr on 2026-08-07."]},
 
   {domain:"Data", code:"DATA-02", name:"Backup Strategy",
     options:[
