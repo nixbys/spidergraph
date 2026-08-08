@@ -100,6 +100,16 @@ const base = import.meta.env.BASE_URL;
   }
 
   .sidebar{position:sticky; top:80px; align-self:start; display:flex; flex-direction:column; gap:16px;}
+  /* Below the breakpoint above, .sidebar gets order:-1 and stacks above the main content
+     in a single column. position:sticky no longer serves its side-by-side purpose there,
+     and actively breaks the page: as the user scrolls, the "stuck" sidebar overlaps and
+     obscures whatever main-content row happens to be underneath it (confirmed via
+     Playwright elementFromPoint + screenshot — checklist items were unreadable/unclickable
+     behind the sidebar cards). Un-stick it — this has to come *after* the base .sidebar
+     rule above, not inside the earlier @media block next to `order:-1`, since same-specificity
+     CSS resolves by source order regardless of media-query nesting; placed earlier, the
+     later unconditional rule above would win and silently no-op this override. */
+  @media (max-width:900px){ .sidebar{position:static; top:auto;} }
 
   .scroll-top-btn{
     position:fixed; bottom:24px; right:24px; z-index:90; width:44px; height:44px; border-radius:50%;
