@@ -6,18 +6,25 @@
 // `current` selects which link (or which tool inside the dropdown) renders with
 // class="current". Tool pages pass both a tool id AND get the "Tools" summary itself
 // marked current automatically.
+//
+// The dropdown panel is deliberately built from the site's own recurring motifs rather
+// than being a plain link list: the accent-colored square dot + uppercase mono label is
+// the same `.eyebrow::before` pattern used on every page's own header, and each tool's
+// code ("TOOL-01" etc.) + one-line blurb echo the homepage grid cards and "Your
+// Spidergraph" summary — so the panel reads as "a compact version of the homepage," not
+// a different component vocabulary bolted onto the nav.
 const TOOLS = [
-  { id: 'stack-builder', label: 'Stack Builder', href: 'privacy-stack-builder/' },
-  { id: 'opsec', label: 'OPSEC Field Manual', href: 'opsec-field-manual/' },
-  { id: 'broker-tracker', label: 'Broker Removal Tracker', href: 'broker-removal-tracker/' },
-  { id: 'breach-check', label: 'Breach Check Tracker', href: 'breach-check-tracker/' },
-  { id: 'digital-legacy', label: 'Digital Legacy Worksheet', href: 'digital-legacy-worksheet/' },
-  { id: 'incident-response', label: 'Incident Response Card', href: 'incident-response-card/' },
+  { id: 'stack-builder', label: 'Stack Builder', href: 'privacy-stack-builder/', code: 'TOOL-01', accent: 'teal', blurb: 'Product picks, tiers, radar chart' },
+  { id: 'opsec', label: 'OPSEC Field Manual', href: 'opsec-field-manual/', code: 'TOOL-02', accent: 'amber', blurb: 'Behavioral audit, 44 controls' },
+  { id: 'broker-tracker', label: 'Broker Removal Tracker', href: 'broker-removal-tracker/', code: 'TOOL-03', accent: 'red', blurb: 'Opt out of people-search sites' },
+  { id: 'breach-check', label: 'Breach Check Tracker', href: 'breach-check-tracker/', code: 'TOOL-04', accent: 'blue', blurb: 'Track your own HIBP checks' },
+  { id: 'digital-legacy', label: 'Digital Legacy Worksheet', href: 'digital-legacy-worksheet/', code: 'TOOL-05', accent: 'amber', blurb: 'Emergency access, no live passwords' },
+  { id: 'incident-response', label: 'Incident Response Card', href: 'incident-response-card/', code: 'TOOL-06', accent: 'amber', blurb: 'Printable fraud-line wallet card' },
 ];
 const TOOL_GROUPS = [
-  ['stack-builder', 'opsec'],
-  ['broker-tracker', 'breach-check'],
-  ['digital-legacy', 'incident-response'],
+  { label: 'Domain audits', ids: ['stack-builder', 'opsec'] },
+  { label: 'Trackers', ids: ['broker-tracker', 'breach-check'] },
+  { label: 'Worksheets', ids: ['digital-legacy', 'incident-response'] },
 ];
 
 interface Props {
@@ -50,9 +57,21 @@ const isTool = TOOLS.some(t => t.id === current);
       <div class="nav-tools-panel">
         {TOOL_GROUPS.map(group => (
           <div class="nav-tools-group">
-            {group.map(id => {
+            <div class="nav-tools-group-label">{group.label}</div>
+            {group.ids.map(id => {
               const tool = TOOLS.find(t => t.id === id)!;
-              return <a href={`${base}${tool.href}`} class={current === tool.id ? 'current' : ''}>{tool.label}</a>;
+              return (
+                <a href={`${base}${tool.href}`} class:list={['nav-tools-item', { current: current === tool.id }]}>
+                  <span class:list={['nav-tools-dot', tool.accent]}></span>
+                  <span class="nav-tools-item-text">
+                    <span class="nav-tools-item-top">
+                      <span class="nav-tools-item-label">{tool.label}</span>
+                      <span class:list={['nav-tools-item-code', tool.accent]}>{tool.code}</span>
+                    </span>
+                    <span class="nav-tools-item-blurb">{tool.blurb}</span>
+                  </span>
+                </a>
+              );
             })}
           </div>
         ))}
