@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout
+  title="Spidergraph — Incident Response Card"
+  description="Build your own printable incident-response wallet card — your bank, card, and carrier fraud lines plus the first three things to do, ready before you need it under pressure."
+  ogDescription="Build your own printable incident-response wallet card — your bank, card, and carrier fraud lines plus the first three things to do."
+  path="incident-response-card/"
+  current="incident-response"
+  accent="amber"
+  noPrint={true}
+>
+<style slot="head" is:global>
+  /* Incident Response Card-only overrides + layout. Shared tokens/nav/brand live in shared/.
+     is:global — this page creates history entries via JS at runtime, and the print-card
+     spans below are populated by JS too. */
+  body{padding-bottom:80px;}
+  .wrap{max-width:1180px; margin:0 auto;}
+
+  header{
+    display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between; align-items:flex-end;
+    border-bottom:1px solid var(--border); padding-bottom:24px; margin-bottom:24px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--amber); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .eyebrow::before{content:"";width:6px;height:6px;background:var(--amber);border-radius:1px; display:inline-block;}
+  h1{font-family:'Space Grotesk', sans-serif; font-size:clamp(28px,4vw,42px); font-weight:700; margin:0;
+    letter-spacing:-.01em; line-height:1.05;}
+  h1 span{color:var(--muted); font-weight:500;}
+  .sub{color:var(--muted); font-size:14.5px; margin-top:10px; max-width:600px; line-height:1.5;}
+
+  .reset-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted);
+    background:var(--surface); border:1px solid var(--border); border-radius:8px;
+    padding:10px 14px; cursor:pointer; height:fit-content; letter-spacing:.03em;
+    transition:all .15s ease; appearance:none; -webkit-appearance:none; margin:0;
+  }
+  .reset-btn:hover{color:var(--text); border-color:#374252;}
+  .reset-btn:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
+
+  .intro-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:20px 22px; margin-bottom:24px; font-size:13.5px; line-height:1.65; color:var(--muted2);
+  }
+  .intro-card b{color:var(--text);}
+  .intro-card .links{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
+  .intro-card .links a{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--text); text-decoration:none;
+    background:var(--surface2); border:1px solid var(--border); border-radius:7px; padding:8px 12px;
+    display:inline-flex; align-items:center; gap:6px; transition:all .15s ease;
+  }
+  .intro-card .links a:hover{border-color:#374252; background:var(--surface3);}
+
+  .layout{display:grid; grid-template-columns:1fr 320px; gap:28px;}
+  @media (max-width:900px){.layout{grid-template-columns:1fr;} .sidebar{order:-1;}}
+
+  .form-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:22px; margin-bottom:16px;
+  }
+  .form-card-title{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted2); margin-bottom:16px;
+  }
+  .field{margin-bottom:16px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{display:block; font-size:13px; font-weight:500; color:var(--text); margin-bottom:6px;}
+  .field .hint{display:block; font-size:12px; color:var(--muted2); margin-top:5px; line-height:1.5;}
+  .field input[type=text], .field input[type=tel], .field textarea{
+    width:100%; background:var(--surface2); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:10px 12px; font-family:'IBM Plex Mono',monospace; font-size:13.5px;
+  }
+  .field textarea{resize:vertical; min-height:60px; font-family:'IBM Plex Sans',sans-serif;}
+  .field input:focus-visible, .field textarea:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
+
+  .runbook{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .runbook li{display:flex; gap:12px; align-items:flex-start; font-size:13px; color:var(--text); line-height:1.5;}
+  .runbook .step-num{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; color:var(--amber);
+    background:var(--amber-dim); border:1px solid #e8a23d55; border-radius:50%;
+    width:20px; height:20px; flex-shrink:0; display:flex; align-items:center; justify-content:center; margin-top:1px;
+  }
+
+  .sidebar{position:sticky; top:80px; align-self:start; display:flex; flex-direction:column; gap:16px;}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px;}
+  .card-title{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted2); margin-bottom:14px;}
+  .score-row{display:flex; justify-content:space-between; align-items:baseline; margin-top:14px;}
+  .score-num{font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700;}
+  .score-label{font-size:12px; color:var(--muted);}
+  .card p.small{font-size:12.5px; color:var(--muted2); line-height:1.6; margin:0 0 12px;}
+  .card p.small:last-child{margin-bottom:0;}
+  .history-list{display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;}
+  .history-item{background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:12px;}
+  .history-item .h-date{font-family:'IBM Plex Mono',monospace; color:var(--muted2); font-size:10.5px; margin-bottom:3px;}
+  .history-item .h-summary{color:var(--text); line-height:1.4;}
+  .history-empty{font-size:12px; color:var(--muted2); font-style:italic;}
+  .card a.card-link{
+    display:block; text-align:center; padding:11px; cursor:pointer; background:var(--surface3);
+    border:1px solid var(--border); border-radius:8px; font-family:'IBM Plex Mono',monospace;
+    font-size:12px; color:var(--text); text-decoration:none; transition:all .15s ease;
+  }
+  .card a.card-link:hover{border-color:#374252;}
+  .card .btn-stack{display:flex; flex-direction:column; gap:8px;}
+  button#printBtn, button#exportBtn{width:100%;}
+  button#printBtn{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:#0f1419;
+    background:var(--amber); border:1px solid var(--amber); border-radius:8px; padding:11px;
+    cursor:pointer; appearance:none; -webkit-appearance:none;
+  }
+  button#printBtn:hover{opacity:.9;}
+  button#printBtn:focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
+  .save-indicator{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted2); margin-top:10px; min-height:14px;}
+
+  footer{margin-top:32px; padding-top:20px; border-top:1px solid var(--border);
+    font-size:12.5px; color:var(--muted2); line-height:1.6;}
+  footer b{color:var(--muted);}
+
+  /* Print card: hidden on-screen, the only thing visible when printed */
+  .print-card{display:none;}
+  @media print{
+    .no-print{display:none !important;}
+    html,body{background:#fff !important; color:#000 !important; padding:0 !important; margin:0 !important;}
+    .print-card{
+      display:block; max-width:380px; margin:0 auto; padding:20px;
+      font-family:'IBM Plex Mono',monospace; color:#000; border:1.5px solid #000; border-radius:10px;
+    }
+    .print-card-title{font-weight:700; font-size:13px; letter-spacing:.06em; margin-bottom:12px;}
+    .print-card hr{border:none; border-top:1px solid #999; margin:14px 0;}
+    .print-row{font-size:11.5px; margin-bottom:7px; line-height:1.5;}
+    .print-row b{font-weight:700;}
+  }
+</style>
+
+<div class="wrap no-print">
+
+  <header>
+    <div>
+      <div class="eyebrow">Quick reference · Incident Response Runbooks</div>
+      <h1>Incident Response <span>Card</span></h1>
+      <div class="sub">Fill in your own fraud lines once, then print or save the card — three steps and four numbers, ready before you need them under pressure.</div>
+    </div>
+    <button type="button" class="reset-btn" id="resetBtn">Reset card</button>
+  </header>
+
+  <div class="intro-card">
+    <b>Why this exists:</b> the Recommendations Report describes a "15-minute runbook... taped somewhere" as more useful mid-incident than a document you have to search through. This builds that card from your own numbers instead of leaving it as a paragraph to act on later.
+    <div class="links">
+      <a href="../playbook/#incident-response-runbooks">📖 Read the full runbooks in the Playbook →</a>
+      <a href="../digital-legacy-worksheet/">📋 Digital Legacy Worksheet →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="form-card">
+        <div class="form-card-title">Your fraud &amp; support lines</div>
+        <div class="field">
+          <label for="bankLine">Bank fraud line</label>
+          <input type="tel" id="bankLine" placeholder="Number on the back of your card or bank's official site" maxlength="60">
+        </div>
+        <div class="field">
+          <label for="cardLine">Card issuer fraud line</label>
+          <input type="tel" id="cardLine" placeholder="If different from your bank" maxlength="60">
+        </div>
+        <div class="field">
+          <label for="carrierLine">Mobile carrier fraud/support line</label>
+          <input type="tel" id="carrierLine" placeholder="For SIM-swap attempts" maxlength="60">
+          <span class="hint">Runbook C in the Playbook covers what to do the moment a SIM swap is suspected.</span>
+        </div>
+        <div class="field">
+          <label for="policeLine">Non-emergency police line</label>
+          <input type="tel" id="policeLine" placeholder="Local non-emergency number" maxlength="60">
+        </div>
+        <div class="field">
+          <label for="note">Optional note</label>
+          <textarea id="note" placeholder="e.g. email recovery phone is on file with carrier; password manager emergency contact is..." maxlength="300"></textarea>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-title">First 15 minutes (from Runbook A)</div>
+        <ol class="runbook">
+          <li><span class="step-num">1</span><span>Change the password on the affected account from a known-clean device. If it's email, do this first — email is the recovery path for everything else.</span></li>
+          <li><span class="step-num">2</span><span>Revoke all active sessions/devices on the account.</span></li>
+          <li><span class="step-num">3</span><span>Check recovery email/phone for tampering before doing anything else.</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="card">
+        <div class="card-title">Completeness</div>
+        <div class="score-row">
+          <div>
+            <div class="score-num" id="scoreNum">0/4</div>
+            <div class="score-label">numbers filled in</div>
+          </div>
+        </div>
+        <div class="save-indicator" id="saveIndicator"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Get the card</div>
+        <div class="btn-stack">
+          <button type="button" id="printBtn">Print card 🖨</button>
+          <button type="button" id="exportBtn" class="reset-btn">Export as text ↓</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Companion tool</div>
+        <p class="small">Who calls on your behalf if you can't is a different question — see the Digital Legacy Worksheet.</p>
+        <a class="card-link" href="../digital-legacy-worksheet/">Digital Legacy Worksheet →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">History</div>
+        <p class="small">Save a dated checkpoint to compare completeness over time.</p>
+        <button type="button" id="snapshotBtn" class="reset-btn" style="width:100%; margin-bottom:12px;">Save snapshot</button>
+        <div id="historyList" class="history-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <b>Companion pages:</b> the full Detect → Contain → Eradicate → Recover runbooks live in the <b>Playbook</b>. Everything you type here stays in this browser only, in <code>localStorage</code> — nothing is sent anywhere, and printing happens entirely on your own device.
+  </footer>
+
+</div>
+
+<div id="printCard" class="print-card">
+  <div class="print-card-title">SPIDERGRAPH — INCIDENT RESPONSE CARD</div>
+  <div class="print-row"><b>1.</b> Change password from a clean device (email first).</div>
+  <div class="print-row"><b>2.</b> Revoke all active sessions/devices.</div>
+  <div class="print-row"><b>3.</b> Check recovery email/phone for tampering.</div>
+  <hr>
+  <div class="print-row"><b>Bank fraud line:</b> <span id="pBank">—</span></div>
+  <div class="print-row"><b>Card fraud line:</b> <span id="pCard">—</span></div>
+  <div class="print-row"><b>Carrier fraud line:</b> <span id="pCarrier">—</span></div>
+  <div class="print-row"><b>Non-emergency police:</b> <span id="pPolice">—</span></div>
+  <div class="print-row" id="pNoteRow" hidden><b>Note:</b> <span id="pNote"></span></div>
+</div>
+
+<script src={`${base}shared/persist.js`} is:inline></script>
+<script src={`${base}shared/history.js`} is:inline></script>
+<script is:inline>
+const store = spidergraphStore("spidergraph-incident-card-v1");
+const saved = store.load();
+const savedData = saved ? (saved.data !== undefined ? saved.data : saved) : null;
+
+let state = {bankLine:"", cardLine:"", carrierLine:"", policeLine:"", note:""};
+if(savedData) state = Object.assign(state, savedData);
+
+const el = {
+  bankLine: document.getElementById("bankLine"),
+  cardLine: document.getElementById("cardLine"),
+  carrierLine: document.getElementById("carrierLine"),
+  policeLine: document.getElementById("policeLine"),
+  note: document.getElementById("note"),
+  scoreNum: document.getElementById("scoreNum"),
+  saveIndicator: document.getElementById("saveIndicator"),
+};
+
+el.bankLine.value = state.bankLine;
+el.cardLine.value = state.cardLine;
+el.carrierLine.value = state.carrierLine;
+el.policeLine.value = state.policeLine;
+el.note.value = state.note;
+
+function debounce(fn, ms){
+  let t = null;
+  return function(...args){ clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
+}
+
+let saveTimer = null;
+function persist(){
+  store.save(state);
+  el.saveIndicator.textContent = "Saved locally just now";
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => { el.saveIndicator.textContent = ""; }, 2000);
+  renderScore();
+  renderPrintCard();
+}
+const persistDebounced = debounce(persist, 500);
+
+el.bankLine.addEventListener("input", () => { state.bankLine = el.bankLine.value; persistDebounced(); });
+el.cardLine.addEventListener("input", () => { state.cardLine = el.cardLine.value; persistDebounced(); });
+el.carrierLine.addEventListener("input", () => { state.carrierLine = el.carrierLine.value; persistDebounced(); });
+el.policeLine.addEventListener("input", () => { state.policeLine = el.policeLine.value; persistDebounced(); });
+el.note.addEventListener("input", () => { state.note = el.note.value; persistDebounced(); });
+
+function renderScore(){
+  let filled = 0;
+  [state.bankLine, state.cardLine, state.carrierLine, state.policeLine].forEach(v => { if(v.trim()) filled++; });
+  el.scoreNum.textContent = `${filled}/4`;
+}
+
+function renderPrintCard(){
+  document.getElementById("pBank").textContent = state.bankLine.trim() || "—";
+  document.getElementById("pCard").textContent = state.cardLine.trim() || "—";
+  document.getElementById("pCarrier").textContent = state.carrierLine.trim() || "—";
+  document.getElementById("pPolice").textContent = state.policeLine.trim() || "—";
+  const noteRow = document.getElementById("pNoteRow");
+  if(state.note.trim()){
+    noteRow.hidden = false;
+    document.getElementById("pNote").textContent = state.note.trim();
+  } else {
+    noteRow.hidden = true;
+  }
+}
+
+document.getElementById("printBtn").addEventListener("click", () => window.print());
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  state = {bankLine:"", cardLine:"", carrierLine:"", policeLine:"", note:""};
+  store.clear();
+  el.bankLine.value = "";
+  el.cardLine.value = "";
+  el.carrierLine.value = "";
+  el.policeLine.value = "";
+  el.note.value = "";
+  renderScore();
+  renderPrintCard();
+  el.saveIndicator.textContent = "";
+});
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const now = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+  let lines = [];
+  lines.push("SPIDERGRAPH — INCIDENT RESPONSE CARD");
+  lines.push(`Generated ${now}`);
+  lines.push("=".repeat(60));
+  lines.push("");
+  lines.push("FIRST 15 MINUTES");
+  lines.push("1. Change password from a clean device (email first).");
+  lines.push("2. Revoke all active sessions/devices.");
+  lines.push("3. Check recovery email/phone for tampering.");
+  lines.push("");
+  lines.push("YOUR NUMBERS");
+  lines.push(`Bank fraud line:        ${state.bankLine.trim() || "(not filled in)"}`);
+  lines.push(`Card fraud line:        ${state.cardLine.trim() || "(not filled in)"}`);
+  lines.push(`Carrier fraud line:     ${state.carrierLine.trim() || "(not filled in)"}`);
+  lines.push(`Non-emergency police:   ${state.policeLine.trim() || "(not filled in)"}`);
+  if(state.note.trim()){
+    lines.push("");
+    lines.push("NOTE");
+    lines.push(state.note.trim());
+  }
+  lines.push("");
+  lines.push("-".repeat(60));
+  lines.push("Full runbooks: see the Playbook's Incident Response Runbooks section.");
+
+  const blob = new Blob([lines.join("\n")], {type:"text/plain"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `incident-response-card-${Date.now()}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+renderScore();
+renderPrintCard();
+
+const history = spidergraphHistory("spidergraph-incident-card-v1");
+
+function renderHistory(){
+  const snapshots = history.list().slice().reverse();
+  const el = document.getElementById("historyList");
+  if(snapshots.length === 0){
+    el.innerHTML = '<div class="history-empty">No snapshots yet — save one to start tracking completeness over time.</div>';
+    return;
+  }
+  el.innerHTML = snapshots.map(s => {
+    const d = new Date(s.date).toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
+    return `<div class="history-item"><div class="h-date">${d}</div><div class="h-summary">${s.summary}</div></div>`;
+  }).join("");
+}
+
+document.getElementById("snapshotBtn").addEventListener("click", () => {
+  const filled = [state.bankLine, state.cardLine, state.carrierLine, state.policeLine].filter(v => v.trim()).length;
+  history.save(`${filled}/4 numbers filled in`, state);
+  renderHistory();
+});
+
+renderHistory();
+</script>
+</BaseLayout>

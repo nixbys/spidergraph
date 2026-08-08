@@ -1,0 +1,65 @@
+---
+// Single source of truth for the top nav — this component is the whole reason for the
+// Astro migration (see CLAUDE.md "Site navigation" and SESSION-NOTES.md for the history): the brand SVG and the
+// Tools ▾ dropdown used to be hand-copied into all 9 page shells.
+//
+// `current` selects which link (or which tool inside the dropdown) renders with
+// class="current". Tool pages pass both a tool id AND get the "Tools" summary itself
+// marked current automatically.
+const TOOLS = [
+  { id: 'stack-builder', label: 'Stack Builder', href: 'privacy-stack-builder/' },
+  { id: 'opsec', label: 'OPSEC Field Manual', href: 'opsec-field-manual/' },
+  { id: 'broker-tracker', label: 'Broker Removal Tracker', href: 'broker-removal-tracker/' },
+  { id: 'breach-check', label: 'Breach Check Tracker', href: 'breach-check-tracker/' },
+  { id: 'digital-legacy', label: 'Digital Legacy Worksheet', href: 'digital-legacy-worksheet/' },
+  { id: 'incident-response', label: 'Incident Response Card', href: 'incident-response-card/' },
+];
+const TOOL_GROUPS = [
+  ['stack-builder', 'opsec'],
+  ['broker-tracker', 'breach-check'],
+  ['digital-legacy', 'incident-response'],
+];
+
+interface Props {
+  current: 'home' | 'playbook' | 'report' | typeof TOOLS[number]['id'];
+  noPrint?: boolean;
+}
+const { current, noPrint = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const isTool = TOOLS.some(t => t.id === current);
+---
+<nav class:list={['topnav', { 'no-print': noPrint }]}>
+  <div class="topnav-inner">
+    <a href={base} class="brand">
+      <svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
+        <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
+        <g stroke="#2b3542" stroke-width="2">
+          <line x1="60" y1="60" x2="60" y2="12"/><line x1="60" y1="60" x2="93.94" y2="26.06"/>
+          <line x1="60" y1="60" x2="108" y2="60"/><line x1="60" y1="60" x2="93.94" y2="93.94"/>
+          <line x1="60" y1="60" x2="60" y2="108"/><line x1="60" y1="60" x2="26.06" y2="93.94"/>
+          <line x1="60" y1="60" x2="12" y2="60"/><line x1="60" y1="60" x2="26.06" y2="26.06"/>
+        </g>
+        <polygon points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
+                 fill="#3ddc97" fill-opacity="0.3" stroke="#3ddc97" stroke-width="4"/>
+      </svg><span class="brand-word">SPIDER<span>GRAPH</span></span>
+    </a>
+    <a href={base} class={current === 'home' ? 'current' : ''}>Home</a><span class="sep">/</span>
+    <a href={`${base}playbook/`} class={current === 'playbook' ? 'current' : ''}>Playbook</a><span class="sep">/</span>
+    <details class="nav-tools">
+      <summary class={isTool ? 'current' : ''}>Tools</summary>
+      <div class="nav-tools-panel">
+        {TOOL_GROUPS.map(group => (
+          <div class="nav-tools-group">
+            {group.map(id => {
+              const tool = TOOLS.find(t => t.id === id)!;
+              return <a href={`${base}${tool.href}`} class={current === tool.id ? 'current' : ''}>{tool.label}</a>;
+            })}
+          </div>
+        ))}
+      </div>
+    </details>
+    <span class="sep">/</span>
+    <a href={`${base}report/`} class={current === 'report' ? 'current' : ''}>Recommendations Report</a>
+  </div>
+</nav>
+<script src={`${base}shared/nav.js`} is:inline></script>
