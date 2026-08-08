@@ -29,6 +29,12 @@
 .scroll-top-btn:hover{border-color:#374252; color:var(--text);}
 .scroll-top-btn:focus-visible{outline:2px solid var(--accent, var(--blue)); outline-offset:2px;}
 
+/* Markdown source can contain long unbroken tokens (e.g. a slash-joined parenthetical
+   like "PeopleConnect (Intelius/TruthFinder/USSearch/Instant Checkmate)") that have no
+   natural wrap point — without this, one long enough token forces the whole page wider
+   than the viewport on narrow phones. overflow-wrap is inherited, so this one rule on
+   the #content root covers every descendant (p/li/h1-h3/td/etc.) below it. */
+#content{overflow-wrap:break-word;}
 #content h1{font-family:'Space Grotesk',sans-serif; font-size:clamp(26px,4vw,36px); font-weight:700;
   letter-spacing:-.01em; margin:0 0 8px; scroll-margin-top:80px;}
 #content h2{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; margin:44px 0 16px;
