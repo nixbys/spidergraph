@@ -92,6 +92,25 @@ const base = import.meta.env.BASE_URL;
   .about{margin-top:60px; padding-top:32px; border-top:1px solid var(--border);}
   .about h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0 0 12px; color:var(--muted);}
   .about p{color:var(--muted2); font-size:13px; line-height:1.7; max-width:680px;}
+
+  .backup{margin-bottom:40px;}
+  .backup-card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px;}
+  .backup-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
+  .backup-head h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0; color:var(--text);}
+  .backup-head .hint{font-size:12px; color:var(--muted2);}
+  .backup-actions{display:flex; gap:10px; flex-wrap:wrap;}
+  .backup-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; cursor:pointer;
+    background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 16px;
+    color:var(--muted); transition:all .15s ease; appearance:none; -webkit-appearance:none; margin:0;
+  }
+  .backup-btn:hover{color:var(--text); border-color:#374252;}
+  .backup-btn:focus-visible{outline:2px solid var(--teal); outline-offset:1px;}
+  .backup-btn.primary{color:var(--teal); border-color:#3ddc9755;}
+  .backup-btn.primary:hover{background:var(--teal-dim);}
+  .backup-status{margin-top:12px; font-size:12.5px; line-height:1.5; min-height:1.5em;}
+  .backup-status.ok{color:var(--teal);}
+  .backup-status.err{color:var(--red);}
 </style>
 
 <div class="wrap">
@@ -113,6 +132,21 @@ const base = import.meta.env.BASE_URL;
       <span class="hint">— read live from this browser's storage, nothing is fetched or sent anywhere</span>
     </div>
     <div class="mystatus-grid" id="myStatusGrid"></div>
+  </div>
+
+  <div class="backup">
+    <div class="backup-card">
+      <div class="backup-head">
+        <h3>Back up your data</h3>
+        <span class="hint">— everything above lives only in this browser; save a copy before switching browsers, devices, or clearing site data</span>
+      </div>
+      <div class="backup-actions">
+        <button type="button" id="backupExportBtn" class="backup-btn primary">Download backup (.json) →</button>
+        <button type="button" id="backupImportBtn" class="backup-btn">Restore from backup file →</button>
+        <input type="file" id="backupFileInput" accept="application/json,.json" hidden>
+      </div>
+      <div class="backup-status" id="backupStatus"></div>
+    </div>
   </div>
 
   <div class="grid">
@@ -175,10 +209,11 @@ const base = import.meta.env.BASE_URL;
 
   <div class="about">
     <h3>How the pieces connect</h3>
-    <p>The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC Field Manual audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either one rather than reading the static version here if you want your own results. The Broker Removal Tracker, Breach Check Tracker, Digital Legacy Worksheet, and Incident Response Card are narrower by design: flat checklists and worksheets that track your own progress and export their own plain-text (or printable) output, rather than scoring you against the Playbook's domains. Nothing you enter in any tool leaves your browser; there's no backend, no account, and no tracking.</p>
+    <p>The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC Field Manual audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either one rather than reading the static version here if you want your own results. The Broker Removal Tracker, Breach Check Tracker, Digital Legacy Worksheet, and Incident Response Card are narrower by design: flat checklists and worksheets that track your own progress and export their own plain-text (or printable) output, rather than scoring you against the Playbook's domains. Nothing you enter in any tool leaves your browser; there's no backend, no account, and no tracking — which also means this browser's storage is the <i>only</i> copy of your data. Use "Back up your data" above before clearing site data or switching browsers.</p>
   </div>
 </div>
 <script src={`${base}shared/persist.js`} is:inline></script>
+<script src={`${base}shared/backup.js`} is:inline></script>
 <script define:vars={{ base }} is:inline>
 (function(){
   function timeAgo(iso){
@@ -259,6 +294,38 @@ const base = import.meta.env.BASE_URL;
       <div class="mystatus-ago">${ago ? `Updated ${ago}` : (started ? "" : "Start →")}</div>
     `;
     grid.appendChild(el);
+  });
+
+  const backupStatus = document.getElementById("backupStatus");
+  function setBackupStatus(msg, ok){
+    backupStatus.textContent = msg;
+    backupStatus.className = "backup-status" + (ok === undefined ? "" : ok ? " ok" : " err");
+  }
+
+  document.getElementById("backupExportBtn").addEventListener("click", () => {
+    const count = spidergraphExport();
+    if(count === 0){
+      setBackupStatus("Nothing to back up yet — use a tool first, then come back here.", false);
+    } else {
+      setBackupStatus(`Downloaded a backup of ${count} saved item${count === 1 ? "" : "s"}.`, true);
+    }
+  });
+
+  const backupFileInput = document.getElementById("backupFileInput");
+  document.getElementById("backupImportBtn").addEventListener("click", () => backupFileInput.click());
+  backupFileInput.addEventListener("change", () => {
+    const file = backupFileInput.files[0];
+    backupFileInput.value = ""; // allow re-selecting the same file later
+    if(!file) return;
+    if(!confirm("Restore from this backup file? This overwrites any current Spidergraph data in this browser with what's saved in the file.")){
+      return;
+    }
+    spidergraphImport(file).then(count => {
+      setBackupStatus(`Restored ${count} item${count === 1 ? "" : "s"} — reloading…`, true);
+      setTimeout(() => location.reload(), 700);
+    }).catch(err => {
+      setBackupStatus(err.message || "Couldn't restore that file.", false);
+    });
   });
 })();
 </script>
