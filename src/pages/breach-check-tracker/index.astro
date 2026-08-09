@@ -136,9 +136,15 @@ const base = import.meta.env.BASE_URL;
   .card p.small{font-size:12.5px; color:var(--muted2); line-height:1.6; margin:0 0 12px;}
   .card p.small:last-child{margin-bottom:0;}
   .history-list{display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;}
-  .history-item{background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:12px;}
+  .history-item{display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:12px;}
+  .history-item-main{min-width:0;}
   .history-item .h-date{font-family:'IBM Plex Mono',monospace; color:var(--muted2); font-size:10.5px; margin-bottom:3px;}
   .history-item .h-summary{color:var(--text); line-height:1.4;}
+  .history-restore-btn{flex-shrink:0; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted2);
+    background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:5px 10px; cursor:pointer;
+    letter-spacing:.03em; transition:all .15s ease; appearance:none; -webkit-appearance:none;}
+  .history-restore-btn:hover{color:var(--text); border-color:#374252;}
+  .history-restore-btn:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
   .history-empty{font-size:12px; color:var(--muted2); font-style:italic;}
   .card a.card-link{
     display:block; text-align:center; padding:11px; cursor:pointer; background:var(--surface3);
@@ -360,6 +366,18 @@ document.getElementById("exportBtn").addEventListener("click", () => {
 
 const history = spidergraphHistory("spidergraph-breach-check-v1");
 
+// Rebuilds the address list from a saved snapshot and re-renders everything — data is
+// the items array, same shape store.load() saves. Re-keys defensively so a restore can
+// never collide with ids created since the snapshot was taken.
+function restoreSnapshot(data){
+  if(!data || !Array.isArray(data)) return;
+  if(!confirm("Restore this snapshot? This replaces your current address list with the saved checkpoint.")) return;
+  items = data.map(it => ({id: makeId(), label: it.label || "", checked: !!it.checked, checkedOn: it.checkedOn || null}));
+  store.save(items);
+  renderList();
+  renderScore();
+}
+
 function renderHistory(){
   const snapshots = history.list().slice().reverse();
   const el = document.getElementById("historyList");
@@ -369,8 +387,14 @@ function renderHistory(){
   }
   el.innerHTML = snapshots.map(s => {
     const d = new Date(s.date).toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
-    return `<div class="history-item"><div class="h-date">${d}</div><div class="h-summary">${s.summary}</div></div>`;
+    return `<div class="history-item"><div class="history-item-main"><div class="h-date">${d}</div><div class="h-summary">${s.summary}</div></div><button type="button" class="history-restore-btn" data-date="${s.date}">Restore</button></div>`;
   }).join("");
+  el.querySelectorAll(".history-restore-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const snap = history.list().find(s => s.date === btn.dataset.date);
+      if(snap) restoreSnapshot(snap.data);
+    });
+  });
 }
 
 document.getElementById("snapshotBtn").addEventListener("click", () => {
