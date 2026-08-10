@@ -15,6 +15,10 @@ that makes the change, not as a separate retroactive pass.
 
 ### Fixed
 
+- `actions/checkout`/`actions/setup-node` bumped `v4`→`v7` in both `ci.yml` and
+  `deploy.yml` — GitHub flagged `v4` as targeting a deprecated Node 20 runner (forced
+  onto Node 24 in the meantime, but not for much longer). Verified `v7` is a real,
+  stable, non-prerelease tag (not assumed from memory) before pinning to it.
 - **Security**: `breach-check-tracker` (2 spots) and `digital-legacy-worksheet` (1
   spot) interpolated user-typed free text (an address label / an account name)
   unescaped into an `aria-label` attribute inside an `innerHTML` template, while the
