@@ -10,55 +10,122 @@ export interface Props {
   description: string;
   ogDescription?: string;
   path: string; // e.g. "playbook/" — used for the canonical/og:url and Nav's `current`-adjacent link building
-  current: 'home' | 'playbook' | 'report' | 'stack-builder' | 'opsec' | 'broker-tracker' | 'breach-check' | 'digital-legacy' | 'incident-response';
+  current:
+    | 'home'
+    | 'playbook'
+    | 'report'
+    | 'stack-builder'
+    | 'opsec'
+    | 'broker-tracker'
+    | 'breach-check'
+    | 'digital-legacy'
+    | 'incident-response';
   accent?: 'blue' | 'teal' | 'amber' | 'red' | 'none';
   noPrint?: boolean;
 }
-const { title, description, ogDescription = description, path, current, accent = 'none', noPrint = false } = Astro.props;
+const {
+  title,
+  description,
+  ogDescription = description,
+  path,
+  current,
+  accent = 'none',
+  noPrint = false,
+} = Astro.props;
 const base = import.meta.env.BASE_URL;
 const canonical = `https://nixbys.github.io${base}${path}`;
+// --accent-border is a ~33%-opacity tint of that accent's base color. color-mix() (not a
+// second literal hex+alpha per accent) so this always tracks tokens.css's --teal/--amber/
+// etc. if their base hex ever changes, instead of needing a parallel edit here too.
 const accentVar: Record<string, string> = {
-  blue: ':root{ --accent:var(--blue); --accent-dim:var(--blue-dim); --accent-border:#5b8def55; }',
-  teal: ':root{ --accent:var(--teal); --accent-dim:var(--teal-dim); --accent-border:#3ddc9755; }',
-  amber: ':root{ --accent:var(--amber); --accent-dim:var(--amber-dim); --accent-border:#e8a23d55; }',
-  red: ':root{ --accent:var(--red); --accent-dim:var(--red-dim); --accent-border:#e0596b55; }',
+  blue: ':root{ --accent:var(--blue); --accent-dim:var(--blue-dim); --accent-border:color-mix(in srgb, var(--blue) 33%, transparent); }',
+  teal: ':root{ --accent:var(--teal); --accent-dim:var(--teal-dim); --accent-border:color-mix(in srgb, var(--teal) 33%, transparent); }',
+  amber:
+    ':root{ --accent:var(--amber); --accent-dim:var(--amber-dim); --accent-border:color-mix(in srgb, var(--amber) 33%, transparent); }',
+  red: ':root{ --accent:var(--red); --accent-dim:var(--red-dim); --accent-border:color-mix(in srgb, var(--red) 33%, transparent); }',
   none: '',
 };
 ---
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
-<title>{title}</title>
-<meta name="description" content={description}>
-<meta name="theme-color" content="#0f1419">
-<meta property="og:type" content="website">
-<meta property="og:title" content={title}>
-<meta property="og:description" content={ogDescription}>
-<meta property="og:url" content={canonical}>
-<meta property="og:image" content={`https://nixbys.github.io${base}favicon-512.png`}>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content={title}>
-<meta name="twitter:description" content={ogDescription}>
-<meta name="twitter:image" content={`https://nixbys.github.io${base}favicon-512.png`}>
-<link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`}>
-<link rel="icon" type="image/png" sizes="16x16" href={`${base}favicon-16.png`}>
-<link rel="icon" type="image/png" sizes="32x32" href={`${base}favicon-32.png`}>
-<link rel="icon" type="image/png" sizes="48x48" href={`${base}favicon-48.png`}>
-<link rel="apple-touch-icon" href={`${base}favicon-180.png`}>
-<link rel="icon" href={`${base}favicon.ico`}>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href={`${base}shared/tokens.css`}>
-<link rel="stylesheet" href={`${base}shared/nav.css`}>
-{accentVar[accent] && <style set:html={accentVar[accent]} />}
-<slot name="head" />
-</head>
-<body>
-<Nav current={current} noPrint={noPrint} />
-<slot />
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- GitHub Pages serves static files only — there's no way to set this as a real response
+     header, so a <meta> CSP is the ceiling of what's enforceable here (no frame-ancestors/
+     report-uri support in the meta form, that's a browser-spec limitation, not an oversight).
+     script-src/style-src only ever need 'self' + 'unsafe-inline' (every script here is either
+     a same-origin file or an inline block Astro emits, and there's no client-side markdown
+     parsing left to justify a CDN allowance — see CLAUDE.md's marked.js note) plus Google
+     Fonts' two origins. Keep this list exactly as narrow as what's actually loaded — don't
+     pre-allow an origin "in case," and if the pre-Astro CDN marked.js script ever comes back
+     as a note in git history, that's the one thing this policy used to (and no longer needs to) allow. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"
+    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <!-- Browser-chrome color, read by the browser directly from this static attribute before
+     any stylesheet loads — can't reference var(--bg) here. Keep this literal in sync by
+     hand if tokens.css's --bg ever changes; it's the one color in the whole site that
+     structurally can't be sourced from the token file. -->
+    <meta name="theme-color" content="#0f1419" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta
+      property="og:image"
+      content={`https://nixbys.github.io${base}og-image.png`}
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <!-- summary_large_image, not summary — og-image.png is a 1200x630 wide banner; the
+     small "summary" card type crops a wide image into an odd square instead of
+     showing it properly. -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta
+      name="twitter:image"
+      content={`https://nixbys.github.io${base}og-image.png`}
+    />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href={`${base}favicon-16.png`}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href={`${base}favicon-32.png`}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href={`${base}favicon-48.png`}
+    />
+    <link rel="apple-touch-icon" href={`${base}favicon-180.png`} />
+    <link rel="icon" href={`${base}favicon.ico`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href={`${base}shared/tokens.css`} />
+    <link rel="stylesheet" href={`${base}shared/nav.css`} />
+    {accentVar[accent] && <style set:html={accentVar[accent]} />}
+    <slot name="head" />
+  </head>
+  <body>
+    <Nav current={current} noPrint={noPrint} />
+    <slot />
+  </body>
 </html>
