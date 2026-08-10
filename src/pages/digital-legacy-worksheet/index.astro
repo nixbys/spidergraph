@@ -785,8 +785,16 @@ const base = import.meta.env.BASE_URL;
       state.accounts.forEach((label, i) => {
         const row = document.createElement('div');
         row.className = 'acct-row';
-        row.innerHTML = `<span></span><button type="button" aria-label="Remove ${label}" title="Remove">✕</button>`;
+        row.innerHTML = `<span></span><button type="button" title="Remove">✕</button>`;
         row.querySelector('span').textContent = label;
+        // label is free-text the user typed (or restored from an imported backup
+        // file) — set via setAttribute rather than interpolated into the innerHTML
+        // template above, since setAttribute can't be broken out of via an embedded
+        // quote the way a template-string attribute can (unlike .textContent just
+        // above, which is always safe regardless of content).
+        row
+          .querySelector('button')
+          .setAttribute('aria-label', `Remove ${label}`);
         row.querySelector('button').addEventListener('click', () => {
           state.accounts.splice(i, 1);
           renderAccounts();
