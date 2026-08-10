@@ -15,6 +15,25 @@ that makes the change, not as a separate retroactive pass.
 
 ### Fixed
 
+- **Security**: `breach-check-tracker` (2 spots) and `digital-legacy-worksheet` (1
+  spot) interpolated user-typed free text (an address label / an account name)
+  unescaped into an `aria-label` attribute inside an `innerHTML` template, while the
+  adjacent visible text correctly escaped the same value — an attribute-breakout
+  injection, exploitable via a crafted label typed directly or delivered through the
+  Backup & Restore import flow, both of which share this origin's `localStorage`
+  across every tool (Digital Legacy Worksheet contacts, Incident Response Card fraud
+  lines, etc.). Flagged by an automated PR review; verified as real and fixed via a
+  live Playwright exploit attempt (confirmed the attack succeeded before the fix and
+  failed after) rather than taking the report at face value. Fixed by setting the
+  attribute via `setAttribute()` post-creation instead of string-interpolating it —
+  not by wrapping it in the existing `escapeHtml()` helper, which only escapes
+  `&`/`</>` for text-node contexts and does **not** escape the quote character an
+  attribute-breakout injection actually needs; the initially-suggested fix ("use
+  escapeHtml()") would not have fully closed this. Audited every other
+  `aria-label`/`title` interpolation across all six tool pages for the same pattern —
+  the only other matches (`broker-removal-tracker`'s broker names, all six tools'
+  snapshot `data-date`/summary text) come from hardcoded constants or computed
+  count-strings, never raw user input, so no further instances exist.
 - CSP no longer allows `https://cdnjs.cloudflare.com` in `script-src` — a dead
   allowance left over from the pre-Astro era when `marked.js` loaded via CDN;
   nothing has loaded from there since the 2026-08-05 Astro migration.
