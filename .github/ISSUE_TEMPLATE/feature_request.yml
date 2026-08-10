@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest something new for the site — a tool improvement, a new domain, etc.
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Read `CLAUDE.md`'s mission guardrail before filing this.** Spidergraph only
+        ever helps a user audit and reduce *their own* exposure — it will never add a
+        feature that looks up, aggregates, or auto-fetches personal data about other
+        people, or about the user from a third party (no backend lookup proxy, no
+        scraping broker sites on the user's behalf). If your idea involves that, it
+        will be declined regardless of how it's implemented — save yourself the
+        write-up.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What are you trying to do that the site doesn't currently support?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: If you have one. Keep in mind this project deliberately stays on plain HTML/CSS/vanilla JS inside Astro — see CLAUDE.md's tech-stack section.

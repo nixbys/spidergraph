@@ -2,331 +2,787 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 ---
+
 <BaseLayout
   title="Spidergraph — Personal Security Program"
   description="A free, open-source privacy and security program — a tiered playbook, six interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking."
   path=""
   current="home"
 >
-<style slot="head" is:global>
-  /* Home-page-only overrides + layout. Shared tokens/nav/brand live in shared/.
+  <style slot="head" is:global>
+    /* Home-page-only overrides + layout. Shared tokens/nav/brand live in shared/.
      is:global is required: this page's JS creates .mystatus-item elements at runtime
      (document.createElement), and Astro's default scoped CSS only matches elements
      present in the template at build time — scoped styles would silently not apply
      to anything JS renders. Every tool page has the same requirement; see CLAUDE.md. */
-  .topnav{margin-bottom:56px;}
-  .wrap{max-width:1000px; margin:0 auto;}
+    .topnav {
+      margin-bottom: 56px;
+    }
+    .wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
 
-  .hero{margin-bottom:64px;}
-  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--blue); margin-bottom:16px; display:flex; align-items:center; gap:8px;}
-  .eyebrow::before{content:"";width:6px;height:6px;background:var(--blue);border-radius:1px; display:inline-block;}
-  h1{font-family:'Space Grotesk', sans-serif; font-size:clamp(34px,5.5vw,58px); font-weight:700; margin:0 0 18px;
-    letter-spacing:-.015em; line-height:1.04; max-width:820px;}
-  h1 span{color:var(--muted); font-weight:500;}
-  .lede{color:var(--muted); font-size:16px; line-height:1.65; max-width:600px;}
+    .hero {
+      margin-bottom: 64px;
+    }
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--blue);
+      border-radius: 1px;
+      display: inline-block;
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(34px, 5.5vw, 58px);
+      font-weight: 700;
+      margin: 0 0 18px;
+      letter-spacing: -0.015em;
+      line-height: 1.04;
+      max-width: 820px;
+    }
+    h1 span {
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .lede {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      max-width: 600px;
+    }
 
-  .flow{
-    display:flex; align-items:center; gap:10px; margin-top:36px; flex-wrap:wrap;
-    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted2);
-  }
-  .flow .node{background:var(--surface); border:1px solid var(--border); border-radius:7px; padding:7px 12px; color:var(--muted);}
-  .flow .arrow{color:var(--border);}
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--muted2);
+    }
+    .flow .node {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 7px 12px;
+      color: var(--muted);
+    }
+    .flow .arrow {
+      color: var(--border);
+    }
 
-  .mystatus{margin-bottom:40px;}
-  .mystatus-head{display:flex; align-items:baseline; gap:10px; margin-bottom:12px; flex-wrap:wrap;}
-  .mystatus-head h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0; color:var(--text);}
-  .mystatus-head .hint{font-size:12px; color:var(--muted2);}
-  .mystatus-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
-  @media (max-width:900px){.mystatus-grid{grid-template-columns:repeat(2,1fr);}}
-  @media (max-width:480px){.mystatus-grid{grid-template-columns:1fr;}}
-  .mystatus-item{
-    display:block; text-decoration:none; background:var(--surface); border:1px solid var(--border);
-    border-radius:12px; padding:14px 16px; transition:all .15s ease;
-  }
-  .mystatus-item:hover{border-color:#374252;}
-  .mystatus-item.not-started{opacity:.6;}
-  .mystatus-item.not-started:hover{opacity:1;}
-  .mystatus-label{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted2); margin-bottom:8px;}
-  .mystatus-value{color:var(--text); font-size:13.5px; font-weight:500; margin-bottom:4px; line-height:1.4;}
-  .mystatus-ago{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);}
-  .mystatus-item.tool-teal .mystatus-label{color:var(--teal);}
-  .mystatus-item.tool-amber .mystatus-label{color:var(--amber);}
-  .mystatus-item.tool-red .mystatus-label{color:var(--red);}
-  .mystatus-item.tool-blue .mystatus-label{color:var(--blue);}
+    .mystatus {
+      margin-bottom: 40px;
+    }
+    .mystatus-head {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .mystatus-head h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      margin: 0;
+      color: var(--text);
+    }
+    .mystatus-head .hint {
+      font-size: 12px;
+      color: var(--muted2);
+    }
+    .mystatus-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 900px) {
+      .mystatus-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 480px) {
+      .mystatus-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .mystatus-item {
+      display: block;
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      transition: all 0.15s ease;
+    }
+    .mystatus-item:hover {
+      border-color: #374252;
+    }
+    .mystatus-item.not-started {
+      opacity: 0.6;
+    }
+    .mystatus-item.not-started:hover {
+      opacity: 1;
+    }
+    .mystatus-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 8px;
+    }
+    .mystatus-value {
+      color: var(--text);
+      font-size: 13.5px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .mystatus-ago {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .mystatus-item.tool-teal .mystatus-label {
+      color: var(--teal);
+    }
+    .mystatus-item.tool-amber .mystatus-label {
+      color: var(--amber);
+    }
+    .mystatus-item.tool-red .mystatus-label {
+      color: var(--red);
+    }
+    .mystatus-item.tool-blue .mystatus-label {
+      color: var(--blue);
+    }
 
-  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
-  .grid .card:last-child:nth-child(odd){grid-column:1 / -1;}
-  @media (max-width:720px){.grid{grid-template-columns:1fr;} .grid .card:last-child:nth-child(odd){grid-column:auto;}}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .grid .card:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+    @media (max-width: 720px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .grid .card:last-child:nth-child(odd) {
+        grid-column: auto;
+      }
+    }
 
-  .card{
-    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px;
-    text-decoration:none; color:var(--text); display:block; transition:all .18s ease; position:relative; overflow:hidden;
-  }
-  .card:hover{border-color:#374252; transform:translateY(-2px);}
-  .card-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px;}
-  .card-code{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
-    color:var(--muted2); background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:4px 9px;}
-  .card-type{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase;}
-  .card h2{font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:600; margin:0 0 10px;}
-  .card p{color:var(--muted); font-size:13.5px; line-height:1.6; margin:0 0 16px;}
-  .card .go{font-family:'IBM Plex Mono',monospace; font-size:11.5px; display:flex; align-items:center; gap:6px;}
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      transition: all 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      border-color: #374252;
+      transform: translateY(-2px);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+    .card-code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 9px;
+    }
+    .card-type {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 10px;
+    }
+    .card p {
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin: 0 0 16px;
+    }
+    .card .go {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-  .card.doc .card-type{color:var(--blue);}
-  .card.doc .go{color:var(--blue);}
-  .card.tool .card-type{color:var(--teal);}
-  .card.tool .go{color:var(--teal);}
-  .card.tool2 .card-type{color:var(--amber);}
-  .card.tool2 .go{color:var(--amber);}
-  .card.tool3 .card-type{color:var(--red);}
-  .card.tool3 .go{color:var(--red);}
-  .card.tool4 .card-type{color:var(--blue);}
-  .card.tool4 .go{color:var(--blue);}
-  .card.tool5 .card-type{color:var(--amber);}
-  .card.tool5 .go{color:var(--amber);}
-  .card.tool6 .card-type{color:var(--amber);}
-  .card.tool6 .go{color:var(--amber);}
-  .card.gen .card-type{color:var(--teal);}
-  .card.gen .go{color:var(--teal);}
+    .card.doc .card-type {
+      color: var(--blue);
+    }
+    .card.doc .go {
+      color: var(--blue);
+    }
+    .card.tool .card-type {
+      color: var(--teal);
+    }
+    .card.tool .go {
+      color: var(--teal);
+    }
+    .card.tool2 .card-type {
+      color: var(--amber);
+    }
+    .card.tool2 .go {
+      color: var(--amber);
+    }
+    .card.tool3 .card-type {
+      color: var(--red);
+    }
+    .card.tool3 .go {
+      color: var(--red);
+    }
+    .card.tool4 .card-type {
+      color: var(--blue);
+    }
+    .card.tool4 .go {
+      color: var(--blue);
+    }
+    .card.tool5 .card-type {
+      color: var(--amber);
+    }
+    .card.tool5 .go {
+      color: var(--amber);
+    }
+    .card.tool6 .card-type {
+      color: var(--amber);
+    }
+    .card.tool6 .go {
+      color: var(--amber);
+    }
+    .card.gen .card-type {
+      color: var(--teal);
+    }
+    .card.gen .go {
+      color: var(--teal);
+    }
 
-  .about{margin-top:60px; padding-top:32px; border-top:1px solid var(--border);}
-  .about h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0 0 12px; color:var(--muted);}
-  .about p{color:var(--muted2); font-size:13px; line-height:1.7; max-width:680px;}
+    .about {
+      margin-top: 60px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .about h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      margin: 0 0 12px;
+      color: var(--muted);
+    }
+    .about p {
+      color: var(--muted2);
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 680px;
+    }
 
-  .backup{margin-bottom:40px;}
-  .backup-card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px;}
-  .backup-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
-  .backup-head h3{font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0; color:var(--text);}
-  .backup-head .hint{font-size:12px; color:var(--muted2);}
-  .backup-actions{display:flex; gap:10px; flex-wrap:wrap;}
-  .backup-btn{
-    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; cursor:pointer;
-    background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 16px;
-    color:var(--muted); transition:all .15s ease; appearance:none; -webkit-appearance:none; margin:0;
-  }
-  .backup-btn:hover{color:var(--text); border-color:#374252;}
-  .backup-btn:focus-visible{outline:2px solid var(--teal); outline-offset:1px;}
-  .backup-btn.primary{color:var(--teal); border-color:#3ddc9755;}
-  .backup-btn.primary:hover{background:var(--teal-dim);}
-  .backup-status{margin-top:12px; font-size:12.5px; line-height:1.5; min-height:1.5em;}
-  .backup-status.ok{color:var(--teal);}
-  .backup-status.err{color:var(--red);}
-</style>
+    .backup {
+      margin-bottom: 40px;
+    }
+    .backup-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .backup-head {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .backup-head h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      margin: 0;
+      color: var(--text);
+    }
+    .backup-head .hint {
+      font-size: 12px;
+      color: var(--muted2);
+    }
+    .backup-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .backup-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      color: var(--muted);
+      transition: all 0.15s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .backup-btn:hover {
+      color: var(--text);
+      border-color: #374252;
+    }
+    .backup-btn:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 1px;
+    }
+    .backup-btn.primary {
+      color: var(--teal);
+      border-color: color-mix(in srgb, var(--teal) 33%, transparent);
+    }
+    .backup-btn.primary:hover {
+      background: var(--teal-dim);
+    }
+    .backup-status {
+      margin-top: 12px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      min-height: 1.5em;
+    }
+    .backup-status.ok {
+      color: var(--teal);
+    }
+    .backup-status.err {
+      color: var(--red);
+    }
+  </style>
 
-<div class="wrap">
-
-  <div class="hero">
-    <div class="eyebrow">Spidergraph · Personal security program</div>
-    <h1>See your whole <span>security posture.</span></h1>
-    <p class="lede">Spidergraph is a complete privacy and security stack — from the tiered playbook that explains every control, to the interactive tools that audit what you actually have against it, plotted as one shape across every domain that matters.</p>
-    <div class="flow">
-      <span class="node">Read the Playbook</span><span class="arrow">→</span>
-      <span class="node">Audit tools &amp; habits</span><span class="arrow">→</span>
-      <span class="node">See your Spidergraph</span>
-    </div>
-  </div>
-
-  <div class="mystatus" id="myStatus">
-    <div class="mystatus-head">
-      <h3>Your Spidergraph</h3>
-      <span class="hint">— read live from this browser's storage, nothing is fetched or sent anywhere</span>
-    </div>
-    <div class="mystatus-grid" id="myStatusGrid"></div>
-  </div>
-
-  <div class="backup">
-    <div class="backup-card">
-      <div class="backup-head">
-        <h3>Back up your data</h3>
-        <span class="hint">— everything above lives only in this browser; save a copy before switching browsers, devices, or clearing site data</span>
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Spidergraph · Personal security program</div>
+      <h1>See your whole <span>security posture.</span></h1>
+      <p class="lede">
+        Spidergraph is a complete privacy and security stack — from the tiered
+        playbook that explains every control, to the interactive tools that
+        audit what you actually have against it, plotted as one shape across
+        every domain that matters.
+      </p>
+      <div class="flow">
+        <span class="node">Read the Playbook</span><span class="arrow">→</span>
+        <span class="node">Audit tools &amp; habits</span><span class="arrow"
+          >→</span
+        >
+        <span class="node">See your Spidergraph</span>
       </div>
-      <div class="backup-actions">
-        <button type="button" id="backupExportBtn" class="backup-btn primary">Download backup (.json) →</button>
-        <button type="button" id="backupImportBtn" class="backup-btn">Restore from backup file →</button>
-        <input type="file" id="backupFileInput" accept="application/json,.json" hidden>
+    </div>
+
+    <div class="mystatus" id="myStatus">
+      <div class="mystatus-head">
+        <h3>Your Spidergraph</h3>
+        <span class="hint"
+          >— read live from this browser's storage, nothing is fetched or sent
+          anywhere</span
+        >
       </div>
-      <div class="backup-status" id="backupStatus"></div>
+      <div class="mystatus-grid" id="myStatusGrid"></div>
+    </div>
+
+    <div class="backup">
+      <div class="backup-card">
+        <div class="backup-head">
+          <h3>Back up your data</h3>
+          <span class="hint"
+            >— everything above lives only in this browser; save a copy before
+            switching browsers, devices, or clearing site data</span
+          >
+        </div>
+        <div class="backup-actions">
+          <button type="button" id="backupExportBtn" class="backup-btn primary"
+            >Download backup (.json) →</button
+          >
+          <button type="button" id="backupImportBtn" class="backup-btn"
+            >Restore from backup file →</button
+          >
+          <input
+            type="file"
+            id="backupFileInput"
+            accept="application/json,.json"
+            hidden
+          />
+        </div>
+        <div class="backup-status" id="backupStatus"></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <a class="card doc" href={`${base}playbook/`}>
+        <div class="card-top">
+          <span class="card-code">DOC-01</span><span class="card-type"
+            >Reference</span
+          >
+        </div>
+        <h2>Personal Security Playbook</h2>
+        <p>
+          Twelve control domains, each tiered Budget → Mid → No-Limit, plus
+          seven incident-response runbooks written in the Detect → Contain →
+          Eradicate → Recover structure security teams actually use.
+        </p>
+        <div class="go">Read the playbook →</div>
+      </a>
+
+      <a class="card tool" href={`${base}privacy-stack-builder/`}>
+        <div class="card-top">
+          <span class="card-code">TOOL-01</span><span class="card-type"
+            >Interactive</span
+          >
+        </div>
+        <h2>Privacy Stack Builder</h2>
+        <p>
+          Pick a target tier, select what you currently run across 15 product
+          slots, and see live gap analysis, cost totals, and a radar chart of
+          your coverage — modeled on a PC-part-picker build sheet.
+        </p>
+        <div class="go">Open the builder →</div>
+      </a>
+
+      <a class="card tool2" href={`${base}opsec-field-manual/`}>
+        <div class="card-top">
+          <span class="card-code">TOOL-02</span><span class="card-type"
+            >Interactive</span
+          >
+        </div>
+        <h2>OPSEC Field Manual</h2>
+        <p>
+          44 behavioral controls across six domains — social engineering,
+          physical security, legal documentation, operational discipline,
+          incident readiness, and audit cadence. Habits, not purchases.
+        </p>
+        <div class="go">Start the audit →</div>
+      </a>
+
+      <a class="card tool3" href={`${base}broker-removal-tracker/`}>
+        <div class="card-top">
+          <span class="card-code">TOOL-03</span><span class="card-type"
+            >Interactive</span
+          >
+        </div>
+        <h2>Broker Removal Tracker</h2>
+        <p>
+          Direct links to the official opt-out page for the ~16 highest-traffic
+          people-search sites — Spokeo, BeenVerified, Whitepages, MyLife, and
+          more — with your progress tracked locally as you work through them.
+        </p>
+        <div class="go">Start tracking →</div>
+      </a>
+
+      <a class="card tool4" href={`${base}breach-check-tracker/`}>
+        <div class="card-top">
+          <span class="card-code">TOOL-04</span><span class="card-type"
+            >Interactive</span
+          >
+        </div>
+        <h2>Breach Check Tracker</h2>
+        <p>
+          List your own email addresses and aliases, then work through your own
+          quarterly Have I Been Pwned check for each — this page tracks your
+          progress locally, it never looks anything up for you.
+        </p>
+        <div class="go">Start tracking →</div>
+      </a>
+
+      <a class="card tool5" href={`${base}digital-legacy-worksheet/`}>
+        <div class="card-top">
+          <span class="card-code">TOOL-05</span><span class="card-type"
+            >Interactive</span
+          >
+        </div>
+        <h2>Digital Legacy Worksheet</h2>
+        <p>
+          Organize who should be able to reach your accounts in an emergency and
+          where recovery info lives — without ever writing down a live password.
+          Export a working note, not a legal document.
+        </p>
+        <div class="go">Start the worksheet →</div>
+      </a>
+
+      <a class="card tool6" href={`${base}incident-response-card/`}>
+        <div class="card-top">
+          <span class="card-code">TOOL-06</span><span class="card-type"
+            >Interactive</span
+          >
+        </div>
+        <h2>Incident Response Card</h2>
+        <p>
+          Fill in your own bank, card, and carrier fraud lines once, then print
+          or export a compact card with the first three things to do — ready
+          before you need it under pressure.
+        </p>
+        <div class="go">Build your card →</div>
+      </a>
+
+      <a class="card gen" href={`${base}report/`}>
+        <div class="card-top">
+          <span class="card-code">DOC-02</span><span class="card-type"
+            >Generated</span
+          >
+        </div>
+        <h2>Recommendations Report</h2>
+        <p>
+          Top picks per category, best practices to close any gap to 100%, and
+          full source documentation — both the research trail behind this
+          project and where to keep learning going forward.
+        </p>
+        <div class="go">View the report →</div>
+      </a>
+    </div>
+
+    <div class="about">
+      <h3>How the pieces connect</h3>
+      <p>
+        The Playbook is the source of truth for every recommendation. The Stack
+        Builder and OPSEC Field Manual audit your actual setup against it and
+        can export a personalized version of the Recommendations Report
+        reflecting your real selections — use the "Generate report" button
+        inside either one rather than reading the static version here if you
+        want your own results. The Broker Removal Tracker, Breach Check Tracker,
+        Digital Legacy Worksheet, and Incident Response Card are narrower by
+        design: flat checklists and worksheets that track your own progress and
+        export their own plain-text (or printable) output, rather than scoring
+        you against the Playbook's domains. Nothing you enter in any tool leaves
+        your browser; there's no backend, no account, and no tracking — which
+        also means this browser's storage is the <i>only</i> copy of your data. Use
+        "Back up your data" above before clearing site data or switching browsers.
+      </p>
     </div>
   </div>
+  <script src={`${base}shared/persist.js`} is:inline></script>
+  <script src={`${base}shared/backup.js`} is:inline></script>
+  <script define:vars={{ base }} is:inline>
+    (function () {
+      function timeAgo(iso) {
+        if (!iso) return null;
+        const days = Math.floor(
+          (Date.now() - new Date(iso).getTime()) / 86400000,
+        );
+        if (days <= 0) return 'today';
+        if (days === 1) return '1 day ago';
+        if (days < 30) return `${days} days ago`;
+        const months = Math.floor(days / 30);
+        return months === 1 ? '1 month ago' : `${months} months ago`;
+      }
+      function pctChecked(map) {
+        const keys = Object.keys(map);
+        if (keys.length === 0) return null;
+        const done = keys.filter((k) => map[k] === true).length;
+        return {
+          done,
+          total: keys.length,
+          pct: Math.round((done / keys.length) * 100),
+        };
+      }
+      const TIER_NAMES = { 1: 'Budget', 2: 'Mid', 3: 'No-Limit' };
 
-  <div class="grid">
-    <a class="card doc" href={`${base}playbook/`}>
-      <div class="card-top"><span class="card-code">DOC-01</span><span class="card-type">Reference</span></div>
-      <h2>Personal Security Playbook</h2>
-      <p>Twelve control domains, each tiered Budget → Mid → No-Limit, plus seven incident-response runbooks written in the Detect → Contain → Eradicate → Recover structure security teams actually use.</p>
-      <div class="go">Read the playbook →</div>
-    </a>
+      const TOOLS = [
+        {
+          key: 'spidergraph-stack-builder-v1',
+          label: 'Stack Builder',
+          href: base + 'privacy-stack-builder/',
+          accent: 'tool-teal',
+          summarize(data) {
+            if (!data || !data.state) return 'Not started yet';
+            const count = Object.keys(data.state).length;
+            const tier = TIER_NAMES[data.target] || '—';
+            return `Target: ${tier} tier · ${count} slots configured`;
+          },
+        },
+        {
+          key: 'spidergraph-opsec-v1',
+          label: 'OPSEC Field Manual',
+          href: base + 'opsec-field-manual/',
+          accent: 'tool-amber',
+          summarize(data) {
+            const p = data ? pctChecked(data) : null;
+            return p
+              ? `${p.done}/${p.total} controls checked (${p.pct}%)`
+              : 'Not started yet';
+          },
+        },
+        {
+          key: 'spidergraph-broker-tracker-v1',
+          label: 'Broker Removal Tracker',
+          href: base + 'broker-removal-tracker/',
+          accent: 'tool-red',
+          summarize(data) {
+            const p = data ? pctChecked(data) : null;
+            return p
+              ? `${p.done}/${p.total} sites requested (${p.pct}%)`
+              : 'Not started yet';
+          },
+        },
+        {
+          key: 'spidergraph-breach-check-v1',
+          label: 'Breach Check Tracker',
+          href: base + 'breach-check-tracker/',
+          accent: 'tool-blue',
+          summarize(data) {
+            if (!data || !Array.isArray(data) || data.length === 0)
+              return 'Not started yet';
+            const done = data.filter((it) => it.checked).length;
+            const pct = Math.round((done / data.length) * 100);
+            return `${done}/${data.length} addresses checked (${pct}%)`;
+          },
+        },
+        {
+          key: 'spidergraph-digital-legacy-v1',
+          label: 'Digital Legacy Worksheet',
+          href: base + 'digital-legacy-worksheet/',
+          accent: 'tool-amber',
+          summarize(data) {
+            if (!data) return 'Not started yet';
+            let filled = 0;
+            if ((data.contactName || '').trim()) filled++;
+            if ((data.contactMethod || '').trim()) filled++;
+            if ((data.recoveryLocation || '').trim()) filled++;
+            if (data.emergencyAccess) filled++;
+            if (Array.isArray(data.accounts) && data.accounts.length > 0)
+              filled++;
+            if ((data.notes || '').trim()) filled++;
+            return filled === 0
+              ? 'Not started yet'
+              : `${filled}/6 sections filled in`;
+          },
+        },
+        {
+          key: 'spidergraph-incident-card-v1',
+          label: 'Incident Response Card',
+          href: base + 'incident-response-card/',
+          accent: 'tool-amber',
+          summarize(data) {
+            if (!data) return 'Not started yet';
+            const filled = [
+              data.bankLine,
+              data.cardLine,
+              data.carrierLine,
+              data.policeLine,
+            ].filter((v) => (v || '').trim()).length;
+            return filled === 0
+              ? 'Not started yet'
+              : `${filled}/4 numbers filled in`;
+          },
+        },
+      ];
 
-    <a class="card tool" href={`${base}privacy-stack-builder/`}>
-      <div class="card-top"><span class="card-code">TOOL-01</span><span class="card-type">Interactive</span></div>
-      <h2>Privacy Stack Builder</h2>
-      <p>Pick a target tier, select what you currently run across 15 product slots, and see live gap analysis, cost totals, and a radar chart of your coverage — modeled on a PC-part-picker build sheet.</p>
-      <div class="go">Open the builder →</div>
-    </a>
-
-    <a class="card tool2" href={`${base}opsec-field-manual/`}>
-      <div class="card-top"><span class="card-code">TOOL-02</span><span class="card-type">Interactive</span></div>
-      <h2>OPSEC Field Manual</h2>
-      <p>44 behavioral controls across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence. Habits, not purchases.</p>
-      <div class="go">Start the audit →</div>
-    </a>
-
-    <a class="card tool3" href={`${base}broker-removal-tracker/`}>
-      <div class="card-top"><span class="card-code">TOOL-03</span><span class="card-type">Interactive</span></div>
-      <h2>Broker Removal Tracker</h2>
-      <p>Direct links to the official opt-out page for the ~16 highest-traffic people-search sites — Spokeo, BeenVerified, Whitepages, MyLife, and more — with your progress tracked locally as you work through them.</p>
-      <div class="go">Start tracking →</div>
-    </a>
-
-    <a class="card tool4" href={`${base}breach-check-tracker/`}>
-      <div class="card-top"><span class="card-code">TOOL-04</span><span class="card-type">Interactive</span></div>
-      <h2>Breach Check Tracker</h2>
-      <p>List your own email addresses and aliases, then work through your own quarterly Have I Been Pwned check for each — this page tracks your progress locally, it never looks anything up for you.</p>
-      <div class="go">Start tracking →</div>
-    </a>
-
-    <a class="card tool5" href={`${base}digital-legacy-worksheet/`}>
-      <div class="card-top"><span class="card-code">TOOL-05</span><span class="card-type">Interactive</span></div>
-      <h2>Digital Legacy Worksheet</h2>
-      <p>Organize who should be able to reach your accounts in an emergency and where recovery info lives — without ever writing down a live password. Export a working note, not a legal document.</p>
-      <div class="go">Start the worksheet →</div>
-    </a>
-
-    <a class="card tool6" href={`${base}incident-response-card/`}>
-      <div class="card-top"><span class="card-code">TOOL-06</span><span class="card-type">Interactive</span></div>
-      <h2>Incident Response Card</h2>
-      <p>Fill in your own bank, card, and carrier fraud lines once, then print or export a compact card with the first three things to do — ready before you need it under pressure.</p>
-      <div class="go">Build your card →</div>
-    </a>
-
-    <a class="card gen" href={`${base}report/`}>
-      <div class="card-top"><span class="card-code">DOC-02</span><span class="card-type">Generated</span></div>
-      <h2>Recommendations Report</h2>
-      <p>Top picks per category, best practices to close any gap to 100%, and full source documentation — both the research trail behind this project and where to keep learning going forward.</p>
-      <div class="go">View the report →</div>
-    </a>
-  </div>
-
-  <div class="about">
-    <h3>How the pieces connect</h3>
-    <p>The Playbook is the source of truth for every recommendation. The Stack Builder and OPSEC Field Manual audit your actual setup against it and can export a personalized version of the Recommendations Report reflecting your real selections — use the "Generate report" button inside either one rather than reading the static version here if you want your own results. The Broker Removal Tracker, Breach Check Tracker, Digital Legacy Worksheet, and Incident Response Card are narrower by design: flat checklists and worksheets that track your own progress and export their own plain-text (or printable) output, rather than scoring you against the Playbook's domains. Nothing you enter in any tool leaves your browser; there's no backend, no account, and no tracking — which also means this browser's storage is the <i>only</i> copy of your data. Use "Back up your data" above before clearing site data or switching browsers.</p>
-  </div>
-</div>
-<script src={`${base}shared/persist.js`} is:inline></script>
-<script src={`${base}shared/backup.js`} is:inline></script>
-<script define:vars={{ base }} is:inline>
-(function(){
-  function timeAgo(iso){
-    if(!iso) return null;
-    const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
-    if(days <= 0) return "today";
-    if(days === 1) return "1 day ago";
-    if(days < 30) return `${days} days ago`;
-    const months = Math.floor(days / 30);
-    return months === 1 ? "1 month ago" : `${months} months ago`;
-  }
-  function pctChecked(map){
-    const keys = Object.keys(map);
-    if(keys.length === 0) return null;
-    const done = keys.filter(k => map[k] === true).length;
-    return {done, total: keys.length, pct: Math.round((done / keys.length) * 100)};
-  }
-  const TIER_NAMES = {1:"Budget", 2:"Mid", 3:"No-Limit"};
-
-  const TOOLS = [
-    {key:"spidergraph-stack-builder-v1", label:"Stack Builder", href: base + "privacy-stack-builder/", accent:"tool-teal",
-      summarize(data){
-        if(!data || !data.state) return "Not started yet";
-        const count = Object.keys(data.state).length;
-        const tier = TIER_NAMES[data.target] || "—";
-        return `Target: ${tier} tier · ${count} slots configured`;
-      }},
-    {key:"spidergraph-opsec-v1", label:"OPSEC Field Manual", href: base + "opsec-field-manual/", accent:"tool-amber",
-      summarize(data){
-        const p = data ? pctChecked(data) : null;
-        return p ? `${p.done}/${p.total} controls checked (${p.pct}%)` : "Not started yet";
-      }},
-    {key:"spidergraph-broker-tracker-v1", label:"Broker Removal Tracker", href: base + "broker-removal-tracker/", accent:"tool-red",
-      summarize(data){
-        const p = data ? pctChecked(data) : null;
-        return p ? `${p.done}/${p.total} sites requested (${p.pct}%)` : "Not started yet";
-      }},
-    {key:"spidergraph-breach-check-v1", label:"Breach Check Tracker", href: base + "breach-check-tracker/", accent:"tool-blue",
-      summarize(data){
-        if(!data || !Array.isArray(data) || data.length === 0) return "Not started yet";
-        const done = data.filter(it => it.checked).length;
-        const pct = Math.round((done / data.length) * 100);
-        return `${done}/${data.length} addresses checked (${pct}%)`;
-      }},
-    {key:"spidergraph-digital-legacy-v1", label:"Digital Legacy Worksheet", href: base + "digital-legacy-worksheet/", accent:"tool-amber",
-      summarize(data){
-        if(!data) return "Not started yet";
-        let filled = 0;
-        if((data.contactName || "").trim()) filled++;
-        if((data.contactMethod || "").trim()) filled++;
-        if((data.recoveryLocation || "").trim()) filled++;
-        if(data.emergencyAccess) filled++;
-        if(Array.isArray(data.accounts) && data.accounts.length > 0) filled++;
-        if((data.notes || "").trim()) filled++;
-        return filled === 0 ? "Not started yet" : `${filled}/6 sections filled in`;
-      }},
-    {key:"spidergraph-incident-card-v1", label:"Incident Response Card", href: base + "incident-response-card/", accent:"tool-amber",
-      summarize(data){
-        if(!data) return "Not started yet";
-        const filled = [data.bankLine, data.cardLine, data.carrierLine, data.policeLine].filter(v => (v || "").trim()).length;
-        return filled === 0 ? "Not started yet" : `${filled}/4 numbers filled in`;
-      }},
-  ];
-
-  const grid = document.getElementById("myStatusGrid");
-  TOOLS.forEach(t => {
-    const store = spidergraphStore(t.key);
-    const saved = store.load();
-    const data = saved ? (saved.data !== undefined ? saved.data : saved) : null;
-    const started = !!saved;
-    const el = document.createElement("a");
-    el.className = "mystatus-item " + t.accent + (started ? "" : " not-started");
-    el.href = t.href;
-    const ago = started && saved.lastUpdated ? timeAgo(saved.lastUpdated) : null;
-    el.innerHTML = `
+      const grid = document.getElementById('myStatusGrid');
+      TOOLS.forEach((t) => {
+        const store = spidergraphStore(t.key);
+        const saved = store.load();
+        const data = saved
+          ? saved.data !== undefined
+            ? saved.data
+            : saved
+          : null;
+        const started = !!saved;
+        const el = document.createElement('a');
+        el.className =
+          'mystatus-item ' + t.accent + (started ? '' : ' not-started');
+        el.href = t.href;
+        const ago =
+          started && saved.lastUpdated ? timeAgo(saved.lastUpdated) : null;
+        el.innerHTML = `
       <div class="mystatus-label">${t.label}</div>
       <div class="mystatus-value">${t.summarize(data)}</div>
-      <div class="mystatus-ago">${ago ? `Updated ${ago}` : (started ? "" : "Start →")}</div>
+      <div class="mystatus-ago">${ago ? `Updated ${ago}` : started ? '' : 'Start →'}</div>
     `;
-    grid.appendChild(el);
-  });
+        grid.appendChild(el);
+      });
 
-  const backupStatus = document.getElementById("backupStatus");
-  function setBackupStatus(msg, ok){
-    backupStatus.textContent = msg;
-    backupStatus.className = "backup-status" + (ok === undefined ? "" : ok ? " ok" : " err");
-  }
+      const backupStatus = document.getElementById('backupStatus');
+      function setBackupStatus(msg, ok) {
+        backupStatus.textContent = msg;
+        backupStatus.className =
+          'backup-status' + (ok === undefined ? '' : ok ? ' ok' : ' err');
+      }
 
-  document.getElementById("backupExportBtn").addEventListener("click", () => {
-    const count = spidergraphExport();
-    if(count === 0){
-      setBackupStatus("Nothing to back up yet — use a tool first, then come back here.", false);
-    } else {
-      setBackupStatus(`Downloaded a backup of ${count} saved item${count === 1 ? "" : "s"}.`, true);
-    }
-  });
+      document
+        .getElementById('backupExportBtn')
+        .addEventListener('click', () => {
+          const count = spidergraphExport();
+          if (count === 0) {
+            setBackupStatus(
+              'Nothing to back up yet — use a tool first, then come back here.',
+              false,
+            );
+          } else {
+            setBackupStatus(
+              `Downloaded a backup of ${count} saved item${count === 1 ? '' : 's'}.`,
+              true,
+            );
+          }
+        });
 
-  const backupFileInput = document.getElementById("backupFileInput");
-  document.getElementById("backupImportBtn").addEventListener("click", () => backupFileInput.click());
-  backupFileInput.addEventListener("change", () => {
-    const file = backupFileInput.files[0];
-    backupFileInput.value = ""; // allow re-selecting the same file later
-    if(!file) return;
-    if(!confirm("Restore from this backup file? This overwrites any current Spidergraph data in this browser with what's saved in the file.")){
-      return;
-    }
-    spidergraphImport(file).then(count => {
-      setBackupStatus(`Restored ${count} item${count === 1 ? "" : "s"} — reloading…`, true);
-      setTimeout(() => location.reload(), 700);
-    }).catch(err => {
-      setBackupStatus(err.message || "Couldn't restore that file.", false);
-    });
-  });
-})();
-</script>
+      const backupFileInput = document.getElementById('backupFileInput');
+      document
+        .getElementById('backupImportBtn')
+        .addEventListener('click', () => backupFileInput.click());
+      backupFileInput.addEventListener('change', () => {
+        const file = backupFileInput.files[0];
+        backupFileInput.value = ''; // allow re-selecting the same file later
+        if (!file) return;
+        if (
+          !confirm(
+            "Restore from this backup file? This overwrites any current Spidergraph data in this browser with what's saved in the file.",
+          )
+        ) {
+          return;
+        }
+        spidergraphImport(file)
+          .then((count) => {
+            setBackupStatus(
+              `Restored ${count} item${count === 1 ? '' : 's'} — reloading…`,
+              true,
+            );
+            setTimeout(() => location.reload(), 700);
+          })
+          .catch((err) => {
+            setBackupStatus(
+              err.message || "Couldn't restore that file.",
+              false,
+            );
+          });
+      });
+    })();
+  </script>
 </BaseLayout>

@@ -11,23 +11,33 @@ import md from '../../content/personal-security-playbook.md?raw';
 const contentHtml = marked.parse(md) as string;
 const base = import.meta.env.BASE_URL;
 ---
+
 <BaseLayout
   title="Spidergraph — Playbook"
-  description="The Personal Security Playbook: twelve control domains tiered Budget to No-Limit, plus incident-response runbooks, sourced from Privacy Guides, The New Oil, IntelTechniques, and Techlore."
+  description="The Personal Security Playbook: twelve control domains tiered Budget to No-Limit, plus incident-response runbooks and full source citations."
   path="playbook/"
   current="playbook"
   accent="blue"
 >
-<link rel="stylesheet" href={`${base}shared/doc-page.css`} slot="head">
-<div class="doc-wrap">
-  <div class="doc-head">
-    <div class="eyebrow">Reference document</div>
-    <select id="sectionJump" class="section-jump" aria-label="Jump to section">
-      <option value="">Jump to section…</option>
-    </select>
+  <link rel="stylesheet" href={`${base}shared/doc-page.css`} slot="head" />
+  <div class="doc-wrap">
+    <div class="doc-head">
+      <div class="eyebrow">Reference document</div>
+      <select
+        id="sectionJump"
+        class="section-jump"
+        aria-label="Jump to section"
+      >
+        <option value="">Jump to section…</option>
+      </select>
+    </div>
+    <div id="content" set:html={contentHtml} />
   </div>
-  <div id="content" set:html={contentHtml}></div>
-</div>
-<button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">↑</button>
-<script src={`${base}shared/doc-page.js`} is:inline></script>
+  <button
+    type="button"
+    id="scrollTopBtn"
+    class="scroll-top-btn"
+    aria-label="Scroll to top">↑</button
+  >
+  <script src={`${base}shared/doc-page.js`} is:inline></script>
 </BaseLayout>

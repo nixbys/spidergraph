@@ -17,50 +17,146 @@
    2026-08-08: redesigned the dropdown panel itself to reuse the site's own recurring
    motifs instead of reading as a plain link list — see the comment block above
    .nav-tools-panel below. */
-.topnav{
-  position:sticky; top:0; z-index:100; margin:-32px -20px 28px; padding:14px 20px;
-  background:var(--bg); border-bottom:1px solid var(--border);
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin: -32px -20px 28px;
+  padding: 14px 20px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
 }
-.topnav-inner{
-  max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:4px;
-  flex-wrap:wrap; row-gap:6px;
+.topnav-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  row-gap: 6px;
 }
-.topnav a{
-  font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em;
-  color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:7px;
-  border:1px solid transparent; transition:all .15s ease;
-  white-space:nowrap; flex-shrink:0;
+.topnav a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
-.topnav a:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
-.topnav a.current{
-  color:var(--accent, var(--text));
-  background:var(--accent-dim, var(--surface2));
-  border-color:var(--accent-border, var(--border));
+.topnav a:hover {
+  color: var(--text);
+  background: var(--surface2);
+  border-color: var(--border);
 }
-.topnav .sep{color:var(--border); margin:0 2px;}
+.topnav a.current {
+  color: var(--accent, var(--text));
+  background: var(--accent-dim, var(--surface2));
+  border-color: var(--accent-border, var(--border));
+}
+.topnav .sep {
+  color: var(--border);
+  margin: 0 2px;
+}
 
-.brand{display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:14px; padding-right:14px; border-right:1px solid var(--border); flex-shrink:0;}
-.brand svg{display:block;}
-.brand-word{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--text); letter-spacing:-0.2px;}
-.brand-word span{color:var(--teal);}
+/* 2026-08-09: dropped the separate "Home" text link (it duplicated this same href one
+   element away) — .brand is now the sole way back home, so it picks up the same
+   hover/current treatment every other top-level link gets, instead of being inert. The
+   border-right separator is set as its own declaration after the `border` shorthand so
+   it keeps winning on the right edge in the resting state; :hover/.current's border-color
+   then legitimately overrides all four sides (higher specificity), turning the separator
+   into a full outline as part of that state — not a bug, that's the point. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-right: 14px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 7px 0 0 7px;
+  border: 1px solid transparent;
+  border-right: 1px solid var(--border);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+.brand:hover {
+  background: var(--surface2);
+  border-color: var(--border);
+}
+.brand.current {
+  background: var(--accent-dim, var(--surface2));
+  border-color: var(--accent-border, var(--border));
+}
+.brand svg {
+  display: block;
+}
+.brand-word {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  letter-spacing: -0.2px;
+  transition: color 0.15s ease;
+}
+.brand-word span {
+  color: var(--teal);
+}
+.brand.current .brand-word {
+  color: var(--accent, var(--text));
+}
 
 /* Tools dropdown — the <summary> itself matches every other top-level nav link */
-.nav-tools{position:relative; flex-shrink:0;}
-.nav-tools > summary{
-  font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em;
-  color:var(--muted); padding:8px 12px; border-radius:7px; border:1px solid transparent;
-  cursor:pointer; list-style:none; user-select:none; white-space:nowrap;
-  display:flex; align-items:center; gap:5px; transition:all .15s ease;
+.nav-tools {
+  position: relative;
+  flex-shrink: 0;
 }
-.nav-tools > summary::-webkit-details-marker{display:none;}
-.nav-tools > summary::after{content:"▾"; font-size:9px; transition:transform .15s ease;}
-.nav-tools[open] > summary::after{transform:rotate(180deg);}
-.nav-tools > summary:hover{color:var(--text); background:var(--surface2); border-color:var(--border);}
-.nav-tools > summary:focus-visible{outline:2px solid var(--blue); outline-offset:1px;}
-.nav-tools > summary.current{
-  color:var(--accent, var(--text));
-  background:var(--accent-dim, var(--surface2));
-  border-color:var(--accent-border, var(--border));
+.nav-tools > summary {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding: 8px 12px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+.nav-tools > summary::-webkit-details-marker {
+  display: none;
+}
+.nav-tools > summary::after {
+  content: '▾';
+  font-size: 9px;
+  transition: transform 0.15s ease;
+}
+.nav-tools[open] > summary::after {
+  transform: rotate(180deg);
+}
+.nav-tools > summary:hover {
+  color: var(--text);
+  background: var(--surface2);
+  border-color: var(--border);
+}
+.nav-tools > summary:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+.nav-tools > summary.current {
+  color: var(--accent, var(--text));
+  background: var(--accent-dim, var(--surface2));
+  border-color: var(--accent-border, var(--border));
 }
 
 /* Panel content, redesigned 2026-08-08 to read as a compact version of the homepage's
@@ -72,51 +168,135 @@
      "Your Spidergraph" widget's per-tool accent-coloring
    - the one-line blurb under each label is the same "label, then a quieter second
      line" hierarchy used by .mystatus-item (label / value / ago) and .metric (k / v) */
-.nav-tools-panel{
-  position:absolute; top:calc(100% + 8px); left:0; z-index:50;
-  width:min(320px, calc(100vw - 40px));
-  max-height:min(560px, calc(100vh - 100px)); overflow-y:auto;
-  background:var(--surface); border:1px solid var(--border); border-radius:14px;
-  padding:10px; box-shadow:0 12px 32px rgba(0,0,0,.45);
-  display:flex; flex-direction:column;
+.nav-tools-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 50;
+  width: min(320px, calc(100vw - 40px));
+  max-height: min(560px, calc(100vh - 100px));
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
 }
-.nav-tools-group{display:flex; flex-direction:column; padding:6px 4px;}
-.nav-tools-group + .nav-tools-group{border-top:1px solid var(--border-soft); margin-top:2px; padding-top:12px;}
-.nav-tools-group-label{
-  font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--muted2); margin:2px 6px 8px; display:flex; align-items:center; gap:7px;
+.nav-tools-group {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 4px;
 }
-.nav-tools-group-label::before{content:"";width:5px;height:5px;background:var(--muted2);border-radius:1px; display:inline-block; flex-shrink:0;}
+.nav-tools-group + .nav-tools-group {
+  border-top: 1px solid var(--border-soft);
+  margin-top: 2px;
+  padding-top: 12px;
+}
+.nav-tools-group-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin: 2px 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.nav-tools-group-label::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--muted2);
+  border-radius: 1px;
+  display: inline-block;
+  flex-shrink: 0;
+}
 
-.nav-tools-item{
-  display:flex; align-items:flex-start; gap:10px; text-decoration:none;
-  padding:9px 8px; border-radius:9px; transition:background .12s ease;
+.nav-tools-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  text-decoration: none;
+  padding: 9px 8px;
+  border-radius: 9px;
+  transition: background 0.12s ease;
 }
-.nav-tools-item:hover{background:var(--surface2);}
-.nav-tools-item.current{background:var(--accent-dim, var(--surface2));}
-.nav-tools-item:focus-visible{outline:2px solid var(--blue); outline-offset:-2px;}
-.nav-tools-dot{
-  width:7px; height:7px; border-radius:1px; flex-shrink:0; margin-top:6px;
+.nav-tools-item:hover {
+  background: var(--surface2);
 }
-.nav-tools-dot.teal{background:var(--teal);}
-.nav-tools-dot.amber{background:var(--amber);}
-.nav-tools-dot.red{background:var(--red);}
-.nav-tools-dot.blue{background:var(--blue);}
-.nav-tools-item-text{display:flex; flex-direction:column; gap:2px; min-width:0;}
-.nav-tools-item-top{display:flex; align-items:baseline; gap:8px;}
-.nav-tools-item-label{
-  font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13.5px; color:var(--text);
+.nav-tools-item.current {
+  background: var(--accent-dim, var(--surface2));
 }
-.nav-tools-item.current .nav-tools-item-label{color:var(--accent, var(--text));}
-.nav-tools-item-code{
-  font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em;
-  white-space:nowrap; opacity:.85;
+.nav-tools-item:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: -2px;
 }
-.nav-tools-item-code.teal{color:var(--teal);}
-.nav-tools-item-code.amber{color:var(--amber);}
-.nav-tools-item-code.red{color:var(--red);}
-.nav-tools-item-code.blue{color:var(--blue);}
-.nav-tools-item-blurb{font-size:11.5px; color:var(--muted2); line-height:1.4;}
+.nav-tools-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.nav-tools-dot.teal {
+  background: var(--teal);
+}
+.nav-tools-dot.amber {
+  background: var(--amber);
+}
+.nav-tools-dot.red {
+  background: var(--red);
+}
+.nav-tools-dot.blue {
+  background: var(--blue);
+}
+.nav-tools-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.nav-tools-item-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.nav-tools-item-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--text);
+}
+.nav-tools-item.current .nav-tools-item-label {
+  color: var(--accent, var(--text));
+}
+.nav-tools-item-code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+.nav-tools-item-code.teal {
+  color: var(--teal);
+}
+.nav-tools-item-code.amber {
+  color: var(--amber);
+}
+.nav-tools-item-code.red {
+  color: var(--red);
+}
+.nav-tools-item-code.blue {
+  color: var(--blue);
+}
+.nav-tools-item-blurb {
+  font-size: 11.5px;
+  color: var(--muted2);
+  line-height: 1.4;
+}
 
 /* Below ~600px, "Tools" itself can wrap to a second/third line at almost any horizontal
    position depending on how much of Home/Playbook/Report wrapped above it — anchoring the
@@ -124,10 +304,16 @@
    320px-wide panel straight off the edge of a narrow viewport. Anchor to .topnav instead
    (position:sticky already gives it a positioning context) so the panel always sits
    edge-to-edge under the whole nav bar regardless of where the trigger landed. */
-@media (max-width:600px){
-  .nav-tools{position:static;}
-  .nav-tools-panel{
-    position:absolute; left:16px; right:16px; top:100%;
-    width:auto; max-width:none;
+@media (max-width: 600px) {
+  .nav-tools {
+    position: static;
+  }
+  .nav-tools-panel {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 100%;
+    width: auto;
+    max-width: none;
   }
 }
