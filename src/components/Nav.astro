@@ -14,12 +14,54 @@
 // Spidergraph" summary — so the panel reads as "a compact version of the homepage," not
 // a different component vocabulary bolted onto the nav.
 const TOOLS = [
-  { id: 'stack-builder', label: 'Stack Builder', href: 'privacy-stack-builder/', code: 'TOOL-01', accent: 'teal', blurb: 'Product picks, tiers, radar chart' },
-  { id: 'opsec', label: 'OPSEC Field Manual', href: 'opsec-field-manual/', code: 'TOOL-02', accent: 'amber', blurb: 'Behavioral audit, 44 controls' },
-  { id: 'broker-tracker', label: 'Broker Removal Tracker', href: 'broker-removal-tracker/', code: 'TOOL-03', accent: 'red', blurb: 'Opt out of people-search sites' },
-  { id: 'breach-check', label: 'Breach Check Tracker', href: 'breach-check-tracker/', code: 'TOOL-04', accent: 'blue', blurb: 'Track your own HIBP checks' },
-  { id: 'digital-legacy', label: 'Digital Legacy Worksheet', href: 'digital-legacy-worksheet/', code: 'TOOL-05', accent: 'amber', blurb: 'Emergency access, no live passwords' },
-  { id: 'incident-response', label: 'Incident Response Card', href: 'incident-response-card/', code: 'TOOL-06', accent: 'amber', blurb: 'Printable fraud-line wallet card' },
+  {
+    id: 'stack-builder',
+    label: 'Stack Builder',
+    href: 'privacy-stack-builder/',
+    code: 'TOOL-01',
+    accent: 'teal',
+    blurb: 'Product picks, tiers, radar chart',
+  },
+  {
+    id: 'opsec',
+    label: 'OPSEC Field Manual',
+    href: 'opsec-field-manual/',
+    code: 'TOOL-02',
+    accent: 'amber',
+    blurb: 'Behavioral audit, 44 controls',
+  },
+  {
+    id: 'broker-tracker',
+    label: 'Broker Removal Tracker',
+    href: 'broker-removal-tracker/',
+    code: 'TOOL-03',
+    accent: 'red',
+    blurb: 'Opt out of people-search sites',
+  },
+  {
+    id: 'breach-check',
+    label: 'Breach Check Tracker',
+    href: 'breach-check-tracker/',
+    code: 'TOOL-04',
+    accent: 'blue',
+    blurb: 'Track your own HIBP checks',
+  },
+  {
+    id: 'digital-legacy',
+    label: 'Digital Legacy Worksheet',
+    href: 'digital-legacy-worksheet/',
+    code: 'TOOL-05',
+    accent: 'amber',
+    blurb: 'Emergency access, no live passwords',
+  },
+  {
+    id: 'incident-response',
+    label: 'Incident Response Card',
+    href: 'incident-response-card/',
+    code: 'TOOL-06',
+    accent: 'amber',
+    blurb: 'Printable fraud-line wallet card',
+  },
 ];
 const TOOL_GROUPS = [
   { label: 'Domain audits', ids: ['stack-builder', 'opsec'] },
@@ -28,57 +70,95 @@ const TOOL_GROUPS = [
 ];
 
 interface Props {
-  current: 'home' | 'playbook' | 'report' | typeof TOOLS[number]['id'];
+  current: 'home' | 'playbook' | 'report' | (typeof TOOLS)[number]['id'];
   noPrint?: boolean;
 }
 const { current, noPrint = false } = Astro.props;
 const base = import.meta.env.BASE_URL;
-const isTool = TOOLS.some(t => t.id === current);
+const isTool = TOOLS.some((t) => t.id === current);
 ---
+
 <nav class:list={['topnav', { 'no-print': noPrint }]}>
   <div class="topnav-inner">
-    <a href={base} class="brand">
+    <a href={base} class:list={['brand', { current: current === 'home' }]}>
       <svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
-        <polygon points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37" fill="none" stroke="#2b3542" stroke-width="2"/>
+        <polygon
+          points="60,28 82.63,37.37 92,60 82.63,82.63 60,92 37.37,82.63 28,60 37.37,37.37"
+          fill="none"
+          stroke="#2b3542"
+          stroke-width="2"></polygon>
         <g stroke="#2b3542" stroke-width="2">
-          <line x1="60" y1="60" x2="60" y2="12"/><line x1="60" y1="60" x2="93.94" y2="26.06"/>
-          <line x1="60" y1="60" x2="108" y2="60"/><line x1="60" y1="60" x2="93.94" y2="93.94"/>
-          <line x1="60" y1="60" x2="60" y2="108"/><line x1="60" y1="60" x2="26.06" y2="93.94"/>
-          <line x1="60" y1="60" x2="12" y2="60"/><line x1="60" y1="60" x2="26.06" y2="26.06"/>
+          <line x1="60" y1="60" x2="60" y2="12"></line><line
+            x1="60"
+            y1="60"
+            x2="93.94"
+            y2="26.06"></line>
+          <line x1="60" y1="60" x2="108" y2="60"></line><line
+            x1="60"
+            y1="60"
+            x2="93.94"
+            y2="93.94"></line>
+          <line x1="60" y1="60" x2="60" y2="108"></line><line
+            x1="60"
+            y1="60"
+            x2="26.06"
+            y2="93.94"></line>
+          <line x1="60" y1="60" x2="12" y2="60"></line><line
+            x1="60"
+            y1="60"
+            x2="26.06"
+            y2="26.06"></line>
         </g>
-        <polygon points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
-                 fill="#3ddc97" fill-opacity="0.3" stroke="#3ddc97" stroke-width="4"/>
+        <polygon
+          points="60,16 75.56,44.44 98,60 81.21,81.21 60,106 47.27,72.73 26,60 41.62,41.62"
+          fill="#3ddc97"
+          fill-opacity="0.3"
+          stroke="#3ddc97"
+          stroke-width="4"></polygon>
       </svg><span class="brand-word">SPIDER<span>GRAPH</span></span>
     </a>
-    <a href={base} class={current === 'home' ? 'current' : ''}>Home</a><span class="sep">/</span>
-    <a href={`${base}playbook/`} class={current === 'playbook' ? 'current' : ''}>Playbook</a><span class="sep">/</span>
+    <a href={`${base}playbook/`} class={current === 'playbook' ? 'current' : ''}
+      >Playbook</a
+    ><span class="sep">/</span>
     <details class="nav-tools">
       <summary class={isTool ? 'current' : ''}>Tools</summary>
       <div class="nav-tools-panel">
-        {TOOL_GROUPS.map(group => (
-          <div class="nav-tools-group">
-            <div class="nav-tools-group-label">{group.label}</div>
-            {group.ids.map(id => {
-              const tool = TOOLS.find(t => t.id === id)!;
-              return (
-                <a href={`${base}${tool.href}`} class:list={['nav-tools-item', { current: current === tool.id }]}>
-                  <span class:list={['nav-tools-dot', tool.accent]}></span>
-                  <span class="nav-tools-item-text">
-                    <span class="nav-tools-item-top">
-                      <span class="nav-tools-item-label">{tool.label}</span>
-                      <span class:list={['nav-tools-item-code', tool.accent]}>{tool.code}</span>
+        {
+          TOOL_GROUPS.map((group) => (
+            <div class="nav-tools-group">
+              <div class="nav-tools-group-label">{group.label}</div>
+              {group.ids.map((id) => {
+                const tool = TOOLS.find((t) => t.id === id)!;
+                return (
+                  <a
+                    href={`${base}${tool.href}`}
+                    class:list={[
+                      'nav-tools-item',
+                      { current: current === tool.id },
+                    ]}
+                  >
+                    <span class:list={['nav-tools-dot', tool.accent]} />
+                    <span class="nav-tools-item-text">
+                      <span class="nav-tools-item-top">
+                        <span class="nav-tools-item-label">{tool.label}</span>
+                        <span class:list={['nav-tools-item-code', tool.accent]}>
+                          {tool.code}
+                        </span>
+                      </span>
+                      <span class="nav-tools-item-blurb">{tool.blurb}</span>
                     </span>
-                    <span class="nav-tools-item-blurb">{tool.blurb}</span>
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        ))}
+                  </a>
+                );
+              })}
+            </div>
+          ))
+        }
       </div>
     </details>
     <span class="sep">/</span>
-    <a href={`${base}report/`} class={current === 'report' ? 'current' : ''}>Recommendations Report</a>
+    <a href={`${base}report/`} class={current === 'report' ? 'current' : ''}
+      >Recommendations Report</a
+    >
   </div>
 </nav>
 <script src={`${base}shared/nav.js`} is:inline></script>

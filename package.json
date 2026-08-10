@@ -1,15 +1,45 @@
 {
   "name": "spidergraph",
   "version": "1.0.0",
+  "description": "A self-contained, client-side privacy and security program: a tiered reference playbook, six interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking.",
   "private": true,
   "type": "module",
+  "license": "MIT",
+  "author": "nixbys",
+  "homepage": "https://nixbys.github.io/spidergraph/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nixbys/spidergraph.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nixbys/spidergraph/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run"
   },
   "dependencies": {
     "astro": "^7.1.6",
     "marked": "^12.0.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@eslint/js": "^10.0.1",
+    "@typescript-eslint/parser": "^8.66.0",
+    "eslint": "^10.8.1",
+    "eslint-plugin-astro": "^3.1.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   }
 }
