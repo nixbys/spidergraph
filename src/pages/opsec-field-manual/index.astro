@@ -2,105 +2,258 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 ---
+
 <BaseLayout
   title="Spidergraph — OPSEC Field Manual"
-  description="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence. Habits, not purchases."
-  ogDescription="A 44-item behavioral OPSEC self-audit across six domains — social engineering, physical security, legal documentation, operational discipline, incident readiness, and audit cadence."
+  description="A 44-item behavioral OPSEC self-audit across six domains: social engineering, physical security, legal docs, discipline, and incident readiness."
   path="opsec-field-manual/"
   current="opsec"
   accent="amber"
 >
-<style slot="head" is:global>
-  /* OPSEC Field Manual-only overrides + layout. Shared tokens/nav/brand live in shared/.
+  <style slot="head" is:global>
+    /* OPSEC Field Manual-only overrides + layout. Shared tokens/nav/brand live in shared/.
      is:global — this page creates domain blocks/items/history entries via JS at runtime. */
-  body{padding-bottom:80px;}
-  .wrap{max-width:1180px;margin:0 auto;}
+    body {
+      padding-bottom: 80px;
+    }
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
 
-  header{
-    display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between; align-items:flex-end;
-    border-bottom:1px solid var(--border);
-    padding-bottom:24px; margin-bottom:28px;
-  }
-  .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--amber); margin-bottom:10px; display:flex; align-items:center; gap:8px;
-  }
-  .eyebrow::before{content:"";width:6px;height:6px;background:var(--amber);border-radius:1px; display:inline-block;}
-  h1{
-    font-family:'Space Grotesk', sans-serif;
-    font-size:clamp(28px,4vw,42px);
-    font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.05;
-  }
-  h1 span{color:var(--muted); font-weight:500;}
-  .sub{color:var(--muted); font-size:14.5px; margin-top:10px; max-width:580px; line-height:1.5;}
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 1px;
+      display: inline-block;
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: -0.01em;
+      line-height: 1.05;
+    }
+    h1 span {
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 14.5px;
+      margin-top: 10px;
+      max-width: 580px;
+      line-height: 1.5;
+    }
 
-  .reset-btn{
-    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted);
-    background:var(--surface); border:1px solid var(--border); border-radius:8px;
-    padding:10px 14px; cursor:pointer; height:fit-content; letter-spacing:.03em;
-    transition:all .15s ease; appearance:none; -webkit-appearance:none; margin:0;
-  }
-  .reset-btn:hover{color:var(--text); border-color:#374252;}
-  .reset-btn:focus-visible, #reportBtn:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
+    .reset-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      height: fit-content;
+      letter-spacing: 0.03em;
+      transition: all 0.15s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .reset-btn:hover {
+      color: var(--text);
+      border-color: #374252;
+    }
+    .reset-btn:focus-visible,
+    #reportBtn:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 1px;
+    }
 
-  .layout{display:grid; grid-template-columns:1fr 340px; gap:28px;}
-  @media (max-width:900px){.layout{grid-template-columns:1fr;} .sidebar{order:-1;}}
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 28px;
+    }
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        order: -1;
+      }
+    }
 
-  .domain-block{
-    background:var(--surface); border:1px solid var(--border); border-radius:14px;
-    margin-bottom:16px; overflow:hidden; scroll-margin-top:80px;
-  }
+    .domain-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      scroll-margin-top: 80px;
+    }
 
-  .domains-toolbar{display:flex; justify-content:flex-end; margin-bottom:10px;}
-  .section-jump{
-    background:var(--surface2); color:var(--text); border:1px solid var(--border);
-    border-radius:7px; padding:7px 30px 7px 12px; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
-    cursor:pointer; appearance:none; -webkit-appearance:none; max-width:220px;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238695a7'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 12px center;
-  }
-  .section-jump:focus-visible{outline:2px solid var(--amber); outline-offset:1px;}
-  .domain-head{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:16px 18px; border-bottom:1px solid var(--border-soft);
-  }
-  .domain-head-left{display:flex; align-items:center; gap:10px;}
-  .domain-code{
-    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted2);
-    background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:4px 8px;
-  }
-  .domain-name{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15.5px;}
-  .domain-pct{font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;}
+    .domains-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+    .section-jump {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 7px 30px 7px 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      max-width: 220px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238695a7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+    .section-jump:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 1px;
+    }
+    .domain-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .domain-head-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .domain-code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--muted2);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+    }
+    .domain-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 15.5px;
+    }
+    .domain-pct {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+    }
 
-  .item{
-    display:flex; gap:12px; align-items:flex-start;
-    padding:13px 18px; border-bottom:1px solid var(--border-soft);
-    cursor:pointer; transition:background .1s ease;
-  }
-  .item:last-child{border-bottom:none;}
-  .item:hover{background:var(--surface2);}
-  .item input[type=checkbox]{
-    appearance:none; width:18px; height:18px; border-radius:5px; border:1.5px solid var(--muted2);
-    background:var(--surface2); flex-shrink:0; margin-top:1px; cursor:pointer; position:relative;
-    transition:all .15s ease;
-  }
-  .item input[type=checkbox]:checked{background:var(--teal); border-color:var(--teal);}
-  .item input[type=checkbox]:checked::after{
-    content:""; position:absolute; left:5px; top:1px; width:5px; height:9px;
-    border:solid #0f1419; border-width:0 2px 2px 0; transform:rotate(45deg);
-  }
-  .item-text{flex:1;}
-  .item-label{font-size:13.8px; line-height:1.45;}
-  .item.checked .item-label{color:var(--muted); text-decoration:line-through; text-decoration-color:#3ddc9766;}
-  .item-crit{
-    font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
-    color:var(--red); border:1px solid #e0596b55; background:var(--red-dim);
-    padding:2px 6px; border-radius:5px; margin-left:8px; white-space:nowrap;
-  }
+    .item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--border-soft);
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+    .item:last-child {
+      border-bottom: none;
+    }
+    .item:hover {
+      background: var(--surface2);
+    }
+    .item input[type='checkbox'] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 1.5px solid var(--muted2);
+      background: var(--surface2);
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s ease;
+    }
+    .item input[type='checkbox']:checked {
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+    .item input[type='checkbox']:checked::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 1px;
+      width: 5px;
+      height: 9px;
+      border: solid var(--bg);
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    .item-text {
+      flex: 1;
+    }
+    .item-label {
+      font-size: 13.8px;
+      line-height: 1.45;
+    }
+    .item.checked .item-label {
+      color: var(--muted);
+      text-decoration: line-through;
+      text-decoration-color: color-mix(in srgb, var(--teal) 40%, transparent);
+    }
+    .item-crit {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid color-mix(in srgb, var(--red) 33%, transparent);
+      background: var(--red-dim);
+      padding: 2px 6px;
+      border-radius: 5px;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
 
-  .sidebar{position:sticky; top:80px; align-self:start; display:flex; flex-direction:column; gap:16px;}
-  /* Below the breakpoint above, .sidebar gets order:-1 and stacks above the main content
+    .sidebar {
+      position: sticky;
+      top: 80px;
+      align-self: start;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    /* Below the breakpoint above, .sidebar gets order:-1 and stacks above the main content
      in a single column. position:sticky no longer serves its side-by-side purpose there,
      and actively breaks the page: as the user scrolls, the "stuck" sidebar overlaps and
      obscures whatever main-content row happens to be underneath it (confirmed via
@@ -109,215 +262,571 @@ const base = import.meta.env.BASE_URL;
      rule above, not inside the earlier @media block next to `order:-1`, since same-specificity
      CSS resolves by source order regardless of media-query nesting; placed earlier, the
      later unconditional rule above would win and silently no-op this override. */
-  @media (max-width:900px){ .sidebar{position:static; top:auto;} }
+    @media (max-width: 900px) {
+      .sidebar {
+        position: static;
+        top: auto;
+      }
+    }
 
-  .scroll-top-btn{
-    position:fixed; bottom:24px; right:24px; z-index:90; width:44px; height:44px; border-radius:50%;
-    background:var(--surface); border:1px solid var(--border); color:var(--amber); font-size:18px;
-    cursor:pointer; display:flex; align-items:center; justify-content:center;
-    opacity:0; visibility:hidden; transform:translateY(8px);
-    transition:opacity .2s ease, transform .2s ease, visibility .2s; appearance:none; -webkit-appearance:none;
-    box-shadow:0 4px 14px rgba(0,0,0,.35);
-  }
-  .scroll-top-btn.visible{opacity:1; visibility:visible; transform:translateY(0);}
-  .scroll-top-btn:hover{border-color:#374252; color:var(--text);}
-  .scroll-top-btn:focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
-  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px;}
-  .card-title{
-    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--muted2); margin-bottom:14px;
-  }
-  .card p.small{font-size:12.5px; color:var(--muted2); line-height:1.6; margin:0 0 12px;}
-  .card p.small:last-child{margin-bottom:0;}
-  .history-list{display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;}
-  .history-item{display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:12px;}
-  .history-item-main{min-width:0;}
-  .history-item .h-date{font-family:'IBM Plex Mono',monospace; color:var(--muted2); font-size:10.5px; margin-bottom:3px;}
-  .history-item .h-summary{color:var(--text); line-height:1.4;}
-  .history-restore-btn{flex-shrink:0; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted2);
-    background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:5px 10px; cursor:pointer;
-    letter-spacing:.03em; transition:all .15s ease; appearance:none; -webkit-appearance:none;}
-  .history-restore-btn:hover{color:var(--text); border-color:#374252;}
-  .history-restore-btn:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
-  .history-empty{font-size:12px; color:var(--muted2); font-style:italic;}
-  svg#radar{display:block; margin:0 auto; width:100%; height:auto; max-width:280px;}
-  .score-row{display:flex; justify-content:space-between; align-items:baseline; margin-top:14px;}
-  .score-num{font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700;}
-  .score-label{font-size:12px; color:var(--muted);}
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 90;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--amber);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+    .scroll-top-btn.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .scroll-top-btn:hover {
+      border-color: #374252;
+      color: var(--text);
+    }
+    .scroll-top-btn:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 2px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .card-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 14px;
+    }
+    .card p.small {
+      font-size: 12.5px;
+      color: var(--muted2);
+      line-height: 1.6;
+      margin: 0 0 12px;
+    }
+    .card p.small:last-child {
+      margin-bottom: 0;
+    }
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+    .history-item-main {
+      min-width: 0;
+    }
+    .history-item .h-date {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--muted2);
+      font-size: 10.5px;
+      margin-bottom: 3px;
+    }
+    .history-item .h-summary {
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .history-restore-btn {
+      flex-shrink: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--muted2);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 10px;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: all 0.15s ease;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .history-restore-btn:hover {
+      color: var(--text);
+      border-color: #374252;
+    }
+    .history-restore-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+    .history-empty {
+      font-size: 12px;
+      color: var(--muted2);
+      font-style: italic;
+    }
+    svg#radar {
+      display: block;
+      margin: 0 auto;
+      width: 100%;
+      height: auto;
+      max-width: 280px;
+    }
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 14px;
+    }
+    .score-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+    }
+    .score-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
 
-  .metric{display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid var(--border-soft); font-size:13px;}
-  .metric:first-of-type{border-top:none;}
-  .metric .k{color:var(--muted);}
-  .metric .v{font-family:'IBM Plex Mono',monospace; font-weight:600;}
-  .v.red{color:var(--red);} .v.amber{color:var(--amber);} .v.teal{color:var(--teal);}
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-top: 1px solid var(--border-soft);
+      font-size: 13px;
+    }
+    .metric:first-of-type {
+      border-top: none;
+    }
+    .metric .k {
+      color: var(--muted);
+    }
+    .metric .v {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 600;
+    }
+    .v.red {
+      color: var(--red);
+    }
+    .v.amber {
+      color: var(--amber);
+    }
+    .v.teal {
+      color: var(--teal);
+    }
 
-  .gap-list{display:flex; flex-direction:column; gap:8px; margin-top:4px;}
-  .gap-item{font-size:12.5px; display:flex; gap:8px; align-items:flex-start; color:var(--muted);}
-  .gap-item .dot{width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:5px;flex-shrink:0;}
-  .gap-item.amber .dot{background:var(--amber);}
-  .gap-item b{color:var(--text); font-weight:600;}
-  .empty-gaps{font-size:12.5px; color:var(--teal); display:flex; gap:8px; align-items:center;}
+    .gap-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .gap-item {
+      font-size: 12.5px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      color: var(--muted);
+    }
+    .gap-item .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    .gap-item.amber .dot {
+      background: var(--amber);
+    }
+    .gap-item b {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .empty-gaps {
+      font-size: 12.5px;
+      color: var(--teal);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
 
-  footer{
-    margin-top:36px; padding-top:20px; border-top:1px solid var(--border);
-    font-size:12.5px; color:var(--muted2); line-height:1.6;
-  }
-  footer b{color:var(--muted);}
-</style>
+    footer {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px;
+      color: var(--muted2);
+      line-height: 1.6;
+    }
+    footer b {
+      color: var(--muted);
+    }
+  </style>
 
-<div class="wrap">
-
-  <header>
-    <div>
-      <div class="eyebrow">Field manual · 6 domains · <span id="itemCount">0</span> controls</div>
-      <h1>Behavioral <span>&amp; OPSEC Audit</span></h1>
-      <div class="sub">The habit-based half of the stack — nothing here is a product you buy, it's a practice you either do or don't. Check off what's already true for you; everything unchecked is your action list, ranked by how much it actually matters.</div>
-    </div>
-    <button type="button" class="reset-btn" id="resetBtn">Reset audit</button>
-  </header>
-
-  <div class="domains-toolbar">
-    <select id="sectionJump" class="section-jump" aria-label="Jump to domain">
-      <option value="">Jump to domain…</option>
-    </select>
-  </div>
-
-  <div class="layout">
-    <div id="domains"></div>
-
-    <div class="sidebar">
-      <div class="card">
-        <div class="card-title">Readiness readout</div>
-        <svg id="radar" width="280" height="280" viewBox="0 0 280 280" aria-hidden="true"></svg>
-        <div class="score-row">
-          <div>
-            <div class="score-num" id="scoreNum">0%</div>
-            <div class="score-label">overall readiness</div>
-          </div>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">
+          Field manual · 6 domains · <span id="itemCount">0</span> controls
+        </div>
+        <h1>Behavioral <span>&amp; OPSEC Audit</span></h1>
+        <div class="sub">
+          The habit-based half of the stack — nothing here is a product you buy,
+          it's a practice you either do or don't. Check off what's already true
+          for you; everything unchecked is your action list, ranked by how much
+          it actually matters.
         </div>
       </div>
+      <button type="button" class="reset-btn" id="resetBtn">Reset audit</button>
+    </header>
 
-      <div class="card">
-        <div class="card-title">Summary</div>
-        <div class="metric"><span class="k">Controls in place</span><span class="v teal" id="mChecked">0/0</span></div>
-        <div class="metric"><span class="k">Critical gaps unchecked</span><span class="v red" id="mCritGap">0</span></div>
-        <div class="metric"><span class="k">Weakest domain</span><span class="v amber" id="mWeakest">—</span></div>
-      </div>
+    <div class="domains-toolbar">
+      <select id="sectionJump" class="section-jump" aria-label="Jump to domain">
+        <option value="">Jump to domain…</option>
+      </select>
+    </div>
 
-      <div class="card">
-        <div class="card-title">Priority action list</div>
-        <div id="gapList" class="gap-list"></div>
-      </div>
+    <div class="layout">
+      <div id="domains"></div>
 
-      <div class="card">
-        <div class="card-title">Export</div>
-        <button type="button" id="reportBtn" style="display:block; width:100%; text-align:center; padding:11px; cursor:pointer; background:var(--surface3); border:1px solid var(--border); border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text);">Generate report ↓</button>
-      </div>
+      <div class="sidebar">
+        <div class="card">
+          <div class="card-title">Readiness readout</div>
+          <svg
+            id="radar"
+            width="280"
+            height="280"
+            viewBox="0 0 280 280"
+            aria-hidden="true"></svg>
+          <div class="score-row">
+            <div>
+              <div class="score-num" id="scoreNum">0%</div>
+              <div class="score-label">overall readiness</div>
+            </div>
+          </div>
+        </div>
 
-      <div class="card">
-        <div class="card-title">History</div>
-        <p class="small">Save a dated checkpoint to compare your audit against past versions of itself.</p>
-        <button type="button" id="snapshotBtn" class="reset-btn" style="width:100%; margin-bottom:12px;">Save snapshot</button>
-        <div id="historyList" class="history-list"></div>
+        <div class="card">
+          <div class="card-title">Summary</div>
+          <div class="metric">
+            <span class="k">Controls in place</span><span
+              class="v teal"
+              id="mChecked">0/0</span
+            >
+          </div>
+          <div class="metric">
+            <span class="k">Critical gaps unchecked</span><span
+              class="v red"
+              id="mCritGap">0</span
+            >
+          </div>
+          <div class="metric">
+            <span class="k">Weakest domain</span><span
+              class="v amber"
+              id="mWeakest">—</span
+            >
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Priority action list</div>
+          <div id="gapList" class="gap-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Export</div>
+          <button
+            type="button"
+            id="reportBtn"
+            style="display:block; width:100%; text-align:center; padding:11px; cursor:pointer; background:var(--surface3); border:1px solid var(--border); border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text);"
+            >Generate report ↓</button
+          >
+        </div>
+
+        <div class="card">
+          <div class="card-title">History</div>
+          <p class="small">
+            Save a dated checkpoint to compare your audit against past versions
+            of itself.
+          </p>
+          <button
+            type="button"
+            id="snapshotBtn"
+            class="reset-btn"
+            style="width:100%; margin-bottom:12px;">Save snapshot</button
+          >
+          <div id="historyList" class="history-list"></div>
+        </div>
       </div>
     </div>
+
+    <footer>
+      <b>Companion tool:</b> product/tool selections (password manager, VPN, OS, etc.)
+      live in the <b>Stack Builder</b>. This manual covers what that picker
+      deliberately left out — the discipline layer. The AUD domain's
+      broker-recheck item points to the <b>Broker Removal Tracker</b> for the actual
+      site-by-site checklist. Full write-ups and the incident-response runbooks these
+      controls feed into are in <b>personal-security-playbook.md</b>. Your
+      checked/unchecked state stays in this browser only, in <code
+        >localStorage</code
+      > — nothing is sent anywhere, so it's still here next time you come back for
+      the quarterly re-audit this manual's own AUD domain recommends. <b
+        >Reset audit</b
+      > clears it.
+    </footer>
   </div>
 
-  <footer>
-    <b>Companion tool:</b> product/tool selections (password manager, VPN, OS, etc.) live in the <b>Stack Builder</b>. This manual covers what that picker deliberately left out — the discipline layer. The AUD domain's broker-recheck item points to the <b>Broker Removal Tracker</b> for the actual site-by-site checklist. Full write-ups and the incident-response runbooks these controls feed into are in <b>personal-security-playbook.md</b>. Your checked/unchecked state stays in this browser only, in <code>localStorage</code> — nothing is sent anywhere, so it's still here next time you come back for the quarterly re-audit this manual's own AUD domain recommends. <b>Reset audit</b> clears it.
-  </footer>
+  <button
+    type="button"
+    id="scrollTopBtn"
+    class="scroll-top-btn"
+    aria-label="Scroll to top">↑</button
+  >
 
-</div>
+  <script src={`${base}shared/persist.js`} is:inline></script>
+  <script src={`${base}shared/history.js`} is:inline></script>
+  <script src={`${base}shared/opsec-scoring.js`} is:inline></script>
+  <script is:inline>
+    const DOMAINS = [
+      {
+        code: 'SE',
+        name: 'Social Engineering & Human-Layer Defense',
+        items: [
+          {
+            t: 'I verify sender domains character-by-character before clicking links in unsolicited messages',
+            crit: true,
+          },
+          {
+            t: 'I never act on urgency alone — a request framed as urgent gets slower, not faster, verification',
+          },
+          {
+            t: 'My close family/contacts and I use a verbal passphrase to verify money/credential requests',
+            crit: true,
+          },
+          {
+            t: "For any 'urgent' institutional call, I hang up and call back using a number I already had on file, not one they gave me",
+            crit: true,
+          },
+          {
+            t: 'I confirm unusual requests from known contacts through a second channel before acting',
+          },
+          {
+            t: "I don't discuss travel plans or home-alone windows on public social channels",
+          },
+          {
+            t: "I'm skeptical by default of unsolicited technicians, deliveries, or 'can I use your phone' requests",
+          },
+          {
+            t: "My security question answers aren't publicly discoverable facts (pet names, mother's maiden name, etc.)",
+          },
+          {
+            t: "I've had the actual 'why' conversation with close family about phishing/vishing, not just handed them an app",
+          },
+        ],
+      },
+      {
+        code: 'PHY',
+        name: 'Physical Security',
+        items: [
+          {
+            t: 'Auto-lock is set to under 1 minute on every device I carry',
+            crit: true,
+          },
+          {
+            t: "Find My / anti-theft tracking is enabled and I've confirmed it actually works",
+          },
+          {
+            t: 'Full-disk encryption is verified — not assumed — on every device',
+          },
+          { t: 'I use a privacy screen filter in public or shared workspaces' },
+          {
+            t: 'I never leave devices unattended in vehicles or visible in public spaces',
+          },
+          {
+            t: 'Smart home / IoT devices sit on a segmented network, isolated from my primary devices',
+            crit: true,
+          },
+          {
+            t: 'I use a Faraday bag or airplane mode for higher-risk travel with sensitive devices',
+          },
+          {
+            t: "I've actually tested a remote wipe or remote lock at least once, not just enabled the setting",
+          },
+        ],
+      },
+      {
+        code: 'LEG',
+        name: 'Legal & Documentation',
+        items: [
+          {
+            t: 'Credit is frozen at all three bureaus (Equifax, Experian, TransUnion)',
+            crit: true,
+          },
+          {
+            t: 'A trusted person has offline instructions for where my recovery info lives — not live credentials',
+          },
+          {
+            t: "My password manager's emergency access / legacy contact feature is actually configured",
+          },
+          {
+            t: 'Personal accounts and any content-creator/business accounts are financially and legally separated',
+          },
+          {
+            t: "I've evaluated whether an LLC or equivalent makes sense given current revenue from content/business work",
+          },
+          {
+            t: 'I have a written incident-contact list: bank fraud line, carrier fraud line, local non-emergency police line',
+          },
+        ],
+      },
+      {
+        code: 'BEH',
+        name: 'Operational Discipline',
+        items: [
+          {
+            t: 'I strip metadata (EXIF/GPS) from images before posting anything publicly',
+            crit: true,
+          },
+          {
+            t: "I don't reuse usernames between my public-facing identity and my personal accounts",
+            crit: true,
+          },
+          {
+            t: 'I keep browser profiles/sessions compartmentalized between identities',
+          },
+          { t: "I review my phone's app permissions at least quarterly" },
+          {
+            t: "I've audited old or dormant accounts still tied to my real identity",
+          },
+          {
+            t: 'Every account password is unique and generated — no reuse anywhere',
+          },
+          {
+            t: 'I avoid posting real-time location; anything location-tagged goes up after the fact, not during',
+          },
+        ],
+      },
+      {
+        code: 'IR',
+        name: 'Incident Response Readiness',
+        items: [
+          {
+            t: "I know the first three things I'd do in the first 15 minutes if my email were compromised",
+            crit: true,
+          },
+          {
+            t: "I know my mobile carrier's specific process for locking a SIM against unauthorized swap",
+          },
+          {
+            t: "I've actually restored a file from backup in the last 6 months to confirm it works",
+            crit: true,
+          },
+          {
+            t: 'I know how to report doxxing or impersonation on every platform I actively use',
+          },
+          {
+            t: "I know exactly who I'd call first in a financial fraud incident, before I'd need to",
+          },
+          {
+            t: 'If I suspect malware, I disconnect the device from the network immediately rather than trying to clean an infected OS in place',
+            crit: true,
+          },
+          {
+            t: 'I have access to clean rescue/boot media (USB) to scan or reinstall a compromised device without trusting the infected OS',
+          },
+          {
+            t: 'If I ever give up any information during a social-engineering attempt, I treat it as a credential-compromise incident right away, not something to just note and move on from',
+          },
+        ],
+      },
+      {
+        code: 'AUD',
+        name: 'Maintenance & Audit Cadence',
+        items: [
+          {
+            t: 'OS, browser, and app updates are on auto-update or checked weekly without fail',
+          },
+          {
+            t: 'I review recent account activity/login alerts on email and financial accounts monthly, not just after an alert fires',
+          },
+          {
+            t: 'I re-run my own OSINT self-audit (searching my own name/handles/number) quarterly',
+            crit: true,
+          },
+          {
+            t: 'I work through the Broker Removal Tracker at least once and revisit it quarterly — broker listings reappear on their own re-scrape cycle',
+          },
+          {
+            t: "I revisit my threat model — what I'm protecting, from whom — every 6 months",
+          },
+          {
+            t: 'I do a full credential rotation review annually rather than only after a breach alert',
+          },
+        ],
+      },
+    ];
 
-<button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">↑</button>
+    const store = spidergraphStore('spidergraph-opsec-v1');
+    const state = {}; // "CODE-idx" -> bool
+    DOMAINS.forEach((d) =>
+      d.items.forEach((_it, i) => (state[`${d.code}-${i}`] = false)),
+    );
+    const saved = store.load();
+    if (saved) {
+      // Back-compat: pre-persist.js saves were the flat map itself, not {data, lastUpdated}.
+      const savedMap = saved.data !== undefined ? saved.data : saved;
+      Object.keys(state).forEach((k) => {
+        if (k in savedMap) state[k] = !!savedMap[k];
+      });
+    }
 
-<script src={`${base}shared/persist.js`} is:inline></script>
-<script src={`${base}shared/history.js`} is:inline></script>
-<script is:inline>
-const DOMAINS = [
-  {code:"SE", name:"Social Engineering & Human-Layer Defense", items:[
-    {t:"I verify sender domains character-by-character before clicking links in unsolicited messages", crit:true},
-    {t:"I never act on urgency alone — a request framed as urgent gets slower, not faster, verification"},
-    {t:"My close family/contacts and I use a verbal passphrase to verify money/credential requests", crit:true},
-    {t:"For any 'urgent' institutional call, I hang up and call back using a number I already had on file, not one they gave me", crit:true},
-    {t:"I confirm unusual requests from known contacts through a second channel before acting"},
-    {t:"I don't discuss travel plans or home-alone windows on public social channels"},
-    {t:"I'm skeptical by default of unsolicited technicians, deliveries, or 'can I use your phone' requests"},
-    {t:"My security question answers aren't publicly discoverable facts (pet names, mother's maiden name, etc.)"},
-    {t:"I've had the actual 'why' conversation with close family about phishing/vishing, not just handed them an app"},
-  ]},
-  {code:"PHY", name:"Physical Security", items:[
-    {t:"Auto-lock is set to under 1 minute on every device I carry", crit:true},
-    {t:"Find My / anti-theft tracking is enabled and I've confirmed it actually works"},
-    {t:"Full-disk encryption is verified — not assumed — on every device"},
-    {t:"I use a privacy screen filter in public or shared workspaces"},
-    {t:"I never leave devices unattended in vehicles or visible in public spaces"},
-    {t:"Smart home / IoT devices sit on a segmented network, isolated from my primary devices", crit:true},
-    {t:"I use a Faraday bag or airplane mode for higher-risk travel with sensitive devices"},
-    {t:"I've actually tested a remote wipe or remote lock at least once, not just enabled the setting"},
-  ]},
-  {code:"LEG", name:"Legal & Documentation", items:[
-    {t:"Credit is frozen at all three bureaus (Equifax, Experian, TransUnion)", crit:true},
-    {t:"A trusted person has offline instructions for where my recovery info lives — not live credentials"},
-    {t:"My password manager's emergency access / legacy contact feature is actually configured"},
-    {t:"Personal accounts and any content-creator/business accounts are financially and legally separated"},
-    {t:"I've evaluated whether an LLC or equivalent makes sense given current revenue from content/business work"},
-    {t:"I have a written incident-contact list: bank fraud line, carrier fraud line, local non-emergency police line"},
-  ]},
-  {code:"BEH", name:"Operational Discipline", items:[
-    {t:"I strip metadata (EXIF/GPS) from images before posting anything publicly", crit:true},
-    {t:"I don't reuse usernames between my public-facing identity and my personal accounts", crit:true},
-    {t:"I keep browser profiles/sessions compartmentalized between identities"},
-    {t:"I review my phone's app permissions at least quarterly"},
-    {t:"I've audited old or dormant accounts still tied to my real identity"},
-    {t:"Every account password is unique and generated — no reuse anywhere"},
-    {t:"I avoid posting real-time location; anything location-tagged goes up after the fact, not during"},
-  ]},
-  {code:"IR", name:"Incident Response Readiness", items:[
-    {t:"I know the first three things I'd do in the first 15 minutes if my email were compromised", crit:true},
-    {t:"I know my mobile carrier's specific process for locking a SIM against unauthorized swap"},
-    {t:"I've actually restored a file from backup in the last 6 months to confirm it works", crit:true},
-    {t:"I know how to report doxxing or impersonation on every platform I actively use"},
-    {t:"I know exactly who I'd call first in a financial fraud incident, before I'd need to"},
-    {t:"If I suspect malware, I disconnect the device from the network immediately rather than trying to clean an infected OS in place", crit:true},
-    {t:"I have access to clean rescue/boot media (USB) to scan or reinstall a compromised device without trusting the infected OS"},
-    {t:"If I ever give up any information during a social-engineering attempt, I treat it as a credential-compromise incident right away, not something to just note and move on from"},
-  ]},
-  {code:"AUD", name:"Maintenance & Audit Cadence", items:[
-    {t:"OS, browser, and app updates are on auto-update or checked weekly without fail"},
-    {t:"I review recent account activity/login alerts on email and financial accounts monthly, not just after an alert fires"},
-    {t:"I re-run my own OSINT self-audit (searching my own name/handles/number) quarterly", crit:true},
-    {t:"I work through the Broker Removal Tracker at least once and revisit it quarterly — broker listings reappear on their own re-scrape cycle"},
-    {t:"I revisit my threat model — what I'm protecting, from whom — every 6 months"},
-    {t:"I do a full credential rotation review annually rather than only after a breach alert"},
-  ]},
-];
+    function slugify(text) {
+      return text
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
 
-const store = spidergraphStore("spidergraph-opsec-v1");
-let state = {}; // "CODE-idx" -> bool
-DOMAINS.forEach(d => d.items.forEach((it,i) => state[`${d.code}-${i}`] = false));
-const saved = store.load();
-if(saved){
-  // Back-compat: pre-persist.js saves were the flat map itself, not {data, lastUpdated}.
-  const savedMap = saved.data !== undefined ? saved.data : saved;
-  Object.keys(state).forEach(k => { if(k in savedMap) state[k] = !!savedMap[k]; });
-}
+    const domainsEl = document.getElementById('domains');
+    const jumpSel = document.getElementById('sectionJump');
+    let totalItems = 0;
+    DOMAINS.forEach((d) => (totalItems += d.items.length));
+    document.getElementById('itemCount').textContent = totalItems;
 
-function slugify(text){
-  return text.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
-}
-
-const domainsEl = document.getElementById("domains");
-const jumpSel = document.getElementById("sectionJump");
-let totalItems = 0;
-DOMAINS.forEach(d => totalItems += d.items.length);
-document.getElementById("itemCount").textContent = totalItems;
-
-DOMAINS.forEach(d => {
-  const block = document.createElement("div");
-  block.className = "domain-block";
-  block.id = "domain-" + slugify(d.name);
-  block.innerHTML = `
+    DOMAINS.forEach((d) => {
+      const block = document.createElement('div');
+      block.className = 'domain-block';
+      block.id = 'domain-' + slugify(d.name);
+      block.innerHTML = `
     <div class="domain-head">
       <div class="domain-head-left">
         <span class="domain-code">${d.code}</span>
@@ -327,272 +836,315 @@ DOMAINS.forEach(d => {
     </div>
     <div class="items" id="items-${d.code}"></div>
   `;
-  domainsEl.appendChild(block);
+      domainsEl.appendChild(block);
 
-  const jumpOpt = document.createElement("option");
-  jumpOpt.value = "#" + block.id;
-  jumpOpt.textContent = d.name;
-  jumpSel.appendChild(jumpOpt);
-  const itemsEl = block.querySelector(`#items-${d.code}`);
-  d.items.forEach((it, i) => {
-    const key = `${d.code}-${i}`;
-    const row = document.createElement("label");
-    row.className = "item" + (state[key] ? " checked" : "");
-    row.id = `row-${key}`;
-    row.innerHTML = `
-      <input type="checkbox" id="cb-${key}" ${state[key] ? "checked" : ""}>
+      const jumpOpt = document.createElement('option');
+      jumpOpt.value = '#' + block.id;
+      jumpOpt.textContent = d.name;
+      jumpSel.appendChild(jumpOpt);
+      const itemsEl = block.querySelector(`#items-${d.code}`);
+      d.items.forEach((it, i) => {
+        const key = `${d.code}-${i}`;
+        const row = document.createElement('label');
+        row.className = 'item' + (state[key] ? ' checked' : '');
+        row.id = `row-${key}`;
+        row.innerHTML = `
+      <input type="checkbox" id="cb-${key}" ${state[key] ? 'checked' : ''}>
       <div class="item-text">
         <span class="item-label">${it.t}</span>${it.crit ? '<span class="item-crit">Critical</span>' : ''}
       </div>
     `;
-    itemsEl.appendChild(row);
-    const cb = row.querySelector("input");
-    cb.addEventListener("change", () => {
-      state[key] = cb.checked;
-      row.classList.toggle("checked", cb.checked);
-      store.save(state);
+        itemsEl.appendChild(row);
+        const cb = row.querySelector('input');
+        cb.addEventListener('change', () => {
+          state[key] = cb.checked;
+          row.classList.toggle('checked', cb.checked);
+          store.save(state);
+          render();
+        });
+      });
+    });
+
+    jumpSel.addEventListener('change', () => {
+      if (!jumpSel.value) return;
+      const target = document.querySelector(jumpSel.value);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      jumpSel.value = '';
+    });
+
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    window.addEventListener(
+      'scroll',
+      () => {
+        scrollBtn.classList.toggle('visible', window.scrollY > 400);
+      },
+      { passive: true },
+    );
+    scrollBtn.addEventListener('click', () =>
+      window.scrollTo({ top: 0, behavior: 'smooth' }),
+    );
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      Object.keys(state).forEach((k) => (state[k] = false));
+      store.clear();
+      document.querySelectorAll('input[type=checkbox]').forEach((cb) => {
+        cb.checked = false;
+        cb.closest('.item').classList.remove('checked');
+      });
       render();
     });
-  });
-});
 
-jumpSel.addEventListener("change", () => {
-  if(!jumpSel.value) return;
-  const target = document.querySelector(jumpSel.value);
-  if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
-  jumpSel.value = "";
-});
+    function render() {
+      // Scoring itself lives in src/lib/opsec-scoring.js (unit-tested there) — this just
+      // maps the computed result to this page's own DOM.
+      const r = computeReadiness(DOMAINS, state);
 
-const scrollBtn = document.getElementById("scrollTopBtn");
-window.addEventListener("scroll", () => {
-  scrollBtn.classList.toggle("visible", window.scrollY > 400);
-}, {passive:true});
-scrollBtn.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+      DOMAINS.forEach((d) => {
+        const pct = r.domainPct[d.code];
+        const pctEl = document.getElementById(`pct-${d.code}`);
+        pctEl.textContent = `${pct}%`;
+        pctEl.style.color =
+          pct === 100
+            ? 'var(--teal)'
+            : pct >= 50
+              ? 'var(--amber)'
+              : 'var(--red)';
+      });
 
-document.getElementById("resetBtn").addEventListener("click", () => {
-  Object.keys(state).forEach(k => state[k] = false);
-  store.clear();
-  document.querySelectorAll('input[type=checkbox]').forEach(cb => { cb.checked = false; cb.closest('.item').classList.remove('checked'); });
-  render();
-});
+      document.getElementById('mChecked').textContent =
+        `${r.totalChecked}/${totalItems}`;
+      document.getElementById('mCritGap').textContent = r.critGaps;
+      document.getElementById('scoreNum').textContent = `${r.overallPct}%`;
+      document.getElementById('mWeakest').textContent =
+        `${r.weakest} (${r.weakestPct}%)`;
 
-function render(){
-  let totalChecked = 0, critGaps = 0;
-  const domainPct = {};
-  const gapItems = [];
-
-  DOMAINS.forEach(d => {
-    let checked = 0;
-    d.items.forEach((it, i) => {
-      const key = `${d.code}-${i}`;
-      if(state[key]){ checked++; totalChecked++; }
-      else if(it.crit){
-        critGaps++;
-        gapItems.push({crit:true, domain:d.code, text:it.t});
+      const gapItems = r.gapItems;
+      const gapListEl = document.getElementById('gapList');
+      gapListEl.innerHTML = '';
+      if (gapItems.length === 0) {
+        gapListEl.innerHTML = `<div class="empty-gaps">✓ Every control checked. Full behavioral coverage.</div>`;
       } else {
-        gapItems.push({crit:false, domain:d.code, text:it.t});
+        gapItems.slice(0, 8).forEach((g) => {
+          const div = document.createElement('div');
+          div.className = 'gap-item' + (g.crit ? '' : ' amber');
+          div.innerHTML = `<span class="dot"></span><span><b>${g.domain}:</b> ${g.text}</span>`;
+          gapListEl.appendChild(div);
+        });
       }
+
+      drawRadar(r.domainPct);
+    }
+
+    function drawRadar(domainPct) {
+      const svg = document.getElementById('radar');
+      svg.innerHTML = '';
+      const cx = 140,
+        cy = 140,
+        maxR = 105;
+      const n = DOMAINS.length;
+      const ns = 'http://www.w3.org/2000/svg';
+      function pt(i, r) {
+        const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+        return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+      }
+
+      [1, 2, 3].forEach((l) => {
+        const r = (maxR / 3) * l;
+        const points = [];
+        for (let i = 0; i < n; i++) {
+          points.push(pt(i, r).join(','));
+        }
+        const poly = document.createElementNS(ns, 'polygon');
+        poly.setAttribute('points', points.join(' '));
+        poly.setAttribute('fill', 'none');
+        poly.setAttribute(
+          'stroke',
+          l === 3 ? 'var(--border)' : 'var(--border-soft)',
+        );
+        poly.setAttribute('stroke-width', '1');
+        svg.appendChild(poly);
+      });
+      for (let i = 0; i < n; i++) {
+        const [x, y] = pt(i, maxR);
+        const line = document.createElementNS(ns, 'line');
+        line.setAttribute('x1', cx);
+        line.setAttribute('y1', cy);
+        line.setAttribute('x2', x);
+        line.setAttribute('y2', y);
+        line.setAttribute('stroke', 'var(--border-soft)');
+        line.setAttribute('stroke-width', '1');
+        svg.appendChild(line);
+      }
+
+      const cpoints = [];
+      DOMAINS.forEach((d, i) => {
+        const pct = domainPct[d.code] || 0;
+        const r = maxR * (pct / 100);
+        cpoints.push(pt(i, r));
+      });
+      const cpoly = document.createElementNS(ns, 'polygon');
+      cpoly.setAttribute('points', cpoints.map((p) => p.join(',')).join(' '));
+      cpoly.setAttribute('fill', 'var(--amber)');
+      cpoly.setAttribute('fill-opacity', '0.18');
+      cpoly.setAttribute('stroke', 'var(--amber)');
+      cpoly.setAttribute('stroke-width', '2');
+      cpoly.setAttribute('stroke-linejoin', 'round');
+      svg.appendChild(cpoly);
+
+      cpoints.forEach(([x, y]) => {
+        const c = document.createElementNS(ns, 'circle');
+        c.setAttribute('cx', x);
+        c.setAttribute('cy', y);
+        c.setAttribute('r', '2.5');
+        c.setAttribute('fill', 'var(--amber)');
+        svg.appendChild(c);
+      });
+
+      DOMAINS.forEach((d, i) => {
+        const [x, y] = pt(i, maxR + 16);
+        const t = document.createElementNS(ns, 'text');
+        t.setAttribute('x', x);
+        t.setAttribute('y', y);
+        t.setAttribute('fill', '#5e6b7c');
+        t.setAttribute('font-size', '9.5');
+        t.setAttribute('font-family', 'IBM Plex Mono, monospace');
+        t.setAttribute('text-anchor', 'middle');
+        t.setAttribute('dominant-baseline', 'middle');
+        t.textContent = d.code;
+        svg.appendChild(t);
+      });
+    }
+
+    document
+      .getElementById('reportBtn')
+      .addEventListener('click', generateReport);
+
+    function generateReport() {
+      const now = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+      // Same scoring as render() above, from src/lib/opsec-scoring.js — this function
+      // only adds its own per-item [x]/[ ] text formatting on top.
+      const r = computeReadiness(DOMAINS, state);
+      const lines = [];
+      lines.push('BEHAVIORAL & OPSEC AUDIT — RECOMMENDATIONS REPORT');
+      lines.push(`Generated ${now}`);
+      lines.push('='.repeat(60));
+      lines.push('');
+
+      DOMAINS.forEach((d) => {
+        lines.push(`[${d.code}] ${d.name}`);
+        d.items.forEach((it, i) => {
+          const key = `${d.code}-${i}`;
+          const isChecked = state[key];
+          const mark = isChecked ? '[x]' : it.crit ? '[ ] (CRITICAL)' : '[ ]';
+          lines.push(`  ${mark} ${it.t}`);
+        });
+        lines.push(`  -> Domain completeness: ${r.domainPct[d.code]}%`);
+        lines.push('');
+      });
+
+      lines.push('-'.repeat(60));
+      lines.push('SUMMARY');
+      lines.push(`  Controls in place:       ${r.totalChecked}/${totalItems}`);
+      lines.push(`  Critical gaps unchecked: ${r.critGaps}`);
+      lines.push(`  Overall readiness:       ${r.overallPct}%`);
+      lines.push('');
+      lines.push(
+        '  Unchecked critical items are the highest-leverage next actions —',
+      );
+      lines.push(
+        '  address those before lower-weight items, regardless of domain.',
+      );
+      lines.push('');
+      lines.push('-'.repeat(60));
+      lines.push('SOURCES');
+      lines.push(
+        '  Methodology drawn from Privacy Guides (privacyguides.org),',
+      );
+      lines.push('  The New Oil (thenewoil.org), IntelTechniques / Bazzell');
+      lines.push(
+        '  (inteltechniques.com), Techlore, and EFF Surveillance Self-Defense.',
+      );
+      lines.push(
+        '  Full bibliography, best-practice detail per domain, and further-',
+      );
+      lines.push('  reading recommendations: see recommendations-report.md.');
+
+      const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `opsec-audit-report-${Date.now()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    const historyStore = spidergraphHistory('spidergraph-opsec-v1');
+
+    // Rebuilds the checked/unchecked map from a saved snapshot and re-renders everything —
+    // data is the flat "CODE-idx" -> bool map, same shape store.load() saves.
+    function restoreSnapshot(data) {
+      if (!data) return;
+      if (
+        !confirm(
+          'Restore this snapshot? This replaces your current checklist with the saved checkpoint.',
+        )
+      )
+        return;
+      Object.keys(state).forEach((k) => {
+        state[k] = !!data[k];
+        const cb = document.getElementById(`cb-${k}`);
+        const row = document.getElementById(`row-${k}`);
+        if (cb) cb.checked = state[k];
+        if (row) row.classList.toggle('checked', state[k]);
+      });
+      store.save(state);
+      render();
+    }
+
+    function renderHistory() {
+      const snapshots = historyStore.list().slice().reverse();
+      const el = document.getElementById('historyList');
+      if (snapshots.length === 0) {
+        el.innerHTML =
+          '<div class="history-empty">No snapshots yet — save one to start tracking your audit over time.</div>';
+        return;
+      }
+      el.innerHTML = snapshots
+        .map((s) => {
+          const d = new Date(s.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          });
+          return `<div class="history-item"><div class="history-item-main"><div class="h-date">${d}</div><div class="h-summary">${s.summary}</div></div><button type="button" class="history-restore-btn" data-date="${s.date}">Restore</button></div>`;
+        })
+        .join('');
+      el.querySelectorAll('.history-restore-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const snap = historyStore
+            .list()
+            .find((s) => s.date === btn.dataset.date);
+          if (snap) restoreSnapshot(snap.data);
+        });
+      });
+    }
+
+    document.getElementById('snapshotBtn').addEventListener('click', () => {
+      const total = Object.keys(state).length;
+      const done = Object.values(state).filter((v) => v === true).length;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      const summary = `${done}/${total} controls checked (${pct}%)`;
+      historyStore.save(summary, state);
+      renderHistory();
     });
-    const pct = Math.round((checked/d.items.length)*100);
-    domainPct[d.code] = pct;
-    document.getElementById(`pct-${d.code}`).textContent = `${pct}%`;
-    const pctEl = document.getElementById(`pct-${d.code}`);
-    pctEl.style.color = pct === 100 ? "var(--teal)" : pct >= 50 ? "var(--amber)" : "var(--red)";
-  });
 
-  document.getElementById("mChecked").textContent = `${totalChecked}/${totalItems}`;
-  document.getElementById("mCritGap").textContent = critGaps;
-  document.getElementById("scoreNum").textContent = `${Math.round((totalChecked/totalItems)*100)}%`;
-
-  let weakest = DOMAINS[0].code, weakestPct = 101;
-  DOMAINS.forEach(d => { if(domainPct[d.code] < weakestPct){ weakestPct = domainPct[d.code]; weakest = d.code; } });
-  document.getElementById("mWeakest").textContent = `${weakest} (${weakestPct}%)`;
-
-  gapItems.sort((a,b) => (b.crit - a.crit));
-  const gapListEl = document.getElementById("gapList");
-  gapListEl.innerHTML = "";
-  if(gapItems.length === 0){
-    gapListEl.innerHTML = `<div class="empty-gaps">✓ Every control checked. Full behavioral coverage.</div>`;
-  } else {
-    gapItems.slice(0,8).forEach(g => {
-      const div = document.createElement("div");
-      div.className = "gap-item" + (g.crit ? "" : " amber");
-      div.innerHTML = `<span class="dot"></span><span><b>${g.domain}:</b> ${g.text}</span>`;
-      gapListEl.appendChild(div);
-    });
-  }
-
-  drawRadar(domainPct);
-}
-
-function drawRadar(domainPct){
-  const svg = document.getElementById("radar");
-  svg.innerHTML = "";
-  const cx = 140, cy = 140, maxR = 105;
-  const n = DOMAINS.length;
-  const ns = "http://www.w3.org/2000/svg";
-  function pt(i, r){
-    const angle = (Math.PI * 2 * i / n) - Math.PI/2;
-    return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
-  }
-
-  [1,2,3].forEach(l => {
-    const r = (maxR/3)*l;
-    let points = [];
-    for(let i=0;i<n;i++){ points.push(pt(i,r).join(",")); }
-    const poly = document.createElementNS(ns,"polygon");
-    poly.setAttribute("points", points.join(" "));
-    poly.setAttribute("fill","none");
-    poly.setAttribute("stroke", l===3 ? "#2b3542" : "#20293380");
-    poly.setAttribute("stroke-width","1");
-    svg.appendChild(poly);
-  });
-  for(let i=0;i<n;i++){
-    const [x,y] = pt(i,maxR);
-    const line = document.createElementNS(ns,"line");
-    line.setAttribute("x1",cx); line.setAttribute("y1",cy);
-    line.setAttribute("x2",x); line.setAttribute("y2",y);
-    line.setAttribute("stroke","#20293380"); line.setAttribute("stroke-width","1");
-    svg.appendChild(line);
-  }
-
-  let cpoints = [];
-  DOMAINS.forEach((d,i) => {
-    const pct = domainPct[d.code] || 0;
-    const r = (maxR) * (pct/100);
-    cpoints.push(pt(i,r));
-  });
-  const cpoly = document.createElementNS(ns,"polygon");
-  cpoly.setAttribute("points", cpoints.map(p=>p.join(",")).join(" "));
-  cpoly.setAttribute("fill","#e8a23d2e");
-  cpoly.setAttribute("stroke","#e8a23d");
-  cpoly.setAttribute("stroke-width","2");
-  cpoly.setAttribute("stroke-linejoin","round");
-  svg.appendChild(cpoly);
-
-  cpoints.forEach(([x,y]) => {
-    const c = document.createElementNS(ns,"circle");
-    c.setAttribute("cx",x); c.setAttribute("cy",y); c.setAttribute("r","2.5");
-    c.setAttribute("fill","#e8a23d");
-    svg.appendChild(c);
-  });
-
-  DOMAINS.forEach((d,i) => {
-    const [x,y] = pt(i, maxR + 16);
-    const t = document.createElementNS(ns,"text");
-    t.setAttribute("x",x); t.setAttribute("y",y);
-    t.setAttribute("fill","#5e6b7c");
-    t.setAttribute("font-size","9.5");
-    t.setAttribute("font-family","IBM Plex Mono, monospace");
-    t.setAttribute("text-anchor","middle");
-    t.setAttribute("dominant-baseline","middle");
-    t.textContent = d.code;
-    svg.appendChild(t);
-  });
-}
-
-document.getElementById("reportBtn").addEventListener("click", generateReport);
-
-function generateReport(){
-  const now = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
-  let totalChecked = 0, critGaps = 0;
-  let lines = [];
-  lines.push("BEHAVIORAL & OPSEC AUDIT — RECOMMENDATIONS REPORT");
-  lines.push(`Generated ${now}`);
-  lines.push("=".repeat(60));
-  lines.push("");
-
-  DOMAINS.forEach(d => {
-    let checked = 0;
-    lines.push(`[${d.code}] ${d.name}`);
-    d.items.forEach((it, i) => {
-      const key = `${d.code}-${i}`;
-      const isChecked = state[key];
-      if(isChecked){ checked++; totalChecked++; }
-      else if(it.crit){ critGaps++; }
-      const mark = isChecked ? "[x]" : (it.crit ? "[ ] (CRITICAL)" : "[ ]");
-      lines.push(`  ${mark} ${it.t}`);
-    });
-    const pct = Math.round((checked/d.items.length)*100);
-    lines.push(`  -> Domain completeness: ${pct}%`);
-    lines.push("");
-  });
-
-  lines.push("-".repeat(60));
-  lines.push("SUMMARY");
-  lines.push(`  Controls in place:       ${totalChecked}/${totalItems}`);
-  lines.push(`  Critical gaps unchecked: ${critGaps}`);
-  lines.push(`  Overall readiness:       ${Math.round((totalChecked/totalItems)*100)}%`);
-  lines.push("");
-  lines.push("  Unchecked critical items are the highest-leverage next actions —");
-  lines.push("  address those before lower-weight items, regardless of domain.");
-  lines.push("");
-  lines.push("-".repeat(60));
-  lines.push("SOURCES");
-  lines.push("  Methodology drawn from Privacy Guides (privacyguides.org),");
-  lines.push("  The New Oil (thenewoil.org), IntelTechniques / Bazzell");
-  lines.push("  (inteltechniques.com), Techlore, and EFF Surveillance Self-Defense.");
-  lines.push("  Full bibliography, best-practice detail per domain, and further-");
-  lines.push("  reading recommendations: see recommendations-report.md.");
-
-  const blob = new Blob([lines.join("\n")], {type:"text/plain"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `opsec-audit-report-${Date.now()}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-const history = spidergraphHistory("spidergraph-opsec-v1");
-
-// Rebuilds the checked/unchecked map from a saved snapshot and re-renders everything —
-// data is the flat "CODE-idx" -> bool map, same shape store.load() saves.
-function restoreSnapshot(data){
-  if(!data) return;
-  if(!confirm("Restore this snapshot? This replaces your current checklist with the saved checkpoint.")) return;
-  Object.keys(state).forEach(k => {
-    state[k] = !!data[k];
-    const cb = document.getElementById(`cb-${k}`);
-    const row = document.getElementById(`row-${k}`);
-    if(cb) cb.checked = state[k];
-    if(row) row.classList.toggle("checked", state[k]);
-  });
-  store.save(state);
-  render();
-}
-
-function renderHistory(){
-  const snapshots = history.list().slice().reverse();
-  const el = document.getElementById("historyList");
-  if(snapshots.length === 0){
-    el.innerHTML = '<div class="history-empty">No snapshots yet — save one to start tracking your audit over time.</div>';
-    return;
-  }
-  el.innerHTML = snapshots.map(s => {
-    const d = new Date(s.date).toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
-    return `<div class="history-item"><div class="history-item-main"><div class="h-date">${d}</div><div class="h-summary">${s.summary}</div></div><button type="button" class="history-restore-btn" data-date="${s.date}">Restore</button></div>`;
-  }).join("");
-  el.querySelectorAll(".history-restore-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const snap = history.list().find(s => s.date === btn.dataset.date);
-      if(snap) restoreSnapshot(snap.data);
-    });
-  });
-}
-
-document.getElementById("snapshotBtn").addEventListener("click", () => {
-  const total = Object.keys(state).length;
-  const done = Object.values(state).filter(v => v === true).length;
-  const pct = total ? Math.round((done / total) * 100) : 0;
-  const summary = `${done}/${total} controls checked (${pct}%)`;
-  history.save(summary, state);
-  renderHistory();
-});
-
-render();
-renderHistory();
-</script>
+    render();
+    renderHistory();
+  </script>
 </BaseLayout>
