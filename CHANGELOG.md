@@ -18,7 +18,13 @@ that makes the change, not as a separate retroactive pass.
 - `actions/checkout`/`actions/setup-node` bumped `v4`→`v7` in both `ci.yml` and
   `deploy.yml` — GitHub flagged `v4` as targeting a deprecated Node 20 runner (forced
   onto Node 24 in the meantime, but not for much longer). Verified `v7` is a real,
-  stable, non-prerelease tag (not assumed from memory) before pinning to it.
+  stable, non-prerelease tag (not assumed from memory) before pinning to it. That fix
+  landed and only then, once `deploy.yml` actually ran for real on the resulting merge
+  to `main`, surfaced two more Node-20-deprecation annotations from actions
+  `ci.yml` doesn't use: `actions/upload-pages-artifact@v3` and
+  `actions/deploy-pages@v4`. Bumped to `v5` (verified real/stable/non-prerelease the
+  same way) — same underlying issue, just not visible until the workflow that
+  actually contains it had run.
 - **Security**: `breach-check-tracker` (2 spots) and `digital-legacy-worksheet` (1
   spot) interpolated user-typed free text (an address label / an account name)
   unescaped into an `aria-label` attribute inside an `innerHTML` template, while the
