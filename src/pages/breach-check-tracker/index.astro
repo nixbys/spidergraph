@@ -672,7 +672,7 @@ const base = import.meta.env.BASE_URL;
         row.className = 'addr-row' + (it.checked ? ' done' : '');
         row.id = 'row-' + it.id;
         row.innerHTML = `
-      <input type="checkbox" id="cb-${it.id}" ${it.checked ? 'checked' : ''} aria-label="Mark ${it.label} as checked this cycle">
+      <input type="checkbox" id="cb-${it.id}" ${it.checked ? 'checked' : ''}>
       <div class="addr-body">
         <div class="addr-top">
           <span class="addr-label">${escapeHtml(it.label)}</span>
@@ -682,11 +682,22 @@ const base = import.meta.env.BASE_URL;
           ${it.checkedOn ? `<span class="addr-checked-on">Last checked ${it.checkedOn}</span>` : ''}
         </div>
       </div>
-      <button type="button" class="addr-remove" aria-label="Remove ${it.label}" title="Remove">✕</button>
+      <button type="button" class="addr-remove" title="Remove">✕</button>
     `;
         listEl.appendChild(row);
 
         const cb = row.querySelector('input[type=checkbox]');
+        // it.label is free-text the user typed (or restored from an imported backup
+        // file, not just hand-entered here) — set via setAttribute rather than
+        // interpolated into the innerHTML template above, since setAttribute can't be
+        // broken out of via an embedded quote the way a template-string attribute
+        // can. escapeHtml() (used for the visible <span> above) isn't sufficient on
+        // its own for an attribute context: it only escapes &/</>, not the quote
+        // character an attribute-breakout injection actually needs.
+        cb.setAttribute('aria-label', `Mark ${it.label} as checked this cycle`);
+        row
+          .querySelector('.addr-remove')
+          .setAttribute('aria-label', `Remove ${it.label}`);
         cb.addEventListener('change', () => {
           it.checked = cb.checked;
           it.checkedOn = cb.checked
