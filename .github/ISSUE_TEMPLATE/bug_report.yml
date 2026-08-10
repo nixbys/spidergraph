@@ -1,0 +1,36 @@
+name: Bug report
+description: Something on the site is broken — a tool, the export/print flow, layout, etc.
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a stale price/recommendation or a dead opt-out link, use the "Content
+        accuracy" template instead — it's a different (much more common) kind of
+        report and the fix path is different.
+        For anything security-sensitive, use [SECURITY.md](../../SECURITY.md)'s
+        private reporting flow instead of a public issue.
+  - type: input
+    id: page
+    attributes:
+      label: Page/tool
+      description: e.g. "OPSEC Field Manual" or "homepage Backup & Restore card"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs. actual behavior
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser / OS
+      description: e.g. "Firefox 152, Fedora" — most of this site's bugs so far have been layout issues at specific viewport widths, so this matters.
