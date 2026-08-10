@@ -1,0 +1,35 @@
+name: Content accuracy (stale price, dead link, wrong recommendation)
+description: A tool/pricing recommendation is out of date, or a broker/vendor link is broken.
+labels: ['content']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is the most common and most useful kind of issue for this project — see
+        `CLAUDE.md`'s "Content maintenance discipline" for how these get fixed once
+        reported. The single most helpful thing you can include is a source link for
+        the corrected figure.
+  - type: input
+    id: location
+    attributes:
+      label: Where is it?
+      description: Page/tool and the specific row/slot (e.g. "Stack Builder, IDN-01 Password Manager" or "Playbook, Domain 6 Cloud Storage table").
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: What's there now, and what should it be?
+      description: The current (wrong) value/link, and the correct current one.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source for the correction
+      description: A link to the vendor's own current pricing/feature page, ideally — this is what actually gets re-verified against.
+  - type: input
+    id: date
+    attributes:
+      label: Date you checked this
+      description: "e.g. 2026-08-09 — helps confirm this isn't itself already stale by the time it's triaged."
