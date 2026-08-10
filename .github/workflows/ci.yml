@@ -1,0 +1,29 @@
+name: CI
+
+# Runs on every PR against main, and on pushes to main as a sanity check between
+# deploys. This is deliberately a *check* workflow, separate from deploy.yml (which
+# publishes to Pages) — a red X here blocks a PR from looking mergeable without
+# gating the actual deploy on anything beyond its own `npm run build`.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
