@@ -3,7 +3,11 @@
 Spidergraph is a static, client-side site with no backend, no accounts, and no
 server-side data of any kind — see [CLAUDE.md](CLAUDE.md)'s mission guardrail and
 `README.md`. That constrains the realistic threat model considerably, but it isn't
-zero:
+zero: see [THREAT_MODEL.md](THREAT_MODEL.md) for the full breakdown of what actually
+remains (supply-chain risk in the build tooling, XSS in the interactive tools, and
+the GitHub Pages deploy pipeline's own integrity) and what's automated against it
+(CodeQL, gitleaks, Dependabot, `dependency-review-action`, and a workflow-security
+audit of the Actions themselves — all under `.github/workflows/`).
 
 ## What's in scope
 

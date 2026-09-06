@@ -1,0 +1,47 @@
+# CodeQL static analysis (SAST)
+#
+# Purpose: Spidergraph is 100% client-side JS/TS run in every visitor's browser (see
+# THREAT_MODEL.md) — a bug that lets one user's own input execute as script (DOM-based
+# XSS) or that causes localStorage data to leave the browser is a real vulnerability
+# here even without a server. CodeQL's javascript-typescript queries catch that class
+# of bug (unsanitized innerHTML/insertAdjacentHTML from user-controlled input, taint
+# flow into eval-like sinks, etc.) that ESLint's mechanical rules (eslint.config.mjs)
+# don't attempt to.
+
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Catches newly-published query patterns against unchanged code, not just new commits.
+    - cron: '24 18 * * 0'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Analyze (javascript-typescript)
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@a35ac6e6798d72df5475948b28efb89edc2e19ca # v4.37.9
+        with:
+          languages: javascript-typescript
+          build-mode: none
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@a35ac6e6798d72df5475948b28efb89edc2e19ca # v4.37.9
+        with:
+          category: '/language:javascript-typescript'
