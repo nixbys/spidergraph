@@ -1,0 +1,32 @@
+# Dependabot keeps dependencies and pinned action versions current.
+#
+# Why this matters for security: every workflow in this repo pins its GitHub Actions
+# to an exact commit (a SHA), which is safe but freezes them in time. Dependabot
+# opens a small, reviewable pull request whenever a newer version exists -- for npm
+# packages (astro, marked, the eslint/prettier/vitest toolchain) and the pinned
+# Actions themselves -- so staying patched does not require manual work. Updates are
+# grouped so a week's bumps arrive as one PR per ecosystem, not a flood of separate
+# ones.
+
+version: 2
+updates:
+  # Frontend / build-tooling npm packages (package.json): astro, marked, eslint,
+  # prettier, typescript, vitest.
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      npm:
+        patterns: ['*']
+
+  # The pinned action SHAs used across .github/workflows.
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns: ['*']
