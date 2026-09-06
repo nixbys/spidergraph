@@ -1,0 +1,75 @@
+# Supply-chain review
+#
+# Purpose: defend against a pull request that adds (or bumps) an npm dependency to
+# a version with a known vulnerability or a disallowed license. This site has no
+# server-side secrets to leak, but the npm dependency tree still matters: astro is
+# build tooling that runs arbitrary package code on every CI run and every
+# contributor's machine, and a compromised transitive dependency there is a real
+# supply-chain vector even for a fully static output. Two layers:
+#
+#   - dependency-review: runs ONLY on pull requests. It compares the dependencies
+#     before and after the PR and blocks the merge if the change pulls in a package
+#     with a known security advisory. This is the gate.
+#   - npm-audit: scans the project's current npm dependency tree against the
+#     advisory database. Advisory only (it never blocks a merge), because it can
+#     flag a pre-existing issue in an already-shipped dependency.
+
+name: Dependency review
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Default-deny token; jobs grant only read access.
+permissions: {}
+
+concurrency:
+  group: dependency-review-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-review:
+    name: dependency-review (PR gate)
+    # Only meaningful on a pull request -- it needs a base..head diff to review.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          # Fail the PR on any newly introduced moderate-or-worse advisory.
+          fail-on-severity: moderate
+
+  npm-audit:
+    name: npm audit (advisory)
+    runs-on: ubuntu-latest
+    # Advisory: report known-vulnerable npm deps without blocking the merge.
+    continue-on-error: true
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
