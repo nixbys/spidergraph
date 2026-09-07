@@ -136,6 +136,24 @@ A separate workflow (`.github/workflows/ci.yml`) runs build+typecheck+lint+test 
 it doesn't deploy anything, it's what the CI badge above reflects. A broken build failing here
 blocks a PR from looking mergeable instead of only failing after landing on `main`.
 
+## Security
+
+There's no backend and no accounts, which rules out a lot of the usual attack
+surface, but it isn't zero: the interactive tools build DOM from user input and
+handle import/export, and the deploy pipeline itself has integrity to protect. See
+[SECURITY.md](SECURITY.md) for what's in scope and how to report an issue, and
+[THREAT_MODEL.md](THREAT_MODEL.md) for the full breakdown (supply-chain risk in the
+build tooling, XSS in the interactive tools, and the GitHub Pages deploy pipeline)
+and what's automated against it — CodeQL, gitleaks, Dependabot, dependency review,
+and a workflow-security audit of the Actions themselves, all under
+`.github/workflows/`.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Tool/pricing recommendations in the content itself
+are not license-covered facts and carry no warranty of current accuracy; see
+Maintenance below.
+
 ## Brand
 
 "Spidergraph" was checked against existing products before adoption — the name shows up
