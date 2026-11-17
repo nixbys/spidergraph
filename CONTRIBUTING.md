@@ -54,9 +54,10 @@ CI runs the same commands.
 ## Conventions
 
 - **One change per PR.** A content fix and a feature go in separate PRs.
-- **Page styles need `is:global`** (`<style slot="head" is:global>`). The tools build
-  their rows with JavaScript, and Astro's default scoped CSS doesn't match elements that
-  don't exist at build time.
+- **Each page's CSS and script are plain files** in `public/pages/<page>.css` and
+  `public/pages/<page>.js`, loaded by the page in `src/pages/`. Keep them there: the CSP
+  allows no inline scripts, and Astro's scoped `<style>` wouldn't match the rows the tools
+  build with JavaScript.
 - **Colors come from `public/shared/tokens.css`.** Use `var(--teal)` and friends, also in
   SVG that JavaScript draws, never a literal hex value. Teal means good, amber partial,
   red a gap, blue informational. Each page passes its accent to `<BaseLayout accent="…">`.
@@ -70,8 +71,8 @@ Prices and tiers go stale. When you change one:
 1. Check the vendor's own current pricing page.
 2. Edit the markdown in `src/content/`, not the rendered page.
 3. A tier change goes in two places that don't know about each other: the domain table in
-   `src/content/personal-security-playbook.md` and the slot in the `DATA` array of the
-   Stack Builder page.
+   `src/content/personal-security-playbook.md` and the slot in the `DATA` array in
+   `public/pages/privacy-stack-builder.js`.
 4. Don't overwrite a changed figure silently. In `DATA`, set the slot's
    `verified:"YYYY-MM-DD"` and add a line to its `legacyNotes` with the old value and why
    it changed (`IDN-01` has an example). In markdown, put

@@ -18,6 +18,9 @@ const browserGlobals = {
   alert: 'readonly',
   confirm: 'readonly',
   FileReader: 'readonly',
+  setTimeout: 'readonly',
+  clearTimeout: 'readonly',
+  location: 'readonly',
 };
 
 const sharedRules = {
@@ -70,7 +73,7 @@ export default [
     // NOT need declaring here — eslint-plugin-astro already recognizes define:vars
     // bindings itself; adding it manually caused a no-redeclare conflict against its
     // own detection.
-    files: ['**/*.astro/*.js', '**/*.astro/*.ts'],
+    files: ['public/pages/*.js', '**/*.astro/*.js', '**/*.astro/*.ts'],
     languageOptions: {
       sourceType: 'script',
       globals: {

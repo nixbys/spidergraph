@@ -5,7 +5,7 @@
 // Each snapshot is a fully self-contained {date, summary, data} object — no snapshot depends
 // on another's shape, so there's no cross-snapshot migration to get wrong later, only the
 // same saved.data-shape handling every tool's live load path already does.
-// Called from every tool page's own inline <script> tag, not from within this file —
+// Called from every tool page's own script (public/pages/<page>.js), not from within this file —
 // see the same /* exported */ note in shared/persist.js.
 /* exported spidergraphHistory */
 function spidergraphHistory(key, maxSnapshots) {
