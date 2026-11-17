@@ -54,15 +54,13 @@ const accentVar: Record<string, string> = {
     <!-- GitHub Pages serves static files only — there's no way to set this as a real response
      header, so a <meta> CSP is the ceiling of what's enforceable here (no frame-ancestors/
      report-uri support in the meta form, that's a browser-spec limitation, not an oversight).
-     script-src/style-src only ever need 'self' + 'unsafe-inline' (every script here is either
-     a same-origin file or an inline block Astro emits, and there's no client-side markdown
-     parsing left to justify a CDN allowance) plus Google
-     Fonts' two origins. Keep this list exactly as narrow as what's actually loaded — don't
-     pre-allow an origin "in case," and if the pre-Astro CDN marked.js script ever comes back
-     as a note in git history, that's the one thing this policy used to (and no longer needs to) allow. -->
+     script-src is 'self' only: every script is a same-origin file (no inline <script>, no
+     inline event handlers), so an injected inline script won't run. style-src still needs
+     'unsafe-inline' for the accent <style> below and runtime style="" attributes, plus
+     Google Fonts. Keep both lists exactly as narrow as what's actually loaded. -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"
     />
     <title>{title}</title>
     <meta name="description" content={description} />

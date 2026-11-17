@@ -66,9 +66,9 @@ Mitigations:
 - The CSP `<meta>` tag in `src/layouts/BaseLayout.astro` restricts `script-src` to
   `'self'` — no third-party script origins can be loaded even if a bug caused a page
   to try. It does **not** protect against inline-script injection: `script-src`
-  includes `'unsafe-inline'` because the tool pages ship inline `<script is:inline>`
-  blocks by design, so CSP is a secondary defense here, not the primary one — actual
-  DOM-building code must not interpolate untrusted strings into `innerHTML` (use
+  no longer includes `'unsafe-inline'`: since 2026-11-16 every script is a same-origin
+  file, so an injected inline script is blocked. CSP is still a secondary defense —
+  actual DOM-building code must not interpolate untrusted strings into `innerHTML` (use
   `textContent`/`createElement`, as the fixed bugs above corrected).
 - `eslint.config.mjs` catches the mechanical bug classes (unused vars, accidental
   `var`, undefined globals). `codeql.yml` (above) adds taint-flow analysis for
@@ -130,15 +130,10 @@ into a commit by accident while testing something unrelated. `secret-scan.yml`
 
 These are open and acknowledged, not hidden:
 
-1. **`'unsafe-inline'` in the CSP's `script-src` and `style-src`.** Required because
-   every tool page ships inline `<script is:inline>` and some inline `style=""`
-   attributes are set at runtime. This means the CSP does not stop inline-script
-   injection if a DOM-building bug ever reintroduced one — the real defense against
-   that class of bug is code review + CodeQL + ESLint, not the CSP. Removing
-   `'unsafe-inline'` would require a nonce- or hash-based policy, and a static-file
-   host can't rotate a per-request nonce the way a real server response header
-   could; a build-time-fixed nonce would offer little more than the current policy
-   does. Worth revisiting if the site ever moves off pure static hosting.
+1. **`'unsafe-inline'` in the CSP's `style-src`.** Needed for the per-page accent
+   `<style>` and `style=""` attributes set at runtime. Injected CSS can restyle a page
+   but not run script. `script-src` has been `'self'` only since 2026-11-16, when every
+   page script moved into `public/pages/`; inline scripts and event handlers are blocked.
 2. **No Subresource Integrity (SRI).** Not currently needed — the only non-`self`
    resource loaded is the Google Fonts stylesheet, and there's no CDN-hosted script
    dependency to pin. If that ever changes (a CDN script is reintroduced), add SRI

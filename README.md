@@ -50,10 +50,11 @@ every pull request. Pushes to `main` deploy to GitHub Pages.
 ## Layout
 
 ```
-src/pages/         one folder per page
+src/pages/         one folder per page (markup)
 src/layouts/       the shared <head> and nav
 src/components/    the nav and brand mark
 src/content/       the Playbook and Report in Markdown, compiled at build time
+public/pages/      each page's CSS and script
 public/shared/     design tokens, nav, storage helpers, scoring logic
 test/              Vitest tests for the scoring logic
 ```

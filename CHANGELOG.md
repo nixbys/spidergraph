@@ -13,6 +13,13 @@ that makes the change, not as a separate retroactive pass.
 
 ## Unreleased
 
+### Changed
+
+- Each page's CSS and script moved out of its `.astro` file into
+  `public/pages/<page>.css` and `.js`; the pages render the same DOM as before. The
+  Stack Builder `DATA` array now lives in `public/pages/privacy-stack-builder.js`.
+- The CSP's `script-src` drops `'unsafe-inline'`: no page has inline script any more.
+
 ### Fixed
 
 - `actions/checkout`/`actions/setup-node` bumped `v4`→`v7` in both `ci.yml` and

@@ -9,7 +9,7 @@
 // Every method fails soft — private browsing or a blocked localStorage should
 // degrade to "state doesn't persist," never a thrown error that breaks the page.
 //
-// Called from every tool page's own inline <script> tag, not from within this file —
+// Called from every tool page's own script (public/pages/<page>.js), not from within this file —
 // /* exported */ tells eslint's no-unused-vars this classic script's function is
 // meant to be used as a global by whatever loads it next, not dead code.
 /* exported spidergraphStore */

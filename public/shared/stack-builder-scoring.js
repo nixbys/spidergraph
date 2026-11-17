@@ -1,5 +1,5 @@
 // Pure scoring logic for the Stack Builder, extracted out of the tightly DOM-coupled
-// render() function in src/pages/privacy-stack-builder/index.astro so it's actually
+// render() function in public/pages/privacy-stack-builder.js so it's actually
 // unit-testable (see test/stack-builder-scoring.test.js) without spinning up a DOM.
 // This is the one piece of that page's logic where a bug would silently mis-score a
 // user's real security posture, so it's worth the extraction even though the rest of
