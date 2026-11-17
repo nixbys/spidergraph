@@ -1,17 +1,9 @@
-# Dependabot keeps dependencies and pinned action versions current.
-#
-# Why this matters for security: every workflow in this repo pins its GitHub Actions
-# to an exact commit (a SHA), which is safe but freezes them in time. Dependabot
-# opens a small, reviewable pull request whenever a newer version exists -- for npm
-# packages (astro, marked, the eslint/prettier/vitest toolchain) and the pinned
-# Actions themselves -- so staying patched does not require manual work. Updates are
-# grouped so a week's bumps arrive as one PR per ecosystem, not a flood of separate
-# ones.
+# Weekly updates for npm packages and the SHA-pinned GitHub Actions. Version and
+# security updates are each grouped, so a week's bumps arrive as one PR per
+# ecosystem instead of one per package.
 
 version: 2
 updates:
-  # Frontend / build-tooling npm packages (package.json): astro, marked, eslint,
-  # prettier, typescript, vitest.
   - package-ecosystem: npm
     directory: '/'
     schedule:
@@ -19,9 +11,16 @@ updates:
     open-pull-requests-limit: 5
     groups:
       npm:
+        applies-to: version-updates
         patterns: ['*']
+      npm-security:
+        applies-to: security-updates
+        patterns: ['*']
+    ignore:
+      # @astrojs/check (the typecheck step) supports TypeScript 5 and 6 only.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
 
-  # The pinned action SHAs used across .github/workflows.
   - package-ecosystem: github-actions
     directory: '/'
     schedule:
