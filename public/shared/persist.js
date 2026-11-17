@@ -1,8 +1,6 @@
 // Spidergraph localStorage helper — shared by every stateful interactive tool.
-// One tiny wrapper instead of each tool hand-rolling its own try/catch boilerplate
-// (see CLAUDE.md "Local persistence — all six interactive tools use it" — three tools
-// repeating the same ~10-line pattern was tolerable, a fourth was the documented
-// trigger to extract this).
+// One small wrapper instead of each tool repeating the same try/catch boilerplate;
+// it was extracted when a fourth tool needed the same ~10-line pattern.
 //
 // save(data) wraps whatever shape a tool's own state is in with a lastUpdated
 // timestamp, so "audited N days ago" (the homepage summary, and each tool's own

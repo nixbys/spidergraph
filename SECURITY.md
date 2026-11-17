@@ -1,8 +1,7 @@
 # Security Policy
 
 Spidergraph is a static, client-side site with no backend, no accounts, and no
-server-side data of any kind — see [CLAUDE.md](CLAUDE.md)'s mission guardrail and
-`README.md`. That constrains the realistic threat model considerably, but it isn't
+server-side data of any kind (see the Scope section of [CONTRIBUTING.md](CONTRIBUTING.md)). That constrains the realistic threat model considerably, but it isn't
 zero: see [THREAT_MODEL.md](THREAT_MODEL.md) for the full breakdown of what actually
 remains (supply-chain risk in the build tooling, XSS in the interactive tools, and
 the GitHub Pages deploy pipeline's own integrity) and what's automated against it
@@ -35,14 +34,14 @@ audit of the Actions themselves — all under `.github/workflows/`).
 ## What's explicitly out of scope
 
 - Reports about the lack of a backend, accounts, or server-side rate limiting —
-  that's the design, not a gap (see CLAUDE.md).
+  that's the design, not a gap.
 - The Broker Removal Tracker linking out to real third-party opt-out pages, or the
   Breach Check Tracker linking to Have I Been Pwned — this project never performs
-  lookups on a user's behalf by design; see the mission guardrail in `CLAUDE.md` and
-  `README.md`'s "Deliberately out of scope" section before reporting this as a gap.
+  lookups on a user's behalf by design; see the Scope section of `CONTRIBUTING.md`
+  before reporting this as a gap.
 - Content/pricing accuracy issues (a tool recommendation being stale) — that's a
-  maintenance issue, not a security one. Open a normal issue instead, following the
-  verification convention in `README.md`'s Maintenance section.
+  maintenance issue, not a security one. Open a normal issue instead, following
+  "Changing a recommendation" in `CONTRIBUTING.md`.
 
 ## Reporting a vulnerability
 

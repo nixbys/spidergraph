@@ -14,7 +14,7 @@ const base = import.meta.env.BASE_URL;
      is:global is required: this page's JS creates .mystatus-item elements at runtime
      (document.createElement), and Astro's default scoped CSS only matches elements
      present in the template at build time — scoped styles would silently not apply
-     to anything JS renders. Every tool page has the same requirement; see CLAUDE.md. */
+     to anything JS renders. Every tool page has the same requirement. */
     .topnav {
       margin-bottom: 56px;
     }
