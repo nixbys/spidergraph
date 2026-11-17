@@ -1,7 +1,6 @@
 ---
-// Single source of truth for the top nav — this component is the whole reason for the
-// Astro migration (see CLAUDE.md "Site navigation" and SESSION-NOTES.md for the history): the brand SVG and the
-// Tools ▾ dropdown used to be hand-copied into all 9 page shells.
+// The one copy of the top nav. The brand SVG and the Tools ▾ dropdown used to be
+// hand-copied into all 9 page shells; that duplication is why the site moved to Astro.
 //
 // `current` selects which link (or which tool inside the dropdown) renders with
 // class="current". Tool pages pass both a tool id AND get the "Tools" summary itself

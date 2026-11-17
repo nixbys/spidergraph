@@ -1,5 +1,5 @@
-// Flat ESLint config (ESLint 9+/10 default). Deliberately minimal: this project's own
-// stated philosophy (CLAUDE.md) is plain HTML/CSS/vanilla JS with no framework beyond
+// Flat ESLint config (ESLint 9+/10 default). Deliberately minimal: this project's
+// rule (CONTRIBUTING.md, Stack) is plain HTML/CSS/vanilla JS with no framework beyond
 // Astro itself, so this isn't trying to impose a large rule set — just the class of
 // bug that's cheap to catch mechanically (unused vars, undefined globals, accidental
 // var, etc.) and that the repo-wide var/let cleanup already established as this
@@ -63,9 +63,8 @@ export default [
     // a `*.js`-only glob here silently matches nothing.
     //
     // Every global below is CONSUMED here, defined by a sibling <script src> tag on
-    // the same page (see CLAUDE.md's "Local persistence" / "Snapshot history" /
-    // "Backup & Restore" sections, plus the two scoring files' own header comments,
-    // for which page loads which). A per-block linter can't see that on its own, so
+    // the same page (each page's <script src> tags and the shared files' header
+    // comments say which page loads which). A per-block linter can't see that on its own, so
     // it's declared explicitly rather than producing false no-undef errors. `base`
     // (index.astro's own script, via Astro's define:vars={{ base }} directive) does
     // NOT need declaring here — eslint-plugin-astro already recognizes define:vars

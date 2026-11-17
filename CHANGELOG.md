@@ -47,8 +47,6 @@ that makes the change, not as a separate retroactive pass.
 - CSP no longer allows `https://cdnjs.cloudflare.com` in `script-src` — a dead
   allowance left over from the pre-Astro era when `marked.js` loaded via CDN;
   nothing has loaded from there since the 2026-08-05 Astro migration.
-- `persist.js`'s doc comment pointed at a `CLAUDE.md` section that no longer exists
-  (renamed at some point); repointed to the section that actually covers it.
 - `history.js` and `nav.js` used `var` while every other JS file in the project uses
   `let`/`const`; normalized.
 - README's `public/shared/` file listing was missing `backup.js`, and the site-wide
@@ -109,8 +107,7 @@ that makes the change, not as a separate retroactive pass.
   local variable shadowing the browser's built-in `window.history` across all six
   tool pages (renamed to `historyStore` everywhere) — both fixed. Also surfaced (and
   fixed) 14 `prefer-const` warnings via `--fix`.
-- Real re-verification (via current web search, not training-data memory — per
-  `CLAUDE.md`'s own rule) of the 7 Stack Builder slots that had never carried a
+- Re-verified, against current vendor pages, the 7 Stack Builder slots that had never carried a
   `verified` date: `AUTH-01`, `SYS-01`, `SYS-02`, `NET-02`, `NET-03`, `COM-01`,
   `DATA-02`. All 7 recommendations confirmed still current (YubiKey/Security Key
   pricing, GrapheneOS Pixel-only support, Ente Auth/Aegis both actively maintained,
@@ -121,9 +118,7 @@ that makes the change, not as a separate retroactive pass.
   slots now carry a `verified` date.
 - Prettier (`.prettierrc.json`, `prettier-plugin-astro`) as `format`/`format:check`
   scripts, applied repo-wide after a full manual diff review of every changed file
-  (not a spot-check) — see `CLAUDE.md`'s "SDLC tooling" section for what that review
-  covered and the `prettier-plugin-astro` idempotency quirk it surfaced (needs two
-  `format` passes to fully converge on a handful of `.astro` files).
+  (not a spot-check). `prettier-plugin-astro` needs two `format` passes to fully converge on a handful of `.astro` files).
 - `test/` — Vitest unit tests for two tools' scoring logic:
   - `public/shared/stack-builder-scoring.js` (`classifyStatus`/`isCovered`/
     `coveragePercent`), extracted out of Stack Builder's `render()` and
