@@ -496,7 +496,9 @@ const base = import.meta.env.BASE_URL;
         <div class="eyebrow">
           Field manual · 6 domains · <span id="itemCount">0</span> controls
         </div>
-        <h1>Behavioral <span>&amp; OPSEC Audit</span></h1>
+        <h1>
+          Behavioral <span>&amp; OPSEC Audit</span>
+        </h1>
         <div class="sub">
           The habit-based half of the stack — nothing here is a product you buy,
           it's a practice you either do or don't. Check off what's already true
@@ -504,7 +506,9 @@ const base = import.meta.env.BASE_URL;
           it actually matters.
         </div>
       </div>
-      <button type="button" class="reset-btn" id="resetBtn">Reset audit</button>
+      <button type="button" class="reset-btn" id="resetBtn">
+        Reset audit
+      </button>
     </header>
 
     <div class="domains-toolbar">
@@ -524,10 +528,13 @@ const base = import.meta.env.BASE_URL;
             width="280"
             height="280"
             viewBox="0 0 280 280"
-            aria-hidden="true"></svg>
+            aria-hidden="true"
+          ></svg>
           <div class="score-row">
             <div>
-              <div class="score-num" id="scoreNum">0%</div>
+              <div class="score-num" id="scoreNum">
+                0%
+              </div>
               <div class="score-label">overall readiness</div>
             </div>
           </div>
@@ -536,22 +543,22 @@ const base = import.meta.env.BASE_URL;
         <div class="card">
           <div class="card-title">Summary</div>
           <div class="metric">
-            <span class="k">Controls in place</span><span
-              class="v teal"
-              id="mChecked">0/0</span
-            >
+            <span class="k">Controls in place</span>
+            <span class="v teal" id="mChecked">
+              0/0
+            </span>
           </div>
           <div class="metric">
-            <span class="k">Critical gaps unchecked</span><span
-              class="v red"
-              id="mCritGap">0</span
-            >
+            <span class="k">Critical gaps unchecked</span>
+            <span class="v red" id="mCritGap">
+              0
+            </span>
           </div>
           <div class="metric">
-            <span class="k">Weakest domain</span><span
-              class="v amber"
-              id="mWeakest">—</span
-            >
+            <span class="k">Weakest domain</span>
+            <span class="v amber" id="mWeakest">
+              —
+            </span>
           </div>
         </div>
 
@@ -566,8 +573,9 @@ const base = import.meta.env.BASE_URL;
             type="button"
             id="reportBtn"
             style="display:block; width:100%; text-align:center; padding:11px; cursor:pointer; background:var(--surface3); border:1px solid var(--border); border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text);"
-            >Generate report ↓</button
           >
+            Generate report ↓
+          </button>
         </div>
 
         <div class="card">
@@ -580,26 +588,27 @@ const base = import.meta.env.BASE_URL;
             type="button"
             id="snapshotBtn"
             class="reset-btn"
-            style="width:100%; margin-bottom:12px;">Save snapshot</button
+            style="width:100%; margin-bottom:12px;"
           >
+            Save snapshot
+          </button>
           <div id="historyList" class="history-list"></div>
         </div>
       </div>
     </div>
 
     <footer>
-      <b>Companion tool:</b> product/tool selections (password manager, VPN, OS, etc.)
-      live in the <b>Stack Builder</b>. This manual covers what that picker
-      deliberately left out — the discipline layer. The AUD domain's
-      broker-recheck item points to the <b>Broker Removal Tracker</b> for the actual
-      site-by-site checklist. Full write-ups and the incident-response runbooks these
-      controls feed into are in <b>personal-security-playbook.md</b>. Your
-      checked/unchecked state stays in this browser only, in <code
-        >localStorage</code
-      > — nothing is sent anywhere, so it's still here next time you come back for
-      the quarterly re-audit this manual's own AUD domain recommends. <b
-        >Reset audit</b
-      > clears it.
+      <b>Companion tool:</b> product/tool selections (password manager, VPN, OS,
+      etc.) live in the <b>Stack Builder</b>. This manual covers what that
+      picker deliberately left out — the discipline layer. The AUD domain's
+      broker-recheck item points to the <b>Broker Removal Tracker</b> for the
+      actual site-by-site checklist. Full write-ups and the incident-response
+      runbooks these controls feed into are in{' '}
+      <b>personal-security-playbook.md</b>. Your checked/unchecked state stays
+      in this browser only, in <code>localStorage</code> — nothing is sent
+      anywhere, so it's still here next time you come back for the quarterly
+      re-audit this manual's own AUD domain recommends. <b>Reset audit</b>{' '}
+      clears it.
     </footer>
   </div>
 
@@ -607,8 +616,10 @@ const base = import.meta.env.BASE_URL;
     type="button"
     id="scrollTopBtn"
     class="scroll-top-btn"
-    aria-label="Scroll to top">↑</button
+    aria-label="Scroll to top"
   >
+    ↑
+  </button>
 
   <script src={`${base}shared/persist.js`} is:inline></script>
   <script src={`${base}shared/history.js`} is:inline></script>

@@ -393,7 +393,9 @@ const base = import.meta.env.BASE_URL;
   <div class="wrap">
     <div class="hero">
       <div class="eyebrow">Spidergraph · Personal security program</div>
-      <h1>See your whole <span>security posture.</span></h1>
+      <h1>
+        See your whole <span>security posture.</span>
+      </h1>
       <p class="lede">
         Spidergraph is a complete privacy and security stack — from the tiered
         playbook that explains every control, to the interactive tools that
@@ -401,10 +403,10 @@ const base = import.meta.env.BASE_URL;
         every domain that matters.
       </p>
       <div class="flow">
-        <span class="node">Read the Playbook</span><span class="arrow">→</span>
-        <span class="node">Audit tools &amp; habits</span><span class="arrow"
-          >→</span
-        >
+        <span class="node">Read the Playbook</span>
+        <span class="arrow">→</span>
+        <span class="node">Audit tools &amp; habits</span>
+        <span class="arrow">→</span>
         <span class="node">See your Spidergraph</span>
       </div>
     </div>
@@ -412,10 +414,10 @@ const base = import.meta.env.BASE_URL;
     <div class="mystatus" id="myStatus">
       <div class="mystatus-head">
         <h3>Your Spidergraph</h3>
-        <span class="hint"
-          >— read live from this browser's storage, nothing is fetched or sent
-          anywhere</span
-        >
+        <span class="hint">
+          — read live from this browser's storage, nothing is fetched or sent
+          anywhere
+        </span>
       </div>
       <div class="mystatus-grid" id="myStatusGrid"></div>
     </div>
@@ -424,18 +426,18 @@ const base = import.meta.env.BASE_URL;
       <div class="backup-card">
         <div class="backup-head">
           <h3>Back up your data</h3>
-          <span class="hint"
-            >— everything above lives only in this browser; save a copy before
-            switching browsers, devices, or clearing site data</span
-          >
+          <span class="hint">
+            — everything above lives only in this browser; save a copy before
+            switching browsers, devices, or clearing site data
+          </span>
         </div>
         <div class="backup-actions">
-          <button type="button" id="backupExportBtn" class="backup-btn primary"
-            >Download backup (.json) →</button
-          >
-          <button type="button" id="backupImportBtn" class="backup-btn"
-            >Restore from backup file →</button
-          >
+          <button type="button" id="backupExportBtn" class="backup-btn primary">
+            Download backup (.json) →
+          </button>
+          <button type="button" id="backupImportBtn" class="backup-btn">
+            Restore from backup file →
+          </button>
           <input
             type="file"
             id="backupFileInput"
@@ -450,9 +452,8 @@ const base = import.meta.env.BASE_URL;
     <div class="grid">
       <a class="card doc" href={`${base}playbook/`}>
         <div class="card-top">
-          <span class="card-code">DOC-01</span><span class="card-type"
-            >Reference</span
-          >
+          <span class="card-code">DOC-01</span>
+          <span class="card-type">Reference</span>
         </div>
         <h2>Personal Security Playbook</h2>
         <p>
@@ -465,9 +466,8 @@ const base = import.meta.env.BASE_URL;
 
       <a class="card tool" href={`${base}privacy-stack-builder/`}>
         <div class="card-top">
-          <span class="card-code">TOOL-01</span><span class="card-type"
-            >Interactive</span
-          >
+          <span class="card-code">TOOL-01</span>
+          <span class="card-type">Interactive</span>
         </div>
         <h2>Privacy Stack Builder</h2>
         <p>
@@ -480,9 +480,8 @@ const base = import.meta.env.BASE_URL;
 
       <a class="card tool2" href={`${base}opsec-field-manual/`}>
         <div class="card-top">
-          <span class="card-code">TOOL-02</span><span class="card-type"
-            >Interactive</span
-          >
+          <span class="card-code">TOOL-02</span>
+          <span class="card-type">Interactive</span>
         </div>
         <h2>OPSEC Field Manual</h2>
         <p>
@@ -495,9 +494,8 @@ const base = import.meta.env.BASE_URL;
 
       <a class="card tool3" href={`${base}broker-removal-tracker/`}>
         <div class="card-top">
-          <span class="card-code">TOOL-03</span><span class="card-type"
-            >Interactive</span
-          >
+          <span class="card-code">TOOL-03</span>
+          <span class="card-type">Interactive</span>
         </div>
         <h2>Broker Removal Tracker</h2>
         <p>
@@ -510,9 +508,8 @@ const base = import.meta.env.BASE_URL;
 
       <a class="card tool4" href={`${base}breach-check-tracker/`}>
         <div class="card-top">
-          <span class="card-code">TOOL-04</span><span class="card-type"
-            >Interactive</span
-          >
+          <span class="card-code">TOOL-04</span>
+          <span class="card-type">Interactive</span>
         </div>
         <h2>Breach Check Tracker</h2>
         <p>
@@ -525,9 +522,8 @@ const base = import.meta.env.BASE_URL;
 
       <a class="card tool5" href={`${base}digital-legacy-worksheet/`}>
         <div class="card-top">
-          <span class="card-code">TOOL-05</span><span class="card-type"
-            >Interactive</span
-          >
+          <span class="card-code">TOOL-05</span>
+          <span class="card-type">Interactive</span>
         </div>
         <h2>Digital Legacy Worksheet</h2>
         <p>
@@ -540,9 +536,8 @@ const base = import.meta.env.BASE_URL;
 
       <a class="card tool6" href={`${base}incident-response-card/`}>
         <div class="card-top">
-          <span class="card-code">TOOL-06</span><span class="card-type"
-            >Interactive</span
-          >
+          <span class="card-code">TOOL-06</span>
+          <span class="card-type">Interactive</span>
         </div>
         <h2>Incident Response Card</h2>
         <p>
@@ -555,9 +550,8 @@ const base = import.meta.env.BASE_URL;
 
       <a class="card gen" href={`${base}report/`}>
         <div class="card-top">
-          <span class="card-code">DOC-02</span><span class="card-type"
-            >Generated</span
-          >
+          <span class="card-code">DOC-02</span>
+          <span class="card-type">Generated</span>
         </div>
         <h2>Recommendations Report</h2>
         <p>
@@ -583,8 +577,9 @@ const base = import.meta.env.BASE_URL;
         export their own plain-text (or printable) output, rather than scoring
         you against the Playbook's domains. Nothing you enter in any tool leaves
         your browser; there's no backend, no account, and no tracking — which
-        also means this browser's storage is the <i>only</i> copy of your data. Use
-        "Back up your data" above before clearing site data or switching browsers.
+        also means this browser's storage is the <i>only</i> copy of your data.
+        Use "Back up your data" above before clearing site data or switching
+        browsers.
       </p>
     </div>
   </div>

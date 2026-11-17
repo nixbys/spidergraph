@@ -477,24 +477,28 @@ const base = import.meta.env.BASE_URL;
     <header>
       <div>
         <div class="eyebrow">Quick reference · Incident Response Runbooks</div>
-        <h1>Incident Response <span>Card</span></h1>
+        <h1>
+          Incident Response <span>Card</span>
+        </h1>
         <div class="sub">
           Fill in your own fraud lines once, then print or save the card — three
           steps and four numbers, ready before you need them under pressure.
         </div>
       </div>
-      <button type="button" class="reset-btn" id="resetBtn">Reset card</button>
+      <button type="button" class="reset-btn" id="resetBtn">
+        Reset card
+      </button>
     </header>
 
     <div class="intro-card">
-      <b>Why this exists:</b> the Recommendations Report describes a "15-minute runbook...
-      taped somewhere" as more useful mid-incident than a document you have to search
-      through. This builds that card from your own numbers instead of leaving it as
-      a paragraph to act on later.
+      <b>Why this exists:</b> the Recommendations Report describes a "15-minute
+      runbook... taped somewhere" as more useful mid-incident than a document
+      you have to search through. This builds that card from your own numbers
+      instead of leaving it as a paragraph to act on later.
       <div class="links">
-        <a href="../playbook/#incident-response-runbooks"
-          >📖 Read the full runbooks in the Playbook →</a
-        >
+        <a href="../playbook/#incident-response-runbooks">
+          📖 Read the full runbooks in the Playbook →
+        </a>
         <a href="../digital-legacy-worksheet/">📋 Digital Legacy Worksheet →</a>
       </div>
     </div>
@@ -529,10 +533,10 @@ const base = import.meta.env.BASE_URL;
               placeholder="For SIM-swap attempts"
               maxlength="60"
             />
-            <span class="hint"
-              >Runbook C in the Playbook covers what to do the moment a SIM swap
-              is suspected.</span
-            >
+            <span class="hint">
+              Runbook C in the Playbook covers what to do the moment a SIM swap
+              is suspected.
+            </span>
           </div>
           <div class="field">
             <label for="policeLine">Non-emergency police line</label>
@@ -548,7 +552,8 @@ const base = import.meta.env.BASE_URL;
             <textarea
               id="note"
               placeholder="e.g. email recovery phone is on file with carrier; password manager emergency contact is..."
-              maxlength="300"></textarea>
+              maxlength="300"
+            ></textarea>
           </div>
         </div>
 
@@ -556,22 +561,23 @@ const base = import.meta.env.BASE_URL;
           <div class="form-card-title">First 15 minutes (from Runbook A)</div>
           <ol class="runbook">
             <li>
-              <span class="step-num">1</span><span
-                >Change the password on the affected account from a known-clean
+              <span class="step-num">1</span>
+              <span>
+                Change the password on the affected account from a known-clean
                 device. If it's email, do this first — email is the recovery
-                path for everything else.</span
-              >
+                path for everything else.
+              </span>
             </li>
             <li>
-              <span class="step-num">2</span><span
-                >Revoke all active sessions/devices on the account.</span
-              >
+              <span class="step-num">2</span>
+              <span>Revoke all active sessions/devices on the account.</span>
             </li>
             <li>
-              <span class="step-num">3</span><span
-                >Check recovery email/phone for tampering before doing anything
-                else.</span
-              >
+              <span class="step-num">3</span>
+              <span>
+                Check recovery email/phone for tampering before doing anything
+                else.
+              </span>
             </li>
           </ol>
         </div>
@@ -582,7 +588,9 @@ const base = import.meta.env.BASE_URL;
           <div class="card-title">Completeness</div>
           <div class="score-row">
             <div>
-              <div class="score-num" id="scoreNum">0/4</div>
+              <div class="score-num" id="scoreNum">
+                0/4
+              </div>
               <div class="score-label">numbers filled in</div>
             </div>
           </div>
@@ -592,10 +600,12 @@ const base = import.meta.env.BASE_URL;
         <div class="card">
           <div class="card-title">Get the card</div>
           <div class="btn-stack">
-            <button type="button" id="printBtn">Print card 🖨</button>
-            <button type="button" id="exportBtn" class="reset-btn"
-              >Export as text ↓</button
-            >
+            <button type="button" id="printBtn">
+              Print card 🖨
+            </button>
+            <button type="button" id="exportBtn" class="reset-btn">
+              Export as text ↓
+            </button>
           </div>
         </div>
 
@@ -605,9 +615,9 @@ const base = import.meta.env.BASE_URL;
             Who calls on your behalf if you can't is a different question — see
             the Digital Legacy Worksheet.
           </p>
-          <a class="card-link" href="../digital-legacy-worksheet/"
-            >Digital Legacy Worksheet →</a
-          >
+          <a class="card-link" href="../digital-legacy-worksheet/">
+            Digital Legacy Worksheet →
+          </a>
         </div>
 
         <div class="card">
@@ -619,18 +629,20 @@ const base = import.meta.env.BASE_URL;
             type="button"
             id="snapshotBtn"
             class="reset-btn"
-            style="width:100%; margin-bottom:12px;">Save snapshot</button
+            style="width:100%; margin-bottom:12px;"
           >
+            Save snapshot
+          </button>
           <div id="historyList" class="history-list"></div>
         </div>
       </div>
     </div>
 
     <footer>
-      <b>Companion pages:</b> the full Detect → Contain → Eradicate → Recover runbooks
-      live in the <b>Playbook</b>. Everything you type here stays in this
-      browser only, in <code>localStorage</code> — nothing is sent anywhere, and printing
-      happens entirely on your own device.
+      <b>Companion pages:</b> the full Detect → Contain → Eradicate → Recover
+      runbooks live in the <b>Playbook</b>. Everything you type here stays in
+      this browser only, in <code>localStorage</code> — nothing is sent
+      anywhere, and printing happens entirely on your own device.
     </footer>
   </div>
 
@@ -639,7 +651,9 @@ const base = import.meta.env.BASE_URL;
     <div class="print-row">
       <b>1.</b> Change password from a clean device (email first).
     </div>
-    <div class="print-row"><b>2.</b> Revoke all active sessions/devices.</div>
+    <div class="print-row">
+      <b>2.</b> Revoke all active sessions/devices.
+    </div>
     <div class="print-row">
       <b>3.</b> Check recovery email/phone for tampering.
     </div>
