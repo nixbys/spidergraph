@@ -1215,7 +1215,7 @@ const base = import.meta.env.BASE_URL;
         domain: 'Communications',
         code: 'COM-02',
         name: 'Voice/Video & Burner Numbers',
-        verified: '2026-08-06',
+        verified: '2026-11-16',
         options: [
           {
             id: 'none',
@@ -1239,12 +1239,15 @@ const base = import.meta.env.BASE_URL;
           {
             id: 'burner',
             label:
-              'Same + a dedicated burner number (Burner or Hushed, ~$5/mo) for full compartmentalization',
+              'Same + a dedicated burner number (Burner ~$5/mo or Hushed ~$7/mo) for full compartmentalization',
             tier: 3,
             cost: 60,
           },
         ],
         rec: "Google Voice covers most 'give this out instead of my real number' needs for free; pay for Burner/Hushed only when the number itself needs to be disposable, not just separate.",
+        legacyNotes: [
+          "Hushed was listed at ~$5/mo alongside Burner; corrected to ~$7/mo on 2026-11-16 (Hushed's cheapest recurring plan is now $6.99/mo; Burner's is still $4.99/mo).",
+        ],
       },
 
       {
@@ -1318,7 +1321,7 @@ const base = import.meta.env.BASE_URL;
         domain: 'Financial',
         code: 'FIN-01',
         name: 'Card Masking / Payment Privacy',
-        verified: '2026-07-24',
+        verified: '2026-11-16',
         options: [
           {
             id: 'none',
@@ -1341,12 +1344,15 @@ const base = import.meta.env.BASE_URL;
           {
             id: 'privacy-pro',
             label:
-              'Privacy.com Pro + dedicated per-vendor cards on every subscription',
+              'Privacy.com Premium + dedicated per-vendor cards on every subscription',
             tier: 3,
             cost: 300,
           },
         ],
         rec: "One leaked merchant database shouldn't expose your real card everywhere else — Privacy.com's free tier alone (12 cards/month, no monthly fee) covers most people's actual usage.",
+        legacyNotes: [
+          'The $300/yr option was labeled Privacy.com Pro; relabeled Premium on 2026-11-16, the tier that actually costs $300/yr (Pro is $120/yr).',
+        ],
       },
 
       {
@@ -1382,7 +1388,7 @@ const base = import.meta.env.BASE_URL;
         domain: 'Digital Footprint',
         code: 'OSN-01',
         name: 'Data Broker Removal',
-        verified: '2026-07-25',
+        verified: '2026-11-16',
         options: [
           { id: 'none', label: 'Never audited or opted out', tier: 0, cost: 0 },
           {
@@ -1399,12 +1405,15 @@ const base = import.meta.env.BASE_URL;
           },
           {
             id: 'layered',
-            label: 'EasyOptOuts + DeleteMe layered, or Optery Ultimate',
+            label: 'EasyOptOuts + DeleteMe layered',
             tier: 3,
             cost: 149,
           },
         ],
         rec: "EasyOptOuts alone out-performs DeleteMe alone on documented removal rate — layer, don't just upgrade. Doing the manual tier yourself? The <a href='../broker-removal-tracker/' style='color:var(--red)'>Broker Removal Tracker</a> walks the top ~16 sites one by one with direct links to each site's own opt-out page.",
+        legacyNotes: [
+          'The $149/yr option also offered Optery Ultimate; removed on 2026-11-16 because Ultimate costs $249/yr, not $149/yr.',
+        ],
       },
     ];
 
