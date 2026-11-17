@@ -1,6 +1,5 @@
 ---
-// Shared page shell: head boilerplate + nav. This is what used to be copy-pasted into
-// six-then-nine inline <style>/<head> blocks — see SESSION-NOTES.md for the history.
+// Shared page shell: head boilerplate + nav, once copy-pasted into every page.
 // Each page still owns its own visual layout via the "styles" slot (page-specific CSS is
 // legitimately different per tool) and its body content via the default slot.
 import Nav from '../components/Nav.astro';
@@ -57,7 +56,7 @@ const accentVar: Record<string, string> = {
      report-uri support in the meta form, that's a browser-spec limitation, not an oversight).
      script-src/style-src only ever need 'self' + 'unsafe-inline' (every script here is either
      a same-origin file or an inline block Astro emits, and there's no client-side markdown
-     parsing left to justify a CDN allowance — see CLAUDE.md's marked.js note) plus Google
+     parsing left to justify a CDN allowance) plus Google
      Fonts' two origins. Keep this list exactly as narrow as what's actually loaded — don't
      pre-allow an origin "in case," and if the pre-Astro CDN marked.js script ever comes back
      as a note in git history, that's the one thing this policy used to (and no longer needs to) allow. -->

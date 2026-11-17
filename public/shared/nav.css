@@ -5,7 +5,7 @@
 
    2026-08-05: restructured from a flat 9-item list (Home/Playbook/6 tools/Report) into
    Home / Playbook / "Tools ▾" dropdown / Report — 9 top-level items had gone past
-   comfortable flat-nav range (see CLAUDE.md → "Site navigation"). The dropdown uses a
+   comfortable flat-nav range. The dropdown uses a
    native <details>/<summary> element rather than a hand-rolled ARIA widget: free keyboard
    support (Tab + Enter/Space) and screen-reader semantics, no custom open/close state to
    get wrong. shared/nav.js only adds outside-click / Escape-to-close on top of that.

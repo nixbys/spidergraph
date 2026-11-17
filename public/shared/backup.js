@@ -1,8 +1,7 @@
 // Spidergraph backup/restore — a single site-wide export/import of every "spidergraph-"
 // prefixed localStorage key: all six tools' live state (persist.js) plus all six tools'
 // snapshot history (history.js). This is the only way to move your data to a new browser
-// or device, or keep an offline copy, since there's no account/backend by design — see
-// CLAUDE.md's no-backend guardrail. Lives on the homepage only (not per-tool) because it's
+// or device, or keep an offline copy, since there's no account/backend by design. Lives on the homepage only (not per-tool) because it's
 // inherently cross-tool, the same reason the "Your Spidergraph" summary widget lives there.
 //
 // Deliberately discovers keys by prefix rather than a hardcoded list, so a 7th tool's

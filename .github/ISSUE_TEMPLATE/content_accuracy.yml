@@ -5,10 +5,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        This is the most common and most useful kind of issue for this project — see
-        `CLAUDE.md`'s "Content maintenance discipline" for how these get fixed once
-        reported. The single most helpful thing you can include is a source link for
-        the corrected figure.
+        "Changing a recommendation" in CONTRIBUTING.md describes how these get fixed.
+        The most helpful thing to include is a source link for the corrected figure.
   - type: input
     id: location
     attributes:

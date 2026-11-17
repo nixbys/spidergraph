@@ -1,6 +1,5 @@
 /* Spidergraph design tokens — shared across every page.
-   Single source of truth for the palette documented in CLAUDE.md.
-   Edit here, not per-page — this file is linked by all six HTML shells. */
+   The one place the palette is defined: edit here, not per page. */
 :root {
   --bg: #0f1419;
   --surface: #171e27;

@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        **Read `CLAUDE.md`'s mission guardrail before filing this.** Spidergraph only
+        **Read the Scope section of CONTRIBUTING.md before filing this.** Spidergraph only
         ever helps a user audit and reduce *their own* exposure — it will never add a
         feature that looks up, aggregates, or auto-fetches personal data about other
         people, or about the user from a third party (no backend lookup proxy, no
@@ -23,4 +23,4 @@ body:
     id: proposal
     attributes:
       label: Proposed approach
-      description: If you have one. Keep in mind this project deliberately stays on plain HTML/CSS/vanilla JS inside Astro — see CLAUDE.md's tech-stack section.
+      description: If you have one. Keep in mind this project deliberately stays on plain HTML/CSS/vanilla JS inside Astro — see the Stack section of CONTRIBUTING.md.
