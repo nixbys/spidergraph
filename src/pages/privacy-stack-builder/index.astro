@@ -612,7 +612,9 @@ const base = import.meta.env.BASE_URL;
     <header>
       <div>
         <div class="eyebrow">Configurator · 15 slots</div>
-        <h1>Stack <span>Builder</span></h1>
+        <h1>
+          Stack <span>Builder</span>
+        </h1>
         <div class="sub">
           Pick what you currently run in each slot. The build compares it
           against the recommended part for your target tier and flags gaps —
@@ -631,24 +633,30 @@ const base = import.meta.env.BASE_URL;
             type="button"
             class="tier-btn"
             data-tier="1"
-            aria-pressed="false">Budget</button
+            aria-pressed="false"
           >
+            Budget
+          </button>
           <button
             type="button"
             class="tier-btn active"
             data-tier="2"
-            aria-pressed="true">Mid</button
+            aria-pressed="true"
           >
+            Mid
+          </button>
           <button
             type="button"
             class="tier-btn"
             data-tier="3"
-            aria-pressed="false">No-Limit</button
+            aria-pressed="false"
           >
+            No-Limit
+          </button>
         </div>
-        <button type="button" class="reset-btn" id="resetBtn"
-          >Reset build</button
-        >
+        <button type="button" class="reset-btn" id="resetBtn">
+          Reset build
+        </button>
       </div>
     </header>
 
@@ -691,10 +699,13 @@ const base = import.meta.env.BASE_URL;
             width="280"
             height="280"
             viewBox="0 0 280 280"
-            aria-hidden="true"></svg>
+            aria-hidden="true"
+          ></svg>
           <div class="score-row">
             <div>
-              <div class="score-num" id="scoreNum">0%</div>
+              <div class="score-num" id="scoreNum">
+                0%
+              </div>
               <div class="score-label">of target tier filled</div>
             </div>
           </div>
@@ -703,28 +714,28 @@ const base = import.meta.env.BASE_URL;
         <div class="card">
           <div class="card-title">Build summary</div>
           <div class="metric">
-            <span class="k">Slots at target</span><span
-              class="v teal"
-              id="mAtTarget">0/15</span
-            >
+            <span class="k">Slots at target</span>
+            <span class="v teal" id="mAtTarget">
+              0/15
+            </span>
           </div>
           <div class="metric">
-            <span class="k">Slots below target</span><span
-              class="v amber"
-              id="mBelow">0</span
-            >
+            <span class="k">Slots below target</span>
+            <span class="v amber" id="mBelow">
+              0
+            </span>
           </div>
           <div class="metric">
-            <span class="k">Critical gaps (none set)</span><span
-              class="v red"
-              id="mGap">0</span
-            >
+            <span class="k">Critical gaps (none set)</span>
+            <span class="v red" id="mGap">
+              0
+            </span>
           </div>
           <div class="metric">
-            <span class="k">Est. recurring cost / yr</span><span
-              class="v"
-              id="mCost">$0</span
-            >
+            <span class="k">Est. recurring cost / yr</span>
+            <span class="v" id="mCost">
+              $0
+            </span>
           </div>
         </div>
 
@@ -740,8 +751,9 @@ const base = import.meta.env.BASE_URL;
             class="tier-btn active"
             id="reportBtn"
             style="display:block; width:100%; text-align:center; padding:11px; cursor:pointer;"
-            >Generate report ↓</button
           >
+            Generate report ↓
+          </button>
         </div>
 
         <div class="card">
@@ -754,54 +766,75 @@ const base = import.meta.env.BASE_URL;
             type="button"
             id="snapshotBtn"
             class="reset-btn"
-            style="width:100%; margin-bottom:12px;">Save snapshot</button
+            style="width:100%; margin-bottom:12px;"
           >
+            Save snapshot
+          </button>
           <div id="historyList" class="history-list"></div>
         </div>
       </div>
     </div>
 
     <footer>
-      <b>Not in this picker:</b> social engineering discipline, physical security
-      habits, and legal/documentation steps aren't product slots — they're behavior,
-      not purchases. The companion <b>OPSEC Field Manual</b> covers exactly that discipline
-      layer as a checklist; see <b>personal-security-playbook.md</b> for the full
-      write-ups on those domains and the incident-response runbooks. Costs shown are
-      rough annual estimates for the paid tier of each option and may not reflect
-      current pricing — verify at checkout.
-      <br /><br />
-      <b>On the Linux/GrapheneOS recommendations:</b> Privacy Guides and Techlore
-      rate Linux (desktop) and GrapheneOS (Android) as the stronger privacy default
-      because mainstream proprietary OSes ship with telemetry that's genuinely hard
-      to fully remove — see Privacy Guides' <a
+      <b>Not in this picker:</b> social engineering discipline, physical
+      security habits, and legal/documentation steps aren't product slots —
+      they're behavior, not purchases. The companion <b>OPSEC Field Manual</b>{' '}
+      covers exactly that discipline layer as a checklist; see{' '}
+      <b>personal-security-playbook.md</b> for the full write-ups on those
+      domains and the incident-response runbooks. Costs shown are rough annual
+      estimates for the paid tier of each option and may not reflect current
+      pricing — verify at checkout.
+      <br />
+      <br />
+      <b>On the Linux/GrapheneOS recommendations:</b> Privacy Guides and
+      Techlore rate Linux (desktop) and GrapheneOS (Android) as the stronger
+      privacy default because mainstream proprietary OSes ship with telemetry
+      that's genuinely hard to fully remove — see Privacy Guides'{' '}
+      <a
         href="https://www.privacyguides.org/en/os/linux-overview/"
         target="_blank"
-        rel="noopener">Linux Overview</a
-      > and <a
+        rel="noopener"
+      >
+        Linux Overview
+      </a>{' '}
+      and{' '}
+      <a
         href="https://www.privacyguides.org/en/os/windows/"
         target="_blank"
-        rel="noopener">Windows Overview</a
-      >. Neither source treats staying on Windows, macOS, or iOS as a mistake —
-      see Techlore's <a
+        rel="noopener"
+      >
+        Windows Overview
+      </a>
+      . Neither source treats staying on Windows, macOS, or iOS as a mistake —
+      see Techlore's{' '}
+      <a
         href="https://techlore.tech/the-real-privacy-enemy-is-ourselves/"
         target="_blank"
-        rel="noopener">"The Real Privacy Enemy is Ourselves"</a
-      > on shaming beginners and people who make informed, practical platform choices.
-      Every platform above gets a real hardening ceiling either way.
-      <br /><br />
-      <b>On the ✓ verified / Legacy tags:</b> this isn't a static list — slots get
-      re-checked against current vendor pricing and source guidance on the project's
-      quarterly cycle (see <b>SOURCES</b> in a generated report). A <span
-        class="verified-tag"
-        style="margin-left:0;">✓ verified</span
-      > tag shows the date a slot's figures were last confirmed current; a slot with
-      no tag hasn't been re-checked recently. When a figure changes, the old value
-      isn't silently deleted — it's kept as a <b>Legacy</b> note directly under the
-      current recommendation, so you can see what changed and when.
-      <br /><br />
-      Your build stays in this browser only, in <code>localStorage</code> — nothing
-      is sent anywhere, so it's still here next time you come back for the quarterly
-      re-audit the Playbook recommends. <b>Reset build</b> clears it.
+        rel="noopener"
+      >
+        "The Real Privacy Enemy is Ourselves"
+      </a>{' '}
+      on shaming beginners and people who make informed, practical platform
+      choices. Every platform above gets a real hardening ceiling either way.
+      <br />
+      <br />
+      <b>On the ✓ verified / Legacy tags:</b> this isn't a static list — slots
+      get re-checked against current vendor pricing and source guidance on the
+      project's quarterly cycle (see <b>SOURCES</b> in a generated report). A{' '}
+      <span class="verified-tag" style="margin-left:0;">
+        ✓ verified
+      </span>{' '}
+      tag shows the date a slot's figures were last confirmed current; a slot
+      with no tag hasn't been re-checked recently. When a figure changes, the
+      old value isn't silently deleted — it's kept as a <b>Legacy</b> note
+      directly under the current recommendation, so you can see what changed and
+      when.
+      <br />
+      <br />
+      Your build stays in this browser only, in <code>localStorage</code> —
+      nothing is sent anywhere, so it's still here next time you come back for
+      the quarterly re-audit the Playbook recommends. <b>Reset build</b> clears
+      it.
     </footer>
   </div>
 
@@ -809,8 +842,10 @@ const base = import.meta.env.BASE_URL;
     type="button"
     id="scrollTopBtn"
     class="scroll-top-btn"
-    aria-label="Scroll to top">↑</button
+    aria-label="Scroll to top"
   >
+    ↑
+  </button>
 
   <script src={`${base}shared/persist.js`} is:inline></script>
   <script src={`${base}shared/history.js`} is:inline></script>

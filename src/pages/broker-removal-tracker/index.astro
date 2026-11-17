@@ -480,7 +480,9 @@ const base = import.meta.env.BASE_URL;
     <header>
       <div>
         <div class="eyebrow">Self-audit · 16 broker requests tracked</div>
-        <h1>Broker <span>Removal Tracker</span></h1>
+        <h1>
+          Broker <span>Removal Tracker</span>
+        </h1>
         <div class="sub">
           Search your own name on each site below, then use that site's own
           official opt-out page to request removal. Check it off once submitted
@@ -488,34 +490,36 @@ const base = import.meta.env.BASE_URL;
           your own follow-through.
         </div>
       </div>
-      <button type="button" class="reset-btn" id="resetBtn"
-        >Reset tracker</button
-      >
+      <button type="button" class="reset-btn" id="resetBtn">
+        Reset tracker
+      </button>
     </header>
 
     <div class="intro-card">
-      <b>Why this exists:</b> people-search sites like these compile profiles — name,
-      address history, relatives, phone numbers, sometimes court records — from public
-      records and data-broker feeds, then sell access to anyone searching a name.
-      Opting out at the source removes a listing until the site's next data refresh;
-      it doesn't stop the underlying record from existing. See <b
-        >Domain 8: OSINT & Digital Footprint</b
-      > in the Playbook for the full explanation of how these sites source data and
-      why removals don't stick permanently.
+      <b>Why this exists:</b> people-search sites like these compile profiles —
+      name, address history, relatives, phone numbers, sometimes court records —
+      from public records and data-broker feeds, then sell access to anyone
+      searching a name. Opting out at the source removes a listing until the
+      site's next data refresh; it doesn't stop the underlying record from
+      existing. See <b>Domain 8: OSINT & Digital Footprint</b> in the Playbook
+      for the full explanation of how these sites source data and why removals
+      don't stick permanently.
       <div class="links">
-        <a href="../playbook/#8-osint-digital-footprint"
-          >📖 Read the full explainer in the Playbook →</a
-        >
-        <a href="../privacy-stack-builder/#domain-digital-footprint"
-          >⚙️ Compare automated removal services (EasyOptOuts / DeleteMe /
-          Optery) →</a
-        >
+        <a href="../playbook/#8-osint-digital-footprint">
+          📖 Read the full explainer in the Playbook →
+        </a>
+        <a href="../privacy-stack-builder/#domain-digital-footprint">
+          ⚙️ Compare automated removal services (EasyOptOuts / DeleteMe /
+          Optery) →
+        </a>
       </div>
     </div>
 
     <div class="layout">
       <div>
-        <div class="list-head"><span class="list-head-title">Sites</span></div>
+        <div class="list-head">
+          <span class="list-head-title">Sites</span>
+        </div>
         <div id="brokerList"></div>
       </div>
 
@@ -524,7 +528,9 @@ const base = import.meta.env.BASE_URL;
           <div class="card-title">Progress</div>
           <div class="score-row">
             <div>
-              <div class="score-num" id="scoreNum">0%</div>
+              <div class="score-num" id="scoreNum">
+                0%
+              </div>
               <div class="score-label">requests submitted</div>
             </div>
           </div>
@@ -533,14 +539,16 @@ const base = import.meta.env.BASE_URL;
         <div class="card">
           <div class="card-title">Summary</div>
           <div class="metric">
-            <span class="k">Requested</span><span class="v teal" id="mDone"
-              >0/16</span
-            >
+            <span class="k">Requested</span>
+            <span class="v teal" id="mDone">
+              0/16
+            </span>
           </div>
           <div class="metric">
-            <span class="k">Not started</span><span class="v red" id="mTodo"
-              >16</span
-            >
+            <span class="k">Not started</span>
+            <span class="v red" id="mTodo">
+              16
+            </span>
           </div>
         </div>
 
@@ -555,8 +563,10 @@ const base = import.meta.env.BASE_URL;
             class="card-link"
             href="https://inteltechniques.com/workbook.html"
             target="_blank"
-            rel="noopener">IntelTechniques workbook ↗</a
+            rel="noopener"
           >
+            IntelTechniques workbook ↗
+          </a>
         </div>
 
         <div class="card">
@@ -566,16 +576,16 @@ const base = import.meta.env.BASE_URL;
             breach of an account instead of a broker profile, that's the Breach
             Check Tracker's job, not this one.
           </p>
-          <a class="card-link" href="../breach-check-tracker/"
-            >Breach Check Tracker →</a
-          >
+          <a class="card-link" href="../breach-check-tracker/">
+            Breach Check Tracker →
+          </a>
         </div>
 
         <div class="card">
           <div class="card-title">Export</div>
-          <button type="button" id="exportBtn" class="reset-btn"
-            >Export progress ↓</button
-          >
+          <button type="button" id="exportBtn" class="reset-btn">
+            Export progress ↓
+          </button>
         </div>
 
         <div class="card">
@@ -587,24 +597,26 @@ const base = import.meta.env.BASE_URL;
             type="button"
             id="snapshotBtn"
             class="reset-btn"
-            style="width:100%; margin-bottom:12px;">Save snapshot</button
+            style="width:100%; margin-bottom:12px;"
           >
+            Save snapshot
+          </button>
           <div id="historyList" class="history-list"></div>
         </div>
       </div>
     </div>
 
     <footer>
-      <b>Companion pages:</b> the "why" behind this list lives in Domain 8 of the
+      <b>Companion pages:</b> the "why" behind this list lives in Domain 8 of
+      the
       <b>Playbook</b>; if you'd rather pay a service to do this on a recurring
-      cycle instead of manually, compare EasyOptOuts / DeleteMe / Optery in the <b
-        >Stack Builder</b
-      > (slot OSN-01). Opt-out URLs and processes change — each entry below shows
-      the date it was last checked; report a broken link by opening an issue on the
-      repo. Your checked/unchecked state stays in this browser only, in <code
-        >localStorage</code
-      > — nothing is sent anywhere, and no name, address, or search input is ever
-      collected by this page.
+      cycle instead of manually, compare EasyOptOuts / DeleteMe / Optery in the{' '}
+      <b>Stack Builder</b> (slot OSN-01). Opt-out URLs and processes change —
+      each entry below shows the date it was last checked; report a broken link
+      by opening an issue on the repo. Your checked/unchecked state stays in
+      this browser only, in <code>localStorage</code> — nothing is sent
+      anywhere, and no name, address, or search input is ever collected by this
+      page.
     </footer>
   </div>
 
