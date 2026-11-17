@@ -511,7 +511,9 @@ const base = import.meta.env.BASE_URL;
         <div class="eyebrow">
           Self-audit · <span id="itemCount">0</span> addresses tracked
         </div>
-        <h1>Breach <span>Check Tracker</span></h1>
+        <h1>
+          Breach <span>Check Tracker</span>
+        </h1>
         <div class="sub">
           List every email address and alias you actually use, then check each
           one on Have I Been Pwned yourself once a quarter. This page never
@@ -519,29 +521,30 @@ const base = import.meta.env.BASE_URL;
           checked and when.
         </div>
       </div>
-      <button type="button" class="reset-btn" id="resetBtn"
-        >Reset tracker</button
-      >
+      <button type="button" class="reset-btn" id="resetBtn">
+        Reset tracker
+      </button>
     </header>
 
     <div class="intro-card">
-      <b>Why this exists:</b> Domain 1 and Domain 8 of the Playbook both recommend
-      a Have I Been Pwned check as a free, do-this-first step — but until now nothing
-      on this site made that a trackable habit the way the Broker Removal Tracker
-      does for opt-outs. This tool deliberately does <b>not</b> query any breach database
-      itself: it would need a backend and your email to do that server-side, which
-      is exactly the kind of feature Spidergraph's own scope rules out (see the Playbook,
-      or CONTRIBUTING.md if you're a contributor). Instead, add your own addresses
-      below, click through to Have I Been Pwned to check each one yourself, and tick
-      it off — same shape as the rest of this site: you provide the input, you do
-      the verification, this page just remembers your progress.
+      <b>Why this exists:</b> Domain 1 and Domain 8 of the Playbook both
+      recommend a Have I Been Pwned check as a free, do-this-first step — but
+      until now nothing on this site made that a trackable habit the way the
+      Broker Removal Tracker does for opt-outs. This tool deliberately does{' '}
+      <b>not</b> query any breach database itself: it would need a backend and
+      your email to do that server-side, which is exactly the kind of feature
+      Spidergraph's own scope rules out (see the Playbook, or CONTRIBUTING.md if
+      you're a contributor). Instead, add your own addresses below, click
+      through to Have I Been Pwned to check each one yourself, and tick it off —
+      same shape as the rest of this site: you provide the input, you do the
+      verification, this page just remembers your progress.
       <div class="links">
-        <a href="https://haveibeenpwned.com/" target="_blank" rel="noopener"
-          >🔍 Open Have I Been Pwned →</a
-        >
-        <a href="../playbook/#8-osint-digital-footprint"
-          >📖 Read Domain 8 in the Playbook →</a
-        >
+        <a href="https://haveibeenpwned.com/" target="_blank" rel="noopener">
+          🔍 Open Have I Been Pwned →
+        </a>
+        <a href="../playbook/#8-osint-digital-footprint">
+          📖 Read Domain 8 in the Playbook →
+        </a>
       </div>
     </div>
 
@@ -559,7 +562,9 @@ const base = import.meta.env.BASE_URL;
             aria-label="Email address or alias to track"
             maxlength="120"
           />
-          <button type="button" id="addBtn">Add</button>
+          <button type="button" id="addBtn">
+            Add
+          </button>
         </div>
 
         <div id="emptyState" class="empty-state" hidden>
@@ -574,7 +579,9 @@ const base = import.meta.env.BASE_URL;
           <div class="card-title">Progress</div>
           <div class="score-row">
             <div>
-              <div class="score-num" id="scoreNum">0%</div>
+              <div class="score-num" id="scoreNum">
+                0%
+              </div>
               <div class="score-label">checked this cycle</div>
             </div>
           </div>
@@ -583,14 +590,16 @@ const base = import.meta.env.BASE_URL;
         <div class="card">
           <div class="card-title">Summary</div>
           <div class="metric">
-            <span class="k">Checked</span><span class="v teal" id="mDone"
-              >0/0</span
-            >
+            <span class="k">Checked</span>
+            <span class="v teal" id="mDone">
+              0/0
+            </span>
           </div>
           <div class="metric">
-            <span class="k">Not checked</span><span class="v amber" id="mTodo"
-              >0</span
-            >
+            <span class="k">Not checked</span>
+            <span class="v amber" id="mTodo">
+              0
+            </span>
           </div>
         </div>
 
@@ -601,16 +610,16 @@ const base = import.meta.env.BASE_URL;
             site instead of a breach, that's the Broker Removal Tracker's job,
             not this one.
           </p>
-          <a class="card-link" href="../broker-removal-tracker/"
-            >Broker Removal Tracker →</a
-          >
+          <a class="card-link" href="../broker-removal-tracker/">
+            Broker Removal Tracker →
+          </a>
         </div>
 
         <div class="card">
           <div class="card-title">Export</div>
-          <button type="button" id="exportBtn" class="reset-btn"
-            >Export progress ↓</button
-          >
+          <button type="button" id="exportBtn" class="reset-btn">
+            Export progress ↓
+          </button>
         </div>
 
         <div class="card">
@@ -622,19 +631,22 @@ const base = import.meta.env.BASE_URL;
             type="button"
             id="snapshotBtn"
             class="reset-btn"
-            style="width:100%; margin-bottom:12px;">Save snapshot</button
+            style="width:100%; margin-bottom:12px;"
           >
+            Save snapshot
+          </button>
           <div id="historyList" class="history-list"></div>
         </div>
       </div>
     </div>
 
     <footer>
-      <b>Companion pages:</b> the "why" behind this habit lives in Domains 1 and 8
-      of the <b>Playbook</b>. Your address list and checked/unchecked state stay
-      in this browser only, in <code>localStorage</code> — nothing is sent anywhere,
-      and this page never transmits an address you enter to Have I Been Pwned or anywhere
-      else; it only opens a link you click yourself. <b>Reset tracker</b> clears everything.
+      <b>Companion pages:</b> the "why" behind this habit lives in Domains 1 and
+      8 of the <b>Playbook</b>. Your address list and checked/unchecked state
+      stay in this browser only, in <code>localStorage</code> — nothing is sent
+      anywhere, and this page never transmits an address you enter to Have I
+      Been Pwned or anywhere else; it only opens a link you click yourself.{' '}
+      <b>Reset tracker</b> clears everything.
     </footer>
   </div>
 

@@ -492,37 +492,39 @@ const base = import.meta.env.BASE_URL;
         <div class="eyebrow">
           Worksheet · Domain 11: Legal &amp; Documentation
         </div>
-        <h1>Digital Legacy <span>Worksheet</span></h1>
+        <h1>
+          Digital Legacy <span>Worksheet</span>
+        </h1>
         <div class="sub">
           Get a trusted person oriented before you need them to be — where
           things are, who to contact, and how to reach your accounts without you
           ever writing down a live password.
         </div>
       </div>
-      <button type="button" class="reset-btn" id="resetBtn"
-        >Reset worksheet</button
-      >
+      <button type="button" class="reset-btn" id="resetBtn">
+        Reset worksheet
+      </button>
     </header>
 
     <div class="intro-card">
-      <b>Why this exists:</b> Domain 11 of the Playbook recommends "a written, offline
-      document listing account recovery info location for a trusted person, without
-      exposing live credentials." This turns that recommendation into something you
-      actually fill out. It is <b>not</b> a will, a legal document, or a substitute
-      for an estate attorney — it's a working note.
+      <b>Why this exists:</b> Domain 11 of the Playbook recommends "a written,
+      offline document listing account recovery info location for a trusted
+      person, without exposing live credentials." This turns that recommendation
+      into something you actually fill out. It is <b>not</b> a will, a legal
+      document, or a substitute for an estate attorney — it's a working note.
       <div class="warn">
-        <b>Never write an actual password here.</b> Use your password manager's built-in
-        emergency access feature (Bitwarden and Proton Pass both support a trusted-contact
-        request-and-wait-period model) so a trusted person can get in without a live
-        credential ever existing in writing.
+        <b>Never write an actual password here.</b> Use your password manager's
+        built-in emergency access feature (Bitwarden and Proton Pass both
+        support a trusted-contact request-and-wait-period model) so a trusted
+        person can get in without a live credential ever existing in writing.
       </div>
       <div class="links">
-        <a href="../playbook/#11-legal-documentation"
-          >📖 Read Domain 11 in the Playbook →</a
-        >
-        <a href="../privacy-stack-builder/"
-          >⚙️ Compare password managers with emergency access →</a
-        >
+        <a href="../playbook/#11-legal-documentation">
+          📖 Read Domain 11 in the Playbook →
+        </a>
+        <a href="../privacy-stack-builder/">
+          ⚙️ Compare password managers with emergency access →
+        </a>
       </div>
     </div>
 
@@ -531,9 +533,9 @@ const base = import.meta.env.BASE_URL;
         <div class="form-card">
           <div class="form-card-title">Trusted contact</div>
           <div class="field">
-            <label for="contactName"
-              >Who should be contacted in an emergency?</label
-            >
+            <label for="contactName">
+              Who should be contacted in an emergency?
+            </label>
             <input
               type="text"
               id="contactName"
@@ -542,61 +544,66 @@ const base = import.meta.env.BASE_URL;
             />
           </div>
           <div class="field">
-            <label for="contactMethod"
-              >How will they know to act, and how do you reach them?</label
-            >
+            <label for="contactMethod">
+              How will they know to act, and how do you reach them?
+            </label>
             <textarea
               id="contactMethod"
               placeholder="e.g. a note in my will names them; their number is saved in my phone under..."
-              maxlength="500"></textarea>
+              maxlength="500"
+            ></textarea>
           </div>
         </div>
 
         <div class="form-card">
           <div class="form-card-title">Where recovery info lives</div>
           <div class="field">
-            <label for="recoveryLocation"
-              >Physical or logical location of recovery materials</label
-            >
+            <label for="recoveryLocation">
+              Physical or logical location of recovery materials
+            </label>
             <textarea
               id="recoveryLocation"
               placeholder="e.g. fireproof document safe in the hall closet; safe deposit box at [bank], key location..."
-              maxlength="500"></textarea>
-            <span class="hint"
-              >Recovery codes, a printed list of accounts, attorney contact info
-              — the location, not the credentials themselves.</span
-            >
+              maxlength="500"
+            ></textarea>
+            <span class="hint">
+              Recovery codes, a printed list of accounts, attorney contact info
+              — the location, not the credentials themselves.
+            </span>
           </div>
           <div class="field">
             <label>Password manager emergency access</label>
             <div class="radio-group" id="emergencyAccessGroup">
-              <label class="radio-option"
-                ><input type="radio" name="ea" value="not-set-up" /><span
-                  ><span class="opt-label">Not set up yet</span><span
-                    class="opt-desc"
-                    >The single highest-leverage step this worksheet points to —
-                    see the Stack Builder link above.</span
-                  ></span
-                ></label
-              >
-              <label class="radio-option"
-                ><input type="radio" name="ea" value="set-up-untested" /><span
-                  ><span class="opt-label">Set up, not tested</span><span
-                    class="opt-desc"
-                    >Configured in Bitwarden/Proton Pass but never actually
-                    verified end-to-end.</span
-                  ></span
-                ></label
-              >
-              <label class="radio-option"
-                ><input type="radio" name="ea" value="set-up-tested" /><span
-                  ><span class="opt-label">Set up and tested</span><span
-                    class="opt-desc"
-                    >Your trusted contact has actually confirmed they can
-                    request and receive access.</span
-                  ></span
-                ></label
-              >
+              <label class="radio-option">
+                <input type="radio" name="ea" value="not-set-up" />
+                <span>
+                  <span class="opt-label">Not set up yet</span>
+                  <span class="opt-desc">
+                    The single highest-leverage step this worksheet points to —
+                    see the Stack Builder link above.
+                  </span>
+                </span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="ea" value="set-up-untested" />
+                <span>
+                  <span class="opt-label">Set up, not tested</span>
+                  <span class="opt-desc">
+                    Configured in Bitwarden/Proton Pass but never actually
+                    verified end-to-end.
+                  </span>
+                </span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="ea" value="set-up-tested" />
+                <span>
+                  <span class="opt-label">Set up and tested</span>
+                  <span class="opt-desc">
+                    Your trusted contact has actually confirmed they can request
+                    and receive access.
+                  </span>
+                </span>
+              </label>
             </div>
           </div>
         </div>
@@ -606,10 +613,10 @@ const base = import.meta.env.BASE_URL;
             Accounts to flag for your trusted contact
           </div>
           <div class="field" style="margin-bottom:10px;">
-            <span class="hint" style="margin-top:0;"
-              >Labels only — email, financial, password manager, etc. Never an
-              actual username, password, or account number.</span
-            >
+            <span class="hint" style="margin-top:0;">
+              Labels only — email, financial, password manager, etc. Never an
+              actual username, password, or account number.
+            </span>
           </div>
           <div id="acctList" class="acct-list"></div>
           <div id="noAccounts" class="no-accounts" hidden>
@@ -623,7 +630,9 @@ const base = import.meta.env.BASE_URL;
               aria-label="Account label to flag"
               maxlength="120"
             />
-            <button type="button" id="acctAddBtn">Add</button>
+            <button type="button" id="acctAddBtn">
+              Add
+            </button>
           </div>
         </div>
 
@@ -634,7 +643,8 @@ const base = import.meta.env.BASE_URL;
               id="notes"
               placeholder="Anything else your trusted contact would need to know — attorney contact, business/creator entity details, anything from Domain 11 that applies to you."
               maxlength="1000"
-              style="min-height:100px;"></textarea>
+              style="min-height:100px;"
+            ></textarea>
           </div>
         </div>
       </div>
@@ -644,7 +654,9 @@ const base = import.meta.env.BASE_URL;
           <div class="card-title">Completeness</div>
           <div class="score-row">
             <div>
-              <div class="score-num" id="scoreNum">0/6</div>
+              <div class="score-num" id="scoreNum">
+                0/6
+              </div>
               <div class="score-label">sections filled in</div>
             </div>
           </div>
@@ -658,16 +670,16 @@ const base = import.meta.env.BASE_URL;
             Incident Response Card — the numbers you call, not the person who
             calls them for you.
           </p>
-          <a class="card-link" href="../incident-response-card/"
-            >Incident Response Card →</a
-          >
+          <a class="card-link" href="../incident-response-card/">
+            Incident Response Card →
+          </a>
         </div>
 
         <div class="card">
           <div class="card-title">Export</div>
-          <button type="button" id="exportBtn" class="reset-btn"
-            >Export worksheet ↓</button
-          >
+          <button type="button" id="exportBtn" class="reset-btn">
+            Export worksheet ↓
+          </button>
         </div>
 
         <div class="card">
@@ -679,19 +691,22 @@ const base = import.meta.env.BASE_URL;
             type="button"
             id="snapshotBtn"
             class="reset-btn"
-            style="width:100%; margin-bottom:12px;">Save snapshot</button
+            style="width:100%; margin-bottom:12px;"
           >
+            Save snapshot
+          </button>
           <div id="historyList" class="history-list"></div>
         </div>
       </div>
     </div>
 
     <footer>
-      <b>Companion pages:</b> the "why" behind this worksheet is Domain 11 of the
-      <b>Playbook</b>. Everything you type here stays in this browser only, in <code
-        >localStorage</code
-      > — nothing is sent anywhere, ever, and this page never asks for or stores an
-      actual password. <b>Reset worksheet</b> clears everything.
+      <b>Companion pages:</b> the "why" behind this worksheet is Domain 11 of
+      the
+      <b>Playbook</b>. Everything you type here stays in this browser only, in{' '}
+      <code>localStorage</code> — nothing is sent anywhere, ever, and this page
+      never asks for or stores an actual password. <b>Reset worksheet</b> clears
+      everything.
     </footer>
   </div>
 
