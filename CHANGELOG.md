@@ -13,6 +13,12 @@ that makes the change, not as a separate retroactive pass.
 
 ## Unreleased
 
+### Added
+
+- Playbook: the "Jump to section" menu lists each incident runbook in its own group,
+  and a link to a section or runbook (`playbook/#runbook-c-…`) now scrolls there on
+  load (#37).
+
 ### Changed
 
 - Each page's CSS and script moved out of its `.astro` file into
