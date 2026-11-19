@@ -265,6 +265,15 @@ Adapted from the Preparation → Detection → Containment → Eradication → R
 4. **Recover**: If a credit freeze wasn't already in place at all three bureaus (Domain 7/11), put one on now to block further new-account fraud while the dispute is investigated. Rotate the password on the affected account and any account that shares a password with it.
 5. **Lessons learned**: Trace how the exposure likely happened — card skimmed, merchant breach, phished, or a data-broker-listed detail used for account takeover — and close that specific gap. This is exactly why the incident-contact list from the OPSEC Field Manual's Legal & Documentation domain (bank fraud line, carrier fraud line, non-emergency police line, written down _before_ you need it) is worth having ready rather than searched for mid-incident.
 
+### Runbook H: Stuck Account (no delete option, deactivate-only, data kept after "deletion", or other services still sign in through it)
+
+1. **Detect**: You looked for the deletion path (account settings first, then the privacy policy's "your rights" section) and it doesn't exist, only deactivates the account, or the service says it keeps your profile anyway. Before settling for less, send a formal deletion request: where the GDPR or a US state privacy law such as California's CCPA applies, the service has to answer one even when its settings have no delete button.
+2. **Contain**: List what the account still exposes (profile fields, photos and posts, contacts, linked accounts, saved payment methods). Then cut its ties: remove the "Sign in with…" links other services rely on, detach any recovery email or phone that leads to an account you're protecting, and remove saved payment methods.
+3. **Eradicate**: Overwrite what's left. Replace personal details with plausible made-up values, delete the photos and content you can, and turn off search visibility and "find me by email or phone". Leave alone any field you still need to sign in or recover the account. Some services' terms forbid false details; whether to overwrite there is your decision.
+4. **Recover**: Write down which fields you changed, to what, and when, somewhere you'll find it again (your password manager's notes work). Reset flows and security questions may now depend on values you won't remember, and the record is what lets you get back in to close the account later.
+5. **Verify**: Check again after 30 and 90 days that the new values stuck. Some services restore old profile data or suggest it back to you.
+6. **Lessons learned**: Before signing up somewhere new, check whether you can leave. An email alias and the minimum real details (Domain 1) keep the next stuck account harmless.
+
 ---
 
 ## Closing note on tier selection
