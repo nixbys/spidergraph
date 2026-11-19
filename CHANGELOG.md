@@ -15,6 +15,9 @@ that makes the change, not as a separate retroactive pass.
 
 ### Added
 
+- THREAT_MODEL.md: each documented risk names its OWASP reference (Top 10:2025,
+  ASVS 5.0.0, SCVS); it counts seven tools and describes the ruleset that now protects
+  `main` (#41).
 - Stuck Account Ledger (TOOL-07): for accounts a service won't delete, plausible
   replacement details generated in the browser (no network; phone numbers only from
   the 555-0100–0199 range reserved for fiction, no email field) and a per-account

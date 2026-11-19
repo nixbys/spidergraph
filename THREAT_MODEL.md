@@ -7,6 +7,14 @@ database to inject into, no session to hijack, no API to abuse. This document st
 what actually remains, so contributors and reviewers don't have to reason it out from
 scratch each time.
 
+Each risk below names its canonical OWASP definition, so a reviewer can look it up
+instead of reasoning from first principles: the [OWASP Top 10:2025](https://owasp.org/Top10/)
+and the [Application Security Verification Standard (ASVS) 5.0.0](https://owasp.org/www-project-application-security-verification-standard/),
+plus the [Software Component Verification Standard](https://owasp.org/www-project-software-component-verification-standard/)
+for the build dependencies. These are references, not a claim that the site has been
+verified against either standard. (The Playbook's NIST CSF 2.0 tags are the same kind
+of orientation for its readers, not a compliance statement.)
+
 ## Trust boundary
 
 Everything a visitor does — answering the playbook's audit questions, building a
@@ -26,6 +34,10 @@ HTML/CSS/JS with no server component.
 ## In scope: what could actually go wrong
 
 ### 1. Supply-chain risk in the npm dependency tree
+
+_OWASP: [A03:2025 Software Supply Chain Failures](https://top10.owasp.org/2025/A03_2025-Software_Supply_Chain_Failures/);
+ASVS 5.0 15.1.1, 15.1.2 (update time frames, component inventory) and 15.2.1, 15.2.4
+(components within those time frames, from the expected repository); SCVS._
 
 `astro`, `marked`, and the eslint/prettier/vitest toolchain (`package.json`) all run
 arbitrary package code at build time, in CI, and on every contributor's machine. A
@@ -48,7 +60,10 @@ Mitigations:
 
 ### 2. XSS / content-injection in the interactive client-side tools
 
-All six tools (`src/pages/*/index.astro`, backed by `public/shared/*.js`) build DOM
+_OWASP: [A05:2025 Injection](https://top10.owasp.org/2025/A05_2025-Injection/); ASVS 5.0 3.2.2 (text rendered with
+safe functions such as `textContent`) and 3.4.3 (Content-Security-Policy)._
+
+All seven tools (`src/pages/*/index.astro`, backed by `public/shared/*.js`) build DOM
 from user input and generate export/print output; the site has already had at least
 one real attribute-breakout XSS fix (see git history — `82fc9dc`). Because there's no
 server, the practical severity of most such bugs is self-XSS (a user's own crafted
@@ -75,6 +90,9 @@ Mitigations:
   injection-shaped bugs that ESLint's rule set doesn't attempt.
 
 ### 3. Deploy pipeline integrity
+
+_OWASP: [A08:2025 Software or Data Integrity Failures](https://top10.owasp.org/2025/A08_2025-Software_or_Data_Integrity_Failures/)
+(an unverified build or deploy path)._
 
 `.github/workflows/deploy.yml` runs on every push to `main` with `pages: write` and
 `id-token: write` permissions and publishes directly to the live site — this is the
@@ -107,6 +125,8 @@ Mitigations:
 
 ### 4. Secrets accidentally entering git history
 
+_OWASP: ASVS 5.0 13.3.1 (secrets kept in a secrets manager, never in source)._
+
 There's no server-side secret in this project's actual design (no API keys, no
 `.env` — see `SECURITY.md`), but a contributor could still paste a personal token
 into a commit by accident while testing something unrelated. `secret-scan.yml`
@@ -138,11 +158,11 @@ These are open and acknowledged, not hidden:
    resource loaded is the Google Fonts stylesheet, and there's no CDN-hosted script
    dependency to pin. If that ever changes (a CDN script is reintroduced), add SRI
    hashes at the same time.
-3. **Branch protection on `main`** (requiring the CI/security workflows to pass and
-   a review before merge) is a GitHub repository setting, not something a workflow
-   file can enforce from inside the repo. Recommended, but must be turned on by a
-   repo admin in Settings → Branches — nothing added by this hardening pass does
-   that for you.
+3. **`main` is protected by a repository ruleset, not by anything in the repo.**
+   Changes go through a pull request, the CI and security checks (build, CodeQL,
+   gitleaks, dependency review, actionlint, zizmor) must pass, and force-pushes and
+   deletion are blocked. The repository admin can bypass it; a workflow file can't
+   enforce or verify any of this from inside the repo.
 4. **`dependency-review-action` uses its default license policy** (flags
    copyleft/unknown licenses generically) rather than an explicit allow/deny list.
    Fine while the dependency tree stays MIT/permissive as it is today; revisit if
