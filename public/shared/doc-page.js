@@ -18,9 +18,15 @@
   }
 
   function buildSectionJump() {
-    const headings = document.querySelectorAll('#content h1, #content h2');
+    // h3s get ids too, so each runbook can be linked (playbook/#runbook-h-…).
+    const headings = document.querySelectorAll(
+      '#content h1, #content h2, #content h3',
+    );
     const seen = {};
     const jumpSel = document.getElementById('sectionJump');
+    // The runbooks are the Playbook's most-used part but sit at the end of a long
+    // page, so they get their own group in the menu rather than only their section.
+    let runbooks = null;
     headings.forEach((h) => {
       let slug = slugify(h.textContent) || 'section';
       if (seen[slug] !== undefined) {
@@ -30,19 +36,43 @@
         seen[slug] = 0;
       }
       h.id = slug;
-      if (h.tagName === 'H2') {
-        const opt = document.createElement('option');
-        opt.value = '#' + slug;
+      const isRunbook = h.tagName === 'H3' && /^Runbook /.test(h.textContent);
+      if (h.tagName !== 'H2' && !isRunbook) return;
+      const opt = document.createElement('option');
+      opt.value = '#' + slug;
+      if (isRunbook) {
+        if (!runbooks) {
+          runbooks = document.createElement('optgroup');
+          runbooks.label = 'Incident runbooks';
+        }
+        // "Runbook H: Stuck Account (…)" → "H: Stuck Account" keeps the menu narrow.
+        opt.textContent = h.textContent
+          .replace(/^Runbook /, '')
+          .replace(/\s*\(.*$/, '');
+        runbooks.appendChild(opt);
+      } else {
         opt.textContent = h.textContent;
         jumpSel.appendChild(opt);
       }
     });
+    if (runbooks) jumpSel.appendChild(runbooks);
     jumpSel.addEventListener('change', () => {
       if (!jumpSel.value) return;
       const target = document.querySelector(jumpSel.value);
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       jumpSel.value = '';
     });
+    // The ids only exist now, after the browser's own jump to the URL's #fragment
+    // already failed, so a shared link to a runbook or section needs this.
+    if (location.hash) {
+      let target = null;
+      try {
+        target = document.querySelector(decodeURIComponent(location.hash));
+      } catch {
+        /* not a valid selector: stay at the top */
+      }
+      if (target) target.scrollIntoView({ block: 'start' });
+    }
   }
 
   buildSectionJump();

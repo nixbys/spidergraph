@@ -18,6 +18,9 @@ that makes the change, not as a separate retroactive pass.
 - Playbook: Runbook H, Stuck Account — what to do when a service won't delete an
   account: a formal deletion request, cutting its links, overwriting what stays, and a
   record so the account stays recoverable (#37).
+- Playbook: the "Jump to section" menu lists each incident runbook in its own group,
+  and a link to a section or runbook (`playbook/#runbook-c-…`) now scrolls there on
+  load (#37).
 
 ### Changed
 
