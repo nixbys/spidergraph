@@ -13,6 +13,12 @@ that makes the change, not as a separate retroactive pass.
 
 ## Unreleased
 
+### Added
+
+- Playbook: Runbook H, Stuck Account — what to do when a service won't delete an
+  account: a formal deletion request, cutting its links, overwriting what stays, and a
+  record so the account stays recoverable (#37).
+
 ### Changed
 
 - Each page's CSS and script moved out of its `.astro` file into
