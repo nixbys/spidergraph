@@ -1,13 +1,6 @@
 /* Stack Builder-only overrides + layout. Shared tokens/nav/brand live in shared/.
  is:global — this page creates rows/gap items/history entries via JS at runtime;
  Astro's default scoped CSS wouldn't match dynamically-created elements. */
-body {
-  padding-bottom: 80px;
-}
-.wrap {
-  max-width: 1180px;
-  margin: 0 auto;
-}
 
 /* header */
 header {
@@ -38,18 +31,6 @@ header {
   background: var(--blue);
   border-radius: 1px;
   display: inline-block;
-}
-h1 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(28px, 4vw, 42px);
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: -0.01em;
-  line-height: 1.05;
-}
-h1 span {
-  color: var(--muted);
-  font-weight: 500;
 }
 .sub {
   color: var(--muted);
@@ -308,10 +289,6 @@ select:focus {
   -webkit-appearance: none;
   margin: 0;
 }
-.reset-btn:hover {
-  color: var(--text);
-  border-color: #374252;
-}
 .reset-btn:focus-visible {
   outline: 2px solid var(--teal);
   outline-offset: 1px;
@@ -409,109 +386,12 @@ select:focus {
   outline: 2px solid var(--teal);
   outline-offset: 2px;
 }
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-}
-.card-title {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  margin-bottom: 14px;
-}
-.card p.small {
-  font-size: 12.5px;
-  color: var(--muted2);
-  line-height: 1.6;
-  margin: 0 0 12px;
-}
-.card p.small:last-child {
-  margin-bottom: 0;
-}
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 220px;
-  overflow-y: auto;
-}
-.history-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 12px;
-}
-.history-item-main {
-  min-width: 0;
-}
-.history-item .h-date {
-  font-family: 'IBM Plex Mono', monospace;
-  color: var(--muted2);
-  font-size: 10.5px;
-  margin-bottom: 3px;
-}
-.history-item .h-summary {
-  color: var(--text);
-  line-height: 1.4;
-}
-.history-restore-btn {
-  flex-shrink: 0;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10.5px;
-  color: var(--muted2);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 5px 10px;
-  cursor: pointer;
-  letter-spacing: 0.03em;
-  transition: all 0.15s ease;
-  appearance: none;
-  -webkit-appearance: none;
-}
-.history-restore-btn:hover {
-  color: var(--text);
-  border-color: #374252;
-}
-.history-restore-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-.history-empty {
-  font-size: 12px;
-  color: var(--muted2);
-  font-style: italic;
-}
 svg#radar {
   display: block;
   margin: 0 auto;
   width: 100%;
   height: auto;
   max-width: 280px;
-}
-.score-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-top: 14px;
-}
-.score-num {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-}
-.score-label {
-  font-size: 12px;
-  color: var(--muted);
 }
 
 .metric {
@@ -581,9 +461,6 @@ footer {
   font-size: 12.5px;
   color: var(--muted2);
   line-height: 1.6;
-}
-footer b {
-  color: var(--muted);
 }
 footer a {
   color: var(--teal);
