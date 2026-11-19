@@ -15,6 +15,10 @@ that makes the change, not as a separate retroactive pass.
 
 ### Added
 
+- Playbook: a "Framework references" section maps each domain and runbook to NIST
+  Cybersecurity Framework 2.0 subcategories, with one short note on what they are. The
+  mapping lives in `src/content/csf-mapping.json`, rendered at build time; a test keeps
+  it in step with the playbook. The playbook's own text is unchanged (#41).
 - THREAT_MODEL.md: each documented risk names its OWASP reference (Top 10:2025,
   ASVS 5.0.0, SCVS); it counts seven tools and describes the ruleset that now protects
   `main` (#41).
