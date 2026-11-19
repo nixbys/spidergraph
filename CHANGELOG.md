@@ -15,6 +15,8 @@ that makes the change, not as a separate retroactive pass.
 
 ### Added
 
+- Playbook: Runbook I, Estate / Legacy Access, and Runbook J, Identity Theft, with their
+  CSF 2.0 references (#37).
 - Recommendations Report: a NIST CSF 2.0 tag beside each top-pick category and under
   each best-practice section; hovering a tag explains it in plain words, and one line
   points to the Playbook's Framework references (#41).

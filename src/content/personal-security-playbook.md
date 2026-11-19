@@ -274,6 +274,22 @@ Adapted from the Preparation → Detection → Containment → Eradication → R
 5. **Verify**: Check again after 30 and 90 days that the new values stuck. Some services restore old profile data or suggest it back to you.
 6. **Lessons learned**: Before signing up somewhere new, check whether you can leave. An email alias and the minimum real details (Domain 1) keep the next stuck account harmless.
 
+### Runbook I: Estate / Legacy Access (a family member has died or can no longer manage their accounts)
+
+1. **Detect**: You're the executor, next of kin, or the person they named, and their accounts, devices and mail now need handling.
+2. **Contain**: Secure their phone, computer and mail first. Don't sign in with their password: most services forbid it, and their own legacy process is the clean path. Send each of the three credit bureaus a copy of the death certificate and ask for a deceased flag so no one can open credit in their name.
+3. **Eradicate**: Close or memorialize accounts through each service's own process: Google's Inactive Account Manager, Apple's Legacy Contact, Facebook's memorialization or legacy contact. Cancel cards and subscriptions so payments stop.
+4. **Recover**: Download what the family needs (photos, documents) through those legacy tools, and keep several certified copies of the death certificate; almost every institution asks for one.
+5. **Lessons learned**: Set up your own legacy contacts now and fill in the [Digital Legacy Worksheet](../digital-legacy-worksheet/), so someone doing this for you doesn't have to start from nothing.
+
+### Runbook J: Identity Theft (accounts, loans or tax returns in your name that you didn't open)
+
+1. **Detect**: An account you don't recognize on your credit report, a debt collector calling about a debt that isn't yours, an IRS notice about a second tax return, or credit denied for no reason you know of.
+2. **Contain (first day)**: Freeze your credit at all three bureaus (free, and it blocks new accounts) and add a fraud alert, which one bureau passes to the others.
+3. **Eradicate**: Report it at [identitytheft.gov](https://www.identitytheft.gov) for a recovery plan and an Identity Theft Report, then use that report with each company's fraud department to close the accounts and with the bureaus to dispute the entries. For tax fraud, request an IRS Identity Protection PIN.
+4. **Recover**: Follow up in writing until every account is closed and every entry corrected. Check your reports at [AnnualCreditReport.com](https://www.annualcreditreport.com) (free) until they're clean.
+5. **Lessons learned**: Keep the freezes in place and lift them only briefly when you apply for credit. Work out how your details got out: a breach (the [Breach Check Tracker](../breach-check-tracker/)) or a people-search listing (the [Broker Removal Tracker](../broker-removal-tracker/)).
+
 ---
 
 ## Closing note on tier selection
