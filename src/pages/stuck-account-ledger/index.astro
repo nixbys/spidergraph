@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout
+  title="Spidergraph — Stuck Account Ledger"
+  description="For accounts a service won't delete: generate plausible replacement details in your browser, and keep a record of what you changed, where and when, so you can still get back in."
+  path="stuck-account-ledger/"
+  current="stuck-ledger"
+  accent="red"
+>
+  <link
+    slot="head"
+    rel="stylesheet"
+    href={`${base}pages/stuck-account-ledger.css`}
+  />
+
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">
+          Self-audit · <span id="itemCount">0</span> stuck accounts tracked
+        </div>
+        <h1>
+          Stuck Account <span>Ledger</span>
+        </h1>
+        <div class="sub">
+          Some services won't delete an account. When that happens, cut its
+          links, overwrite what it still shows with made-up details, and keep a
+          record here of what you changed. The details are generated in your
+          browser, and everything stays in this browser.
+        </div>
+      </div>
+      <button type="button" class="reset-btn" id="resetBtn">
+        Reset ledger
+      </button>
+    </header>
+
+    <div class="intro-card">
+      <b>Why the record matters:</b> once a profile holds made-up details, a
+      password reset or a security question may ask for them back. Without a
+      note of what you entered, overwriting can lock you out of an account you
+      still need to close. Each account below follows the steps of
+      <b>Runbook H</b> in the Playbook, and reminds you to check after 30 and 90
+      days that the new details stuck.
+      <div class="links">
+        <a href="../playbook/#runbook-h-stuck-account-no-delete-option-deactivate-only-data-kept-after-deletion-or-other-services-still-sign-in-through-it">
+          📖 Read Runbook H in the Playbook →
+        </a>
+        <a href="../playbook/#1-identity-account-foundation">
+          📖 Email aliases: Domain 1 →
+        </a>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div>
+        <div class="list-head">
+          <span class="list-head-title">Stuck accounts</span>
+        </div>
+        <form class="add-row" id="addForm">
+          <input
+            type="text"
+            id="svcInput"
+            placeholder="Service (e.g. an old forum)"
+            aria-label="Service name"
+            maxlength="80"
+            required
+          />
+          <input
+            type="url"
+            id="urlInput"
+            placeholder="https://… (optional)"
+            aria-label="Account or settings page URL"
+            maxlength="300"
+          />
+          <select id="outcomeInput" aria-label="What happened">
+            <option value="no-delete">No delete option</option>
+            <option value="deactivate">Deactivate only</option>
+            <option value="retains">Keeps data after deleting</option>
+            <option value="login-linked">
+              Other services sign in through it
+            </option>
+            <option value="refused">Request refused</option>
+          </select>
+          <button type="submit" id="addBtn">
+            Add account
+          </button>
+        </form>
+        <div class="empty-state" id="emptyState">
+          No stuck accounts yet. Add one above when a service won't let you
+          delete your account.
+        </div>
+        <div id="acctList"></div>
+      </div>
+
+      <div class="sidebar">
+        <div class="card">
+          <div class="card-title">Progress</div>
+          <div class="score-row">
+            <div>
+              <div class="score-num" id="scoreNum">
+                0%
+              </div>
+              <div class="score-label">accounts handled and checked</div>
+            </div>
+          </div>
+          <div class="metric">
+            <span class="k">Steps done</span>
+            <span class="v teal" id="mSteps">
+              0/0
+            </span>
+          </div>
+          <div class="metric">
+            <span class="k">Checks due</span>
+            <span class="v amber" id="mDue">
+              0
+            </span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Replacement details</div>
+          <p class="small">
+            Plausible values, made in this browser from built-in word lists.
+            Phone numbers use 555-0100 to 555-0199, the range reserved for
+            fiction, so they can't be someone's real number. There's no email
+            field: keep an email you control on the account.
+          </p>
+          <dl class="gen-list" id="genList"></dl>
+          <button
+            type="button"
+            class="reset-btn"
+            id="genBtn"
+            style="width:100%"
+          >
+            Generate new set
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Before you overwrite</div>
+          <ul class="small">
+            <li>
+              Leave alone anything you still need to sign in or recover the
+              account: its email, phone for codes, security key.
+            </li>
+            <li>
+              Some services' terms forbid false details. Whether to overwrite
+              there is your decision.
+            </li>
+            <li>
+              A generated street address can match a real one by chance. Use it
+              only where the service insists on an address.
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Export</div>
+          <p class="small">
+            A text file of every account and the values you set. It holds no
+            passwords; keep it with your other account records.
+          </p>
+          <button type="button" id="exportBtn" class="reset-btn">
+            Export ledger ↓
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">History</div>
+          <p class="small">
+            Save a dated checkpoint to compare your progress over time.
+          </p>
+          <button
+            type="button"
+            id="snapshotBtn"
+            class="reset-btn"
+            style="width:100%; margin-bottom:12px;"
+          >
+            Save snapshot
+          </button>
+          <div id="historyList" class="history-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <b>Companion pages:</b> Runbook H in the <b>Playbook</b> explains each
+      step; the <b>Broker Removal Tracker</b> covers people-search listings
+      rather than your own accounts. Everything here stays in this browser, in
+      <code>localStorage</code>: nothing is sent anywhere, and the replacement
+      details are generated on this page, not fetched from a service.
+    </footer>
+  </div>
+
+  <script src={`${base}shared/persist.js`} is:inline></script>
+  <script src={`${base}shared/history.js`} is:inline></script>
+  <script src={`${base}shared/decoy-generator.js`} is:inline></script>
+  <script src={`${base}pages/stuck-account-ledger.js`} is:inline></script>
+</BaseLayout>

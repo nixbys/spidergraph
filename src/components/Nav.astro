@@ -61,10 +61,21 @@ const TOOLS = [
     accent: 'amber',
     blurb: 'Printable fraud-line wallet card',
   },
+  {
+    id: 'stuck-ledger',
+    label: 'Stuck Account Ledger',
+    href: 'stuck-account-ledger/',
+    code: 'TOOL-07',
+    accent: 'red',
+    blurb: "Accounts that won't delete",
+  },
 ];
 const TOOL_GROUPS = [
   { label: 'Domain audits', ids: ['stack-builder', 'opsec'] },
-  { label: 'Trackers', ids: ['broker-tracker', 'breach-check'] },
+  {
+    label: 'Trackers',
+    ids: ['broker-tracker', 'breach-check', 'stuck-ledger'],
+  },
   { label: 'Worksheets', ids: ['digital-legacy', 'incident-response'] },
 ];
 

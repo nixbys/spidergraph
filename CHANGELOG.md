@@ -15,6 +15,11 @@ that makes the change, not as a separate retroactive pass.
 
 ### Added
 
+- Stuck Account Ledger (TOOL-07): for accounts a service won't delete, plausible
+  replacement details generated in the browser (no network; phone numbers only from
+  the 555-0100–0199 range reserved for fiction, no email field) and a per-account
+  record of Runbook H's steps, what was overwritten with what and when, and the 30-
+  and 90-day checks (#37).
 - Playbook: Runbook H, Stuck Account — what to do when a service won't delete an
   account: a formal deletion request, cutting its links, overwriting what stays, and a
   record so the account stays recoverable (#37).

@@ -15,9 +15,10 @@ import vm from 'node:vm';
 //
 // `relativePath` resolves against THIS file's own location (test/helpers/), not the
 // caller's — e.g. '../../public/shared/foo.js', not '../public/shared/foo.js'.
-export function loadClassicScript(relativePath) {
+// `globals` adds browser APIs a script needs (decoy-generator.js uses `crypto`).
+export function loadClassicScript(relativePath, globals = {}) {
   const code = readFileSync(new URL(relativePath, import.meta.url), 'utf8');
-  const context = {};
+  const context = { ...globals };
   vm.createContext(context);
   vm.runInContext(code, context);
   return context;

@@ -278,6 +278,12 @@ h1 span {
 .card.tool6 .go {
   color: var(--amber);
 }
+.card.tool7 .card-type {
+  color: var(--red);
+}
+.card.tool7 .go {
+  color: var(--red);
+}
 .card.gen .card-type {
   color: var(--teal);
 }
