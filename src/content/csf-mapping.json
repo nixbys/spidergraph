@@ -36,5 +36,46 @@
       "RC.RP-01",
       "ID.IM-03"
     ]
+  },
+  "report": {
+    "Password manager": ["PR.AA-01"],
+    "Email + aliasing": ["PR.AA-01"],
+    "Hardware 2FA": ["PR.AA-03"],
+    "Desktop OS": ["PR.PS-01", "PR.PS-02"],
+    "Mobile OS": ["PR.PS-01", "PR.PS-02"],
+    "VPN": ["PR.DS-02", "PR.IR-01"],
+    "Browser": ["PR.PS-01"],
+    "Messaging": ["PR.DS-02"],
+    "Voice/video masking": ["PR.AA-01"],
+    "Cloud storage": ["PR.DS-01"],
+    "Data broker removal": ["ID.AM-07"],
+    "DNS/Router": ["PR.IR-01", "PR.DS-02"],
+    "Backup": ["PR.DS-11"],
+    "Card masking": ["PR.DS-01"],
+    "Credit freeze": ["PR.AA-05"],
+    "Social Engineering & Human-Layer Defense": ["PR.AT-01"],
+    "Physical Security": ["PR.AA-06"],
+    "Legal & Documentation": ["GV.OC-03"],
+    "Operational Discipline": ["PR.PS-01"],
+    "Incident Response Readiness": ["ID.IM-04"],
+    "Maintenance & Audit Cadence": ["ID.IM-01"]
+  },
+  "glosses": {
+    "GV.OC": "Knowing your context and obligations",
+    "ID.AM": "Knowing what you have and where your data is",
+    "ID.RA": "Understanding your risks",
+    "ID.IM": "Getting better over time",
+    "PR.AA": "Identity, sign-in and access",
+    "PR.AT": "Awareness and training",
+    "PR.DS": "Protecting your data",
+    "PR.PS": "Keeping devices and software secure",
+    "PR.IR": "Protecting networks",
+    "DE.CM": "Watching for trouble",
+    "RS.MA": "Running the response",
+    "RS.AN": "Working out what happened",
+    "RS.CO": "Telling the right people",
+    "RS.MI": "Stopping the damage",
+    "RC.RP": "Recovering",
+    "GV.RM": "Deciding how much risk you accept"
   }
 }
