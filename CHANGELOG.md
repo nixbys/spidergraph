@@ -15,6 +15,8 @@ that makes the change, not as a separate retroactive pass.
 
 ### Added
 
+- Playbook: Runbook I, Estate / Legacy Access, and Runbook J, Identity Theft, with their
+  CSF 2.0 references (#37).
 - Playbook: a "Framework references" section maps each domain and runbook to NIST
   Cybersecurity Framework 2.0 subcategories, with one short note on what they are. The
   mapping lives in `src/content/csf-mapping.json`, rendered at build time; a test keeps
