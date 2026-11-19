@@ -36,6 +36,8 @@ that makes the change, not as a separate retroactive pass.
 
 ### Changed
 
+- The 22 CSS rules every tool page repeated (about 1,000 duplicate lines) live once in
+  `public/shared/tool-page.css`; the pages render exactly as before.
 - Each page's CSS and script moved out of its `.astro` file into
   `public/pages/<page>.css` and `.js`; the pages render the same DOM as before. The
   Stack Builder `DATA` array now lives in `public/pages/privacy-stack-builder.js`.

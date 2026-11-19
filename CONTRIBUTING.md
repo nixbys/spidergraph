@@ -55,7 +55,9 @@ CI runs the same commands.
 
 - **One change per PR.** A content fix and a feature go in separate PRs.
 - **Each page's CSS and script are plain files** in `public/pages/<page>.css` and
-  `public/pages/<page>.js`, loaded by the page in `src/pages/`. Keep them there: the CSP
+  `public/pages/<page>.js`, loaded by the page in `src/pages/`. Layout every tool page
+  shares (header text, sidebar cards, score, history list) is in
+  `public/shared/tool-page.css`, loaded first; a page's own file keeps only what differs. Keep them there: the CSP
   allows no inline scripts, and Astro's scoped `<style>` wouldn't match the rows the tools
   build with JavaScript.
 - **Colors come from `public/shared/tokens.css`.** Use `var(--teal)` and friends, also in
