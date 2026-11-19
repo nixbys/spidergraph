@@ -109,6 +109,27 @@
           : `${filled}/4 numbers filled in`;
       },
     },
+    {
+      key: 'spidergraph-stuck-ledger-v1',
+      label: 'Stuck Account Ledger',
+      href: base + 'stuck-account-ledger/',
+      accent: 'tool-red',
+      summarize(data) {
+        const list = data && Array.isArray(data.accounts) ? data.accounts : [];
+        if (list.length === 0) return 'Not started yet';
+        const steps = [
+          'request',
+          'links',
+          'overwrite',
+          'content',
+          'visibility',
+        ];
+        const handled = list.filter((a) =>
+          steps.every((k) => (a.steps || {})[k]),
+        ).length;
+        return `${handled}/${list.length} accounts handled`;
+      },
+    },
   ];
 
   const grid = document.getElementById('myStatusGrid');

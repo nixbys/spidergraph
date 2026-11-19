@@ -21,6 +21,8 @@ const browserGlobals = {
   setTimeout: 'readonly',
   clearTimeout: 'readonly',
   location: 'readonly',
+  crypto: 'readonly',
+  Uint32Array: 'readonly',
 };
 
 const sharedRules = {
@@ -45,7 +47,8 @@ export default [
   {
     // public/shared/*.js — the classic, unbundled browser scripts (no import/export)
     // that DEFINE spidergraphStore/spidergraphHistory/spidergraphExport/
-    // spidergraphImport/classifyStatus/isCovered/coveragePercent/computeReadiness as
+    // spidergraphImport/classifyStatus/isCovered/coveragePercent/computeReadiness/
+    // spidergraphDecoy/decoyFields as
     // globals via /* exported */ comments (see each file). They must NOT also have
     // those names declared as pre-existing globals here — that's exactly what a
     // no-redeclare ("already defined as a built-in global") error is catching if you
@@ -86,6 +89,8 @@ export default [
         isCovered: 'readonly',
         coveragePercent: 'readonly',
         computeReadiness: 'readonly',
+        spidergraphDecoy: 'readonly',
+        decoyFields: 'readonly',
       },
     },
     rules: sharedRules,
@@ -96,7 +101,12 @@ export default [
     // needing Node's globals rather than browserGlobals above.
     files: ['test/**/*.js'],
     languageOptions: {
-      globals: { process: 'readonly', URL: 'readonly', console: 'readonly' },
+      globals: {
+        process: 'readonly',
+        URL: 'readonly',
+        console: 'readonly',
+        globalThis: 'readonly',
+      },
     },
     rules: sharedRules,
   },

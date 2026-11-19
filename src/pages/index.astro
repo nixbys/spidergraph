@@ -5,7 +5,7 @@ const base = import.meta.env.BASE_URL;
 
 <BaseLayout
   title="Spidergraph — Personal Security Program"
-  description="A free, open-source privacy and security program — a tiered playbook, six interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking."
+  description="A free, open-source privacy and security program — a tiered playbook, seven interactive audit tools, and a live coverage radar chart. No backend, no accounts, no tracking."
   path=""
   current="home"
 >
@@ -167,6 +167,20 @@ const base = import.meta.env.BASE_URL;
           before you need it under pressure.
         </p>
         <div class="go">Build your card →</div>
+      </a>
+
+      <a class="card tool7" href={`${base}stuck-account-ledger/`}>
+        <div class="card-top">
+          <span class="card-code">TOOL-07</span>
+          <span class="card-type">Interactive</span>
+        </div>
+        <h2>Stuck Account Ledger</h2>
+        <p>
+          For accounts a service won't delete: generate plausible replacement
+          details in your browser and record what you changed, where and when,
+          so a reset question can't lock you out later.
+        </p>
+        <div class="go">Start the ledger →</div>
       </a>
 
       <a class="card gen" href={`${base}report/`}>

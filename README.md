@@ -7,7 +7,7 @@
 **Live site: https://nixbys.github.io/spidergraph/**
 
 A personal privacy and security program that runs entirely in the browser: a tiered
-playbook, six self-audit tools and a recommendations report. There is no backend, no
+playbook, seven self-audit tools and a recommendations report. There is no backend, no
 account and no tracking. The name comes from the radar chart that plots your coverage
 across every security domain as one shape.
 
@@ -24,6 +24,7 @@ across every security domain as one shape.
 | [Breach Check Tracker](https://nixbys.github.io/spidergraph/breach-check-tracker/)         | Track your quarterly Have I Been Pwned check for each of your addresses. The page never looks anything up itself.                                           |
 | [Digital Legacy Worksheet](https://nixbys.github.io/spidergraph/digital-legacy-worksheet/) | Who your trusted contact is and where recovery information lives. Exports a note, never a password.                                                         |
 | [Incident Response Card](https://nixbys.github.io/spidergraph/incident-response-card/)     | Your bank, carrier and fraud numbers plus the first 15 minutes of steps, on one printable card.                                                             |
+| [Stuck Account Ledger](https://nixbys.github.io/spidergraph/stuck-account-ledger/)         | For accounts a service won't delete: replacement details made in your browser, and a record of what changed, where and when.                                |
 | [Recommendations Report](https://nixbys.github.io/spidergraph/report/)                     | The top pick per category with sources. The Stack Builder and Field Manual export a personal version.                                                       |
 
 Spidergraph only helps you reduce your own exposure. It will never look up or collect
