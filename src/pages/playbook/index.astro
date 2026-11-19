@@ -7,8 +7,11 @@ import { marked } from 'marked';
 // public/shared/doc-page.js for what's left of that flow: just section-jump + scroll-to-top
 // wiring, run against HTML that's already present).
 import md from '../../content/personal-security-playbook.md?raw';
+import csfMap from '../../content/csf-mapping.json';
+import { csfSectionHtml } from '../../lib/csf-section';
 
-const contentHtml = marked.parse(md) as string;
+// The framework references go after the playbook's own text (see src/lib/csf-section.ts).
+const contentHtml = (marked.parse(md) as string) + csfSectionHtml(md, csfMap);
 const base = import.meta.env.BASE_URL;
 ---
 

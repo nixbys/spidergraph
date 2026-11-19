@@ -15,6 +15,10 @@ that makes the change, not as a separate retroactive pass.
 
 ### Added
 
+- Playbook: a "Framework references" section maps each domain and runbook to NIST
+  Cybersecurity Framework 2.0 subcategories, with one short note on what they are. The
+  mapping lives in `src/content/csf-mapping.json`, rendered at build time; a test keeps
+  it in step with the playbook. The playbook's own text is unchanged (#41).
 - Stuck Account Ledger (TOOL-07): for accounts a service won't delete, plausible
   replacement details generated in the browser (no network; phone numbers only from
   the 555-0100–0199 range reserved for fiction, no email field) and a per-account

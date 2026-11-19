@@ -1,0 +1,31 @@
+{
+  "framework": "NIST Cybersecurity Framework 2.0",
+  "edition": "CSWP 29, February 2024",
+  "source": "https://doi.org/10.6028/NIST.CSWP.29",
+  "reviewed": "2026-11-19",
+  "domains": {
+    "0": ["ID.RA-03", "ID.RA-04", "ID.RA-05", "GV.RM-02"],
+    "1": ["PR.AA-01"],
+    "2": ["PR.AA-03"],
+    "3": ["PR.PS-01", "PR.PS-02", "PR.DS-01"],
+    "4": ["PR.IR-01", "PR.DS-02"],
+    "5": ["PR.DS-02"],
+    "6": ["PR.DS-01", "PR.DS-11", "RC.RP-03"],
+    "7": ["DE.CM-06"],
+    "8": ["ID.AM-07", "ID.RA-01"],
+    "9": ["PR.AT-01"],
+    "10": ["PR.AA-06"],
+    "11": ["GV.OC-03", "PR.AA-05"],
+    "12": ["ID.IM-01", "PR.PS-02"]
+  },
+  "runbooks": {
+    "A": ["RS.MA-01", "RS.MI-01", "RS.MI-02", "RC.RP-01", "ID.IM-03"],
+    "B": ["RS.MA-01", "RS.MI-01", "RS.MI-02", "RC.RP-01", "RC.RP-03"],
+    "C": ["RS.MA-01", "RS.MI-01", "RS.MI-02", "RC.RP-01", "ID.IM-03"],
+    "D": ["RS.MA-01", "RS.AN-07", "RS.CO-02", "RS.MI-02", "ID.IM-03"],
+    "E": ["RS.MA-01", "RS.MI-01", "RS.MI-02", "RC.RP-03", "ID.IM-03"],
+    "F": ["RS.MA-01", "RS.MI-01", "RS.CO-03", "ID.IM-03"],
+    "G": ["RS.MA-01", "RS.MI-01", "RS.CO-02", "RC.RP-01", "ID.IM-03"],
+    "H": ["PR.AA-01", "ID.AM-08", "PR.DS-01"]
+  }
+}
