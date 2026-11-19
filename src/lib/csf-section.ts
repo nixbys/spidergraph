@@ -74,3 +74,43 @@ ${runbooks.map((r) => row(r, map.runbooks[r.key])).join('\n')}
 <p class="verified-tag">${esc(map.framework)}, ${esc(map.edition)} · mapping reviewed ${esc(map.reviewed)}</p>
 `;
 }
+
+export interface CsfReportMapping extends CsfMapping {
+  report: Record<string, string[]>;
+  glosses: Record<string, string>;
+}
+
+// One clinical tag per CSF ID; the plain-language gloss is behind hover (title), not
+// inline, so the report's own text reads as before.
+function tags(ids: string[], map: CsfReportMapping): string {
+  return ids
+    .map((id) => {
+      const gloss = map.glosses[id.slice(0, 5)] ?? '';
+      return `<abbr class="csf-tag" title="${esc(gloss)} (NIST CSF 2.0)">${esc(id)}</abbr>`;
+    })
+    .join(' ');
+}
+
+// Adds CSF 2.0 tags to the report at build time: beside each Part 1 category and
+// under each Part 2 heading (not inside it, so heading ids and links stay the same).
+export function annotateReport(html: string, map: CsfReportMapping): string {
+  let out = html;
+  for (const [name, ids] of Object.entries(map.report)) {
+    const label = esc(name);
+    const cell = new RegExp(
+      `(<td[^>]*>)${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(</td>)`,
+    );
+    const head = new RegExp(
+      `(<h3[^>]*>${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</h3>)`,
+    );
+    if (cell.test(out))
+      out = out.replace(cell, `$1${label} ${tags(ids, map)}$2`);
+    else if (head.test(out))
+      out = out.replace(head, `$1\n<p class="csf-tags">${tags(ids, map)}</p>`);
+  }
+  // The one bridge for readers: what the tags are, pointing to the Playbook's explainer.
+  return out.replace(
+    '</table>',
+    '</table>\n<p class="csf-note">Tags like <code>PR.AA-01</code> are NIST Cybersecurity Framework 2.0 categories; hover one for what it covers, or see <a href="../playbook/#framework-references">Framework references</a> in the Playbook.</p>',
+  );
+}
