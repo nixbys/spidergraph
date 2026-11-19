@@ -257,12 +257,12 @@ Adapted from the Preparation → Detection → Containment → Eradication → R
 4. **Recover**: If any information was given before you caught it, treat it like Runbook A/D depending on what was disclosed.
 5. **Lessons learned**: Share the specific pretext used with anyone else who might be targeted the same way (family, close contacts) — social engineers often run the same script against multiple people in a network.
 
-### Runbook G: Financial Fraud / Unauthorized Transaction
+### Runbook G: Financial Fraud / Unauthorized Transaction (on an account you already have)
 
-1. **Detect**: An unrecognized charge, a bank/card fraud alert, a new account or credit inquiry you didn't initiate, or money missing that you didn't move.
+1. **Detect**: An unrecognized charge, a bank/card fraud alert, or money missing that you didn't move. A new account or credit inquiry you didn't start is identity theft: go to Runbook J.
 2. **Contain (first 15 minutes)**: Call the fraud line on the back of your card or your bank's official number — not a number from a text or email claiming to be them. Freeze the specific card/account if the institution supports instant in-app freezing; this is faster than waiting on hold and doesn't require explaining anything yet.
-3. **Eradicate**: Dispute the specific transaction(s) formally, in writing where the institution allows it, not just verbally. If a new account or credit line was opened in your name, that's identity theft, not just card fraud — file a report at [identitytheft.gov](https://www.identitytheft.gov) (the FTC's official recovery process) in addition to the bank dispute.
-4. **Recover**: If a credit freeze wasn't already in place at all three bureaus (Domain 7/11), put one on now to block further new-account fraud while the dispute is investigated. Rotate the password on the affected account and any account that shares a password with it.
+3. **Eradicate**: Dispute the specific transaction(s) formally, in writing where the institution allows it, not just verbally. If you find a new account or credit line in your name, follow Runbook J as well.
+4. **Recover**: Rotate the password on the affected account and any account that shares a password with it, and check that the replacement card is what's saved with your merchants.
 5. **Lessons learned**: Trace how the exposure likely happened — card skimmed, merchant breach, phished, or a data-broker-listed detail used for account takeover — and close that specific gap. This is exactly why the incident-contact list from the OPSEC Field Manual's Legal & Documentation domain (bank fraud line, carrier fraud line, non-emergency police line, written down _before_ you need it) is worth having ready rather than searched for mid-incident.
 
 ### Runbook H: Stuck Account (no delete option, deactivate-only, data kept after "deletion", or other services still sign in through it)
